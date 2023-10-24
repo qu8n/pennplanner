@@ -2,6 +2,7 @@ import {
   AdjustmentsHorizontalIcon,
   ArrowLeftIcon,
   Bars3BottomRightIcon,
+  BarsArrowDownIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline'
 import {
@@ -10,6 +11,7 @@ import {
   Accordion,
   AccordionItem,
   Chip,
+  Link,
 } from '@nextui-org/react'
 import { useState } from 'react'
 
@@ -68,13 +70,13 @@ export function Sidebar() {
         <Button
           fullWidth
           variant="ghost"
-          startContent={<Bars3BottomRightIcon className="w-5 h-5" />}
+          startContent={<BarsArrowDownIcon className="w-5 h-5" />}
         >
           Sort
         </Button>
       </div>
 
-      <div className="mt-3 flex flex-col flex-grow ring-2 rounded-xl ring-gray-300 py-2">
+      <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 py-2">
         <Accordion
           showDivider={false}
           variant="light"
@@ -144,6 +146,15 @@ export function Sidebar() {
             {defaultContent}
           </AccordionItem>
         </Accordion>
+      </div>
+
+      <div className="flex flex-row items-center mt-4 gap-4">
+        <Link href="#" size="sm">
+          Privacy Policy
+        </Link>
+        <Link href="#" size="sm">
+          Terms of Service
+        </Link>
       </div>
     </>
   )
