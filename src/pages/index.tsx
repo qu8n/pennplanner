@@ -1,5 +1,6 @@
-import { Navbar } from '@/components/Navbar'
 import { Inter } from 'next/font/google'
+import { Navbar } from '@/components/Navbar'
+import { Sidebar } from '@/components/Sidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -8,8 +9,9 @@ export default function Home() {
     <main className={`flex flex-col h-screen ${inter.className}`}>
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <aside className="flex w-[35rem] p-4 ring"></aside>
+        <aside className="flex-col flex w-[35rem] p-4 ring">
+          <Sidebar />
+        </aside>
 
         <div className="flex flex-1 flex-col ring">
           {/* Header */}
