@@ -9,7 +9,7 @@ export default function Home() {
     <main className={`flex flex-col h-screen ${inter.className}`}>
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
-        <aside className="flex-col flex w-[35rem] p-4 ring">
+        <aside className="flex-col flex w-[30rem] p-4 ring">
           <Sidebar />
         </aside>
 
@@ -21,8 +21,6 @@ export default function Home() {
           <div className="flex flex-1 overflow-y-auto paragraph px-4 ring"></div>
         </div>
       </div>
-
-      <footer className="flex ring">Footer</footer>
     </main>
   )
 }
