@@ -10,7 +10,7 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
 } from '@nextui-org/react'
-import { AcmeLogo } from '@/assets/Logo'
+import { BookmarkSquareIcon } from '@heroicons/react/24/outline'
 
 const mobileMenuItems = [
   'My Plans',
@@ -30,9 +30,9 @@ export function Navbar() {
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="sm:hidden"
         />
-        <NavbarBrand>
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+        <NavbarBrand className="gap-1">
+          <BookmarkSquareIcon className="h-6 w-6 text-blue-500" />
+          <p className="font-semibold">PennPlanner</p>
         </NavbarBrand>
       </NavbarContent>
 
