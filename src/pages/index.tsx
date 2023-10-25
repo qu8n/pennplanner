@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <main className={`flex flex-col h-screen ${inter.className}`}>
+    <main className={`flex flex-col h-screen ${inter.className} px-28`}>
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <aside className="flex-col flex w-[30rem] p-4">

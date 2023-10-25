@@ -1,30 +1,19 @@
 import {
   AdjustmentsHorizontalIcon,
   ArrowLeftIcon,
-  Bars3BottomRightIcon,
   BarsArrowDownIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline'
-import {
-  Button,
-  Input,
-  Accordion,
-  AccordionItem,
-  Chip,
-  Link,
-} from '@nextui-org/react'
+import { Button, Input, Accordion, AccordionItem } from '@nextui-org/react'
 import { useState } from 'react'
 import { courses } from '@/data/courses'
-
-const defaultContent =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
   title: 'font-semibold text-md',
   trigger:
     'px-3 data-[hover=true]:bg-default-200/[.60] bg-gray-100 rounded-md flex items-center',
-  content: 'text-sm px-2 text-gray-500 gap-2 flex flex-col',
+  content: 'text-sm p-2 text-gray-500 gap-2 flex flex-col',
 }
 
 export function Sidebar() {
@@ -76,34 +65,36 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <div className="mt-3 flex flex-col overflow-y-auto grow ring-2 rounded-xl ring-gray-300 py-2">
-        <Accordion
-          showDivider={false}
-          variant="light"
-          itemClasses={accordionItemClasses}
-        >
-          {courses.map((course) => (
-            <AccordionItem
-              key={course.course_id}
-              aria-label={course.course_id}
-              title={course.course_id}
-              subtitle={course.course_name}
-            >
-              <div>
-                <p className="font-semibold">Description</p>
-                <p>{course.course_description}</p>
-              </div>
-              <div>
-                <p className="font-semibold">Pre-Requisites</p>
-                <p>{course.course_prereqs}</p>
-              </div>
-              <div>
-                <p className="font-semibold">Course Units</p>
-                <p>{course.course_unit} unit</p>
-              </div>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 overflow-hidden">
+        <div className="overflow-y-auto py-2">
+          <Accordion
+            showDivider={false}
+            variant="light"
+            itemClasses={accordionItemClasses}
+          >
+            {courses.map((course) => (
+              <AccordionItem
+                key={course.course_id}
+                aria-label={course.course_id}
+                title={course.course_id}
+                subtitle={course.course_name}
+              >
+                <div>
+                  <p className="font-semibold">Description</p>
+                  <p>{course.course_description}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Pre-Requisites</p>
+                  <p>{course.course_prereqs}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Course Units</p>
+                  <p>{course.course_unit} unit</p>
+                </div>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </>
   )
