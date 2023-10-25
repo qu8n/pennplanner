@@ -14,17 +14,17 @@ import {
   Link,
 } from '@nextui-org/react'
 import { useState } from 'react'
+import { courses } from '@/data/courses'
 
 const defaultContent =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
-  title: 'font-bold text-lg',
-  subtitle: 'text-black',
+  title: 'font-semibold text-md',
   trigger:
-    'p-2 data-[hover=true]:bg-default-200/[.60] bg-gray-100 rounded-md h-14 flex items-center',
-  content: 'text-small px-2 text-gray-500',
+    'px-3 data-[hover=true]:bg-default-200/[.60] bg-gray-100 rounded-md flex items-center',
+  content: 'text-sm px-2 text-gray-500 gap-2 flex flex-col',
 }
 
 export function Sidebar() {
@@ -76,79 +76,34 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 py-2">
+      <div className="mt-3 flex flex-col overflow-y-auto grow ring-2 rounded-xl ring-gray-300 py-2">
         <Accordion
           showDivider={false}
           variant="light"
           itemClasses={accordionItemClasses}
         >
-          <AccordionItem
-            key="1"
-            aria-label="Accordion 1"
-            title={
-              <div className="flex flex-row items-center gap-1">
-                <span className="mr-2">CIS 5150</span>
-                <Chip
-                  variant="bordered"
-                  size="sm"
-                  className="text-gray-400 text-xs"
-                >
-                  1.0 CU
-                </Chip>
+          {courses.map((course) => (
+            <AccordionItem
+              key={course.course_id}
+              aria-label={course.course_id}
+              title={course.course_id}
+              subtitle={course.course_name}
+            >
+              <div>
+                <p className="font-semibold">Description</p>
+                <p>{course.course_description}</p>
               </div>
-            }
-            subtitle="Fundamentals of Linear Algebra & Optimization"
-          >
-            {defaultContent}
-          </AccordionItem>
-          <AccordionItem
-            key="2"
-            aria-label="Accordion 1"
-            title={
-              <div className="flex flex-row items-center gap-1">
-                <span className="mr-2">CIS 5150</span>
-                <Chip
-                  variant="bordered"
-                  size="sm"
-                  className="text-gray-400 text-xs"
-                >
-                  1.0 CU
-                </Chip>
+              <div>
+                <p className="font-semibold">Pre-Requisites</p>
+                <p>{course.course_prereqs}</p>
               </div>
-            }
-            subtitle="Computer Vision & Computational Photography"
-          >
-            {defaultContent}
-          </AccordionItem>
-          <AccordionItem
-            key="3"
-            aria-label="Accordion 1"
-            title={
-              <div className="flex flex-row items-center gap-1">
-                <span className="mr-2">CIS 5150</span>
-                <Chip
-                  variant="bordered"
-                  size="sm"
-                  className="text-gray-400 text-xs"
-                >
-                  1.0 CU
-                </Chip>
+              <div>
+                <p className="font-semibold">Course Units</p>
+                <p>{course.course_unit} unit</p>
               </div>
-            }
-            subtitle="Computer Vision & Computational Photography"
-          >
-            {defaultContent}
-          </AccordionItem>
+            </AccordionItem>
+          ))}
         </Accordion>
-      </div>
-
-      <div className="flex flex-row items-center mt-4 gap-4">
-        <Link href="#" size="sm">
-          Privacy Policy
-        </Link>
-        <Link href="#" size="sm">
-          Terms of Service
-        </Link>
       </div>
     </>
   )
