@@ -23,7 +23,7 @@ const accordionItemClasses = {
   title: 'font-bold text-lg',
   subtitle: 'text-black',
   trigger:
-    'px-2 py-0 data-[hover=true]:bg-default-200/[.60] bg-default-100 rounded-md h-14 flex items-center',
+    'p-2 data-[hover=true]:bg-default-200/[.60] bg-gray-100 rounded-md h-14 flex items-center',
   content: 'text-small px-2 text-gray-500',
 }
 
@@ -88,18 +88,16 @@ export function Sidebar() {
             title={
               <div className="flex flex-row items-center gap-1">
                 <span className="mr-2">CIS 5150</span>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  MSE-DS
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
+                <Chip
+                  variant="bordered"
+                  size="sm"
+                  className="text-gray-400 text-xs"
+                >
                   1.0 CU
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  Technical Elective
                 </Chip>
               </div>
             }
-            subtitle="Computer Vision & Computational Photography"
+            subtitle="Fundamentals of Linear Algebra & Optimization"
           >
             {defaultContent}
           </AccordionItem>
@@ -109,14 +107,12 @@ export function Sidebar() {
             title={
               <div className="flex flex-row items-center gap-1">
                 <span className="mr-2">CIS 5150</span>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  MSE-DS
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
+                <Chip
+                  variant="bordered"
+                  size="sm"
+                  className="text-gray-400 text-xs"
+                >
                   1.0 CU
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  Technical Elective
                 </Chip>
               </div>
             }
@@ -130,14 +126,12 @@ export function Sidebar() {
             title={
               <div className="flex flex-row items-center gap-1">
                 <span className="mr-2">CIS 5150</span>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  MSE-DS
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
+                <Chip
+                  variant="bordered"
+                  size="sm"
+                  className="text-gray-400 text-xs"
+                >
                   1.0 CU
-                </Chip>
-                <Chip variant="bordered" size="sm" className="text-gray-400">
-                  Technical Elective
                 </Chip>
               </div>
             }

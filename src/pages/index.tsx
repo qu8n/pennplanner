@@ -2,9 +2,8 @@ import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { Schedule } from '@/components/Schedule'
+import { CoursePlan } from '@/components/CoursePlan'
 import { Divider } from '@nextui-org/react'
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,9 +24,11 @@ export default function Home() {
           <Divider />
 
           <div className="flex flex-col overflow-y-auto p-4 gap-4">
-            <Schedule />
-            <Schedule />
-            <Schedule />
+            <CoursePlan />
+            <CoursePlan />
+            <CoursePlan />
+            <CoursePlan />
+            <CoursePlan />
           </div>
         </div>
       </div>
