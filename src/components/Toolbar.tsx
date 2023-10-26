@@ -31,23 +31,23 @@ export function Toolbar() {
       <Button
         variant="ghost"
         startContent={<DocumentDuplicateIcon className="w-5 h-5" />}
-        className="flex-none w-36"
+        className="flex-none w-38"
       >
         Make a copy
       </Button>
       <Button
         variant="ghost"
         startContent={<ArrowDownOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-36"
+        className="flex-none w-38"
       >
-        Download
+        Download plan
       </Button>
       <Button
         variant="ghost"
         startContent={<ArrowTopRightOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-36"
+        className="flex-none w-38"
       >
-        Share
+        Share plan
       </Button>
     </>
   )

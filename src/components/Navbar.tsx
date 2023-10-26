@@ -24,7 +24,12 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <NextUINavbar isBordered maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
+    <NextUINavbar
+      // isBordered
+      maxWidth="full"
+      onMenuOpenChange={setIsMenuOpen}
+      className="h-10 border-b-2 border-gray-300"
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -38,26 +43,30 @@ export function Navbar() {
 
       <NavbarContent as="div" justify="end" className="hidden sm:flex gap-8">
         <NavbarItem>
-          <Link color="foreground" href="#">
-            My Plans
+          <Link color="foreground" href="#" size="sm">
+            My plans
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            How It Works
+          <Link color="foreground" href="#" size="sm">
+            How it works
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link color="foreground" href="#" size="sm">
             About
           </Link>
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
+          <Button
+            as={Link}
+            color="primary"
+            href="#"
+            variant="light"
+            size="md"
+            className="rounded-none"
+          >
+            Login / Signup
           </Button>
         </NavbarItem>
       </NavbarContent>
