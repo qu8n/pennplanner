@@ -4,10 +4,20 @@ import {
   BarsArrowDownIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Input, Accordion, AccordionItem } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Accordion,
+  AccordionItem,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from '@nextui-org/react'
 import { useState } from 'react'
-import { courses } from '@/data/courses'
+import { courses as coursesData } from '@/data/courses'
 import { Rating } from '@smastrom/react-rating'
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
@@ -17,8 +27,55 @@ const accordionItemClasses = {
   content: 'text-sm p-2 text-gray-500 gap-2 flex flex-col',
 }
 
+function getCourseNumbers(courseIdA: string, courseIdB: string) {
+  const numberA = parseInt(courseIdA.match(/\d+/)![0])
+  const numberB = parseInt(courseIdB.match(/\d+/)![0])
+  return [numberA, numberB]
+}
+
 export function Sidebar() {
   const [searchValue, setSearchValue] = useState('')
+  const [courses, setCourses] = useState(coursesData)
+
+  function handleSort(key: string) {
+    let sortedCourses: typeof courses = []
+    try {
+      switch (key) {
+        case 'number-asc':
+          sortedCourses = [...courses].sort((a, b) => {
+            const [numberA, numberB] = getCourseNumbers(
+              a.course_id,
+              b.course_id,
+            )
+            return numberA - numberB
+          })
+          break
+        case 'number-desc':
+          sortedCourses = [...courses].sort((a, b) => {
+            const [numberA, numberB] = getCourseNumbers(
+              a.course_id,
+              b.course_id,
+            )
+            return numberB - numberA
+          })
+          break
+        case 'name-asc':
+          sortedCourses = [...courses].sort((a, b) =>
+            a.course_name.localeCompare(b.course_name),
+          )
+          break
+        case 'name-desc':
+          sortedCourses = [...courses].sort((a, b) =>
+            b.course_name.localeCompare(a.course_name),
+          )
+          break
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setCourses(sortedCourses)
+    }
+  }
 
   return (
     <>
@@ -57,13 +114,47 @@ export function Sidebar() {
         >
           Filter
         </Button>
-        <Button
-          fullWidth
-          variant="ghost"
-          startContent={<BarsArrowDownIcon className="w-5 h-5" />}
-        >
-          Sort
-        </Button>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button
+              fullWidth
+              variant="bordered"
+              startContent={<BarsArrowDownIcon className="w-5 h-5" />}
+            >
+              Sort by
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="Static Actions"
+            selectionMode="single"
+            onAction={(key) => handleSort(key as string)}
+          >
+            <DropdownItem
+              key="number-asc"
+              endContent={<ArrowUpIcon className="w-3 h-3" />}
+            >
+              Course number (ascending)
+            </DropdownItem>
+            <DropdownItem
+              key="number-desc"
+              endContent={<ArrowDownIcon className="w-3 h-3" />}
+            >
+              Course number (descending)
+            </DropdownItem>
+            <DropdownItem
+              key="name-asc"
+              endContent={<ArrowUpIcon className="w-3 h-3" />}
+            >
+              Course name (ascending)
+            </DropdownItem>
+            <DropdownItem
+              key="name-desc"
+              endContent={<ArrowDownIcon className="w-3 h-3" />}
+            >
+              Course name (descending)
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
 
       <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 overflow-hidden">

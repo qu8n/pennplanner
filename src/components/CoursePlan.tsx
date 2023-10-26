@@ -12,7 +12,7 @@ export function CoursePlan() {
             <div className="flex flex-row gap-2 items-center">
               <p className="font-semibold text-lg">Fall 2022</p>
               <Button size="sm" variant="ghost" className="ml-auto">
-                Change starting year
+                Change
               </Button>
             </div>
             <div className="bg-white ring-2 ring-gray-200 rounded-lg p-3">
