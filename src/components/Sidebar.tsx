@@ -14,11 +14,13 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownSection,
+  Tooltip,
 } from '@nextui-org/react'
 import { Key, useEffect, useState } from 'react'
 import { courses as coursesData } from '@/data/courses'
 import { Rating } from '@smastrom/react-rating'
 import Fuse from 'fuse.js'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
@@ -289,7 +291,7 @@ export function Sidebar() {
                     />
                     {course.avg_difficulty ?? 'N/A'}
                   </div>
-                  <div className="flex flex-row gap-2">
+                  <div className="flex flex-row gap-2 items-center">
                     <span className="font-medium">Workload: </span>
                     <Rating
                       readOnly={true}
@@ -305,6 +307,38 @@ export function Sidebar() {
                     {course.avg_hours_per_week
                       ? `${course.avg_hours_per_week} hours/week`
                       : 'N/A'}
+                    <Tooltip
+                      placement="right"
+                      content={
+                        <div className="flex flex-col">
+                          <p className="font-medium">Rating system:</p>
+                          <div className="flex flex-row items-center gap-1">
+                            <span>1</span>
+                            <Rating
+                              readOnly={true}
+                              style={{ maxWidth: 20 }}
+                              value={1}
+                              items={1}
+                            />
+                            <span>= 4 hours/week</span>
+                          </div>
+                          <div className="flex flex-row items-center gap-1">
+                            <span>5</span>
+                            <Rating
+                              readOnly={true}
+                              style={{ maxWidth: 20 }}
+                              value={1}
+                              items={1}
+                              className="-ml-[2px]"
+                            />
+                            <span>&gt;= 20 hours/week</span>
+                          </div>
+                        </div>
+                      }
+                      showArrow
+                    >
+                      <InformationCircleIcon className="flex-none w-4 h-4 text-gray-400" />
+                    </Tooltip>
                   </div>
                 </div>
                 <div>
