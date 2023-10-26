@@ -14,9 +14,10 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react'
-import { Key, useState } from 'react'
+import { Key, useEffect, useState } from 'react'
 import { courses as coursesData } from '@/data/courses'
 import { Rating } from '@smastrom/react-rating'
+import Fuse from 'fuse.js'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
@@ -37,6 +38,19 @@ export function Sidebar() {
   const [searchValue, setSearchValue] = useState('')
   const [selectedFilter, setSelectedFilter] = useState(new Set(['']))
   const [selectedSort, setSelectedSort] = useState(new Set(['']))
+
+  useEffect(() => {
+    if (searchValue) {
+      const fuse = new Fuse(coursesData, {
+        threshold: 0.3,
+        keys: ['course_id', 'course_name', 'course_description'],
+      })
+      const results = fuse.search(searchValue)
+      setCourses(results.map((result) => result.item))
+    } else {
+      setCourses(coursesData)
+    }
+  }, [searchValue])
 
   function handleFilter(filterMethod: string) {
     let filteredCourses: typeof courses = []
@@ -135,7 +149,7 @@ export function Sidebar() {
         label={
           <div className="flex flex-row gap-2 items-center">
             <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0 w-4 h-4" />
-            Search by course name or number
+            Search course name, number, or description
           </div>
         }
         labelPlacement="inside"
