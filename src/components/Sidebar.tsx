@@ -13,12 +13,10 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Selection,
 } from '@nextui-org/react'
 import { Key, useState } from 'react'
 import { courses as coursesData } from '@/data/courses'
 import { Rating } from '@smastrom/react-rating'
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
 
 const accordionItemClasses = {
   base: 'ring-2 ring-gray-300 mb-3 rounded-md',
@@ -35,9 +33,47 @@ function getCourseNumbers(courseIdA: string, courseIdB: string) {
 }
 
 export function Sidebar() {
-  const [searchValue, setSearchValue] = useState('')
   const [courses, setCourses] = useState(coursesData)
-  const [selectedSort, setSelectedSort] = useState(new Set(['number-asc']))
+  const [searchValue, setSearchValue] = useState('')
+  const [selectedFilter, setSelectedFilter] = useState(new Set(['']))
+  const [selectedSort, setSelectedSort] = useState(new Set(['']))
+
+  function handleFilter(filterMethod: string) {
+    let filteredCourses: typeof courses = []
+    try {
+      switch (filterMethod) {
+        case 'mcit-core-courses':
+          filteredCourses = [...coursesData].filter((course) => {
+            return course.mcit_core_course
+          })
+          break
+        case 'mcit-open-electives':
+          filteredCourses = [...coursesData].filter((course) => {
+            return course.mcit_open_elective
+          })
+          break
+        case 'mse-ds-core-courses':
+          filteredCourses = [...coursesData].filter((course) => {
+            return course.mse_ds_core_course
+          })
+          break
+        case 'mse-ds-technical-electives':
+          filteredCourses = [...coursesData].filter((course) => {
+            return course.mse_ds_technical_elective
+          })
+          break
+        case 'mse-ds-open-electives':
+          filteredCourses = [...coursesData].filter((course) => {
+            return course.mse_ds_open_elective
+          })
+          break
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setCourses(filteredCourses)
+    }
+  }
 
   function handleSort(sortMethod: string) {
     let sortedCourses: typeof courses = []
@@ -109,13 +145,44 @@ export function Sidebar() {
       />
 
       <div className="flex gap-3 mt-3">
-        <Button
-          fullWidth
-          variant="ghost"
-          startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
-        >
-          Filter
-        </Button>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button
+              fullWidth
+              variant="ghost"
+              startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
+            >
+              Filter
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="filter"
+            selectionMode="single"
+            selectedKeys={selectedFilter}
+            onSelectionChange={(keys) => {
+              setSelectedFilter(
+                new Set([(keys as Set<Key>).values().next().value]),
+              )
+            }}
+            onAction={(key) => handleFilter(key as string)}
+          >
+            <DropdownItem key="mcit-core-courses">
+              MCIT Core Courses
+            </DropdownItem>
+            <DropdownItem key="mcit-open-electives">
+              MCIT Open Electives
+            </DropdownItem>
+            <DropdownItem key="mse-ds-core-courses">
+              MSE-DS Core Courses
+            </DropdownItem>
+            <DropdownItem key="mse-ds-technical-electives">
+              MSE-DS Technical Electives
+            </DropdownItem>
+            <DropdownItem key="mse-ds-open-electives">
+              MSE-DS Open Electives
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
 
         <Dropdown>
           <DropdownTrigger>
@@ -128,7 +195,7 @@ export function Sidebar() {
             </Button>
           </DropdownTrigger>
           <DropdownMenu
-            aria-label="Static Actions"
+            aria-label="sort"
             selectionMode="single"
             selectedKeys={selectedSort}
             onSelectionChange={(keys) => {
@@ -138,28 +205,14 @@ export function Sidebar() {
             }}
             onAction={(key) => handleSort(key as string)}
           >
-            <DropdownItem
-              key="number-asc"
-              startContent={<ArrowUpIcon className="w-3 h-3" />}
-            >
+            <DropdownItem key="number-asc">
               Course number (ascending)
             </DropdownItem>
-            <DropdownItem
-              key="number-desc"
-              startContent={<ArrowDownIcon className="w-3 h-3" />}
-            >
+            <DropdownItem key="number-desc">
               Course number (descending)
             </DropdownItem>
-            <DropdownItem
-              key="name-asc"
-              startContent={<ArrowUpIcon className="w-3 h-3" />}
-            >
-              Course name (ascending)
-            </DropdownItem>
-            <DropdownItem
-              key="name-desc"
-              startContent={<ArrowDownIcon className="w-3 h-3" />}
-            >
+            <DropdownItem key="name-asc">Course name (ascending)</DropdownItem>
+            <DropdownItem key="name-desc">
               Course name (descending)
             </DropdownItem>
           </DropdownMenu>
