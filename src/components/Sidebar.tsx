@@ -13,8 +13,9 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Selection,
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { Key, useState } from 'react'
 import { courses as coursesData } from '@/data/courses'
 import { Rating } from '@smastrom/react-rating'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
@@ -36,11 +37,12 @@ function getCourseNumbers(courseIdA: string, courseIdB: string) {
 export function Sidebar() {
   const [searchValue, setSearchValue] = useState('')
   const [courses, setCourses] = useState(coursesData)
+  const [selectedSort, setSelectedSort] = useState(new Set(['number-asc']))
 
-  function handleSort(key: string) {
+  function handleSort(sortMethod: string) {
     let sortedCourses: typeof courses = []
     try {
-      switch (key) {
+      switch (sortMethod) {
         case 'number-asc':
           sortedCourses = [...courses].sort((a, b) => {
             const [numberA, numberB] = getCourseNumbers(
@@ -114,6 +116,7 @@ export function Sidebar() {
         >
           Filter
         </Button>
+
         <Dropdown>
           <DropdownTrigger>
             <Button
@@ -127,29 +130,35 @@ export function Sidebar() {
           <DropdownMenu
             aria-label="Static Actions"
             selectionMode="single"
+            selectedKeys={selectedSort}
+            onSelectionChange={(keys) => {
+              setSelectedSort(
+                new Set([(keys as Set<Key>).values().next().value]),
+              )
+            }}
             onAction={(key) => handleSort(key as string)}
           >
             <DropdownItem
               key="number-asc"
-              endContent={<ArrowUpIcon className="w-3 h-3" />}
+              startContent={<ArrowUpIcon className="w-3 h-3" />}
             >
               Course number (ascending)
             </DropdownItem>
             <DropdownItem
               key="number-desc"
-              endContent={<ArrowDownIcon className="w-3 h-3" />}
+              startContent={<ArrowDownIcon className="w-3 h-3" />}
             >
               Course number (descending)
             </DropdownItem>
             <DropdownItem
               key="name-asc"
-              endContent={<ArrowUpIcon className="w-3 h-3" />}
+              startContent={<ArrowUpIcon className="w-3 h-3" />}
             >
               Course name (ascending)
             </DropdownItem>
             <DropdownItem
               key="name-desc"
-              endContent={<ArrowDownIcon className="w-3 h-3" />}
+              startContent={<ArrowDownIcon className="w-3 h-3" />}
             >
               Course name (descending)
             </DropdownItem>
