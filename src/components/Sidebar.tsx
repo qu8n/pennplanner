@@ -13,6 +13,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
 } from '@nextui-org/react'
 import { Key, useEffect, useState } from 'react'
 import { courses as coursesData } from '@/data/courses'
@@ -36,7 +37,7 @@ function getCourseNumbers(courseIdA: string, courseIdB: string) {
 export function Sidebar() {
   const [courses, setCourses] = useState(coursesData)
   const [searchValue, setSearchValue] = useState('')
-  const [selectedFilter, setSelectedFilter] = useState(new Set(['']))
+  const [selectedFilter, setSelectedFilter] = useState(new Set(['all-courses']))
   const [selectedSort, setSelectedSort] = useState(new Set(['']))
 
   useEffect(() => {
@@ -47,6 +48,8 @@ export function Sidebar() {
       })
       const results = fuse.search(searchValue)
       setCourses(results.map((result) => result.item))
+      setSelectedFilter(new Set(['all-courses']))
+      setSelectedSort(new Set(['']))
     } else {
       setCourses(coursesData)
     }
@@ -54,30 +57,41 @@ export function Sidebar() {
 
   function handleFilter(filterMethod: string) {
     let filteredCourses: typeof courses = []
+
+    let coursesToFilter: typeof courses = []
+    if (searchValue) {
+      coursesToFilter = [...courses]
+    } else {
+      coursesToFilter = [...coursesData]
+    }
+
     try {
       switch (filterMethod) {
+        case 'all-courses':
+          filteredCourses = coursesToFilter
+          break
         case 'mcit-core-courses':
-          filteredCourses = [...coursesData].filter((course) => {
+          filteredCourses = coursesToFilter.filter((course) => {
             return course.mcit_core_course
           })
           break
         case 'mcit-open-electives':
-          filteredCourses = [...coursesData].filter((course) => {
+          filteredCourses = coursesToFilter.filter((course) => {
             return course.mcit_open_elective
           })
           break
         case 'mse-ds-core-courses':
-          filteredCourses = [...coursesData].filter((course) => {
+          filteredCourses = coursesToFilter.filter((course) => {
             return course.mse_ds_core_course
           })
           break
         case 'mse-ds-technical-electives':
-          filteredCourses = [...coursesData].filter((course) => {
+          filteredCourses = coursesToFilter.filter((course) => {
             return course.mse_ds_technical_elective
           })
           break
         case 'mse-ds-open-electives':
-          filteredCourses = [...coursesData].filter((course) => {
+          filteredCourses = coursesToFilter.filter((course) => {
             return course.mse_ds_open_elective
           })
           break
@@ -166,13 +180,14 @@ export function Sidebar() {
               variant="ghost"
               startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
             >
-              Filter
+              Filter course type
             </Button>
           </DropdownTrigger>
           <DropdownMenu
             aria-label="filter"
             selectionMode="single"
             selectedKeys={selectedFilter}
+            disallowEmptySelection
             onSelectionChange={(keys) => {
               setSelectedFilter(
                 new Set([(keys as Set<Key>).values().next().value]),
@@ -180,21 +195,24 @@ export function Sidebar() {
             }}
             onAction={(key) => handleFilter(key as string)}
           >
-            <DropdownItem key="mcit-core-courses">
-              MCIT Core Courses
-            </DropdownItem>
-            <DropdownItem key="mcit-open-electives">
-              MCIT Open Electives
-            </DropdownItem>
-            <DropdownItem key="mse-ds-core-courses">
-              MSE-DS Core Courses
-            </DropdownItem>
-            <DropdownItem key="mse-ds-technical-electives">
-              MSE-DS Technical Electives
-            </DropdownItem>
-            <DropdownItem key="mse-ds-open-electives">
-              MSE-DS Open Electives
-            </DropdownItem>
+            <DropdownItem key="all-courses">All courses</DropdownItem>
+            <DropdownSection title="MCIT">
+              <DropdownItem key="mcit-core-courses">Core courses</DropdownItem>
+              <DropdownItem key="mcit-open-electives">
+                Open electives
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection title="MSE-DS">
+              <DropdownItem key="mse-ds-core-courses">
+                Core courses
+              </DropdownItem>
+              <DropdownItem key="mse-ds-technical-electives">
+                Technical electives
+              </DropdownItem>
+              <DropdownItem key="mse-ds-open-electives">
+                Open electives
+              </DropdownItem>
+            </DropdownSection>
           </DropdownMenu>
         </Dropdown>
 
@@ -211,6 +229,7 @@ export function Sidebar() {
           <DropdownMenu
             aria-label="sort"
             selectionMode="single"
+            disallowEmptySelection
             selectedKeys={selectedSort}
             onSelectionChange={(keys) => {
               setSelectedSort(
