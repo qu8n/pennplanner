@@ -1,6 +1,6 @@
 // Supabase SQL query: select json_agg(course_catalog) from public.course_catalog
 
-export const courses = [
+export const allCourses = [
   {
     course_id: 'CIS 5300',
     course_name: 'Natural Language Processing',

@@ -4,34 +4,97 @@ import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
 import { CoursePlan } from '@/components/CoursePlan'
 import { Divider } from '@nextui-org/react'
+import {
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  UniqueIdentifier,
+  DragOverlay,
+} from '@dnd-kit/core'
+import { useEffect, useId, useMemo, useState } from 'react'
+import { allCourses } from '@/data/allCourses'
+import { DraggableCourse } from '@/components/DraggableCourse'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const id = useId()
+
+  // const [semesters, setSemesters] = useState([])
+  // const [courses, setCourses] = useState(allCourses)
+  const [activeId, setActiveId] = useState<string | null>(null)
+
+  function handleDragStart(event: DragStartEvent) {
+    const { active } = event
+    setActiveId(active.id as string)
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (!over) {
+      return
+    }
+    // setSemesters((semesters) =>
+    //   semesters.map((semester) => {
+    //     if (semester.id === over.id) {
+    //       semester.courses.push(courses.find((course) => course.id === active.id));
+    //     }
+    //     return semester;
+    //   }),
+    // );
+    // setCourses(courses.filter((course) => course.id !== active.id));
+  }
+
+  const activeCourse = useMemo(() => {
+    return allCourses.find((course) => course.course_id === activeId)
+  }, [activeId])
+
   return (
     <main className={`flex flex-col h-screen ${inter.className} px-28`}>
-      <Navbar />
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="flex-col flex w-[30rem] p-4">
-          <Sidebar />
-        </aside>
+      <DndContext
+        id={id} // resolves "`aria-describedby` did not match" warning
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <Navbar />
+        <div className="flex flex-1 overflow-hidden">
+          <aside className="flex-col flex w-[30rem] p-4">
+            <Sidebar />
+          </aside>
 
-        <div className="flex flex-1 flex-col">
-          <div className="flex flex-row items-center h-16 p-4 gap-2">
-            <Toolbar />
-          </div>
+          <div className="flex flex-1 flex-col">
+            <div className="flex flex-row items-center h-16 p-4 gap-2">
+              <Toolbar />
+            </div>
 
-          <Divider />
+            <Divider />
 
-          <div className="flex flex-col overflow-y-auto p-4 gap-4">
-            <CoursePlan />
-            <CoursePlan />
-            <CoursePlan />
-            <CoursePlan />
-            <CoursePlan />
+            <div className="flex flex-col overflow-y-auto p-4 gap-4">
+              <CoursePlan />
+              <CoursePlan />
+              <CoursePlan />
+              <CoursePlan />
+              <CoursePlan />
+            </div>
           </div>
         </div>
-      </div>
+
+        <DragOverlay>
+          {activeCourse ? (
+            <DraggableCourse
+              key={activeCourse.course_id}
+              id={activeCourse.course_id}
+            >
+              <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
+                <p className="text-sm text-gray-400">
+                  {activeCourse.course_id}
+                </p>
+                <p>{activeCourse.course_name}</p>
+              </div>
+            </DraggableCourse>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
     </main>
   )
 }

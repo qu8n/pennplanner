@@ -14,8 +14,9 @@ import {
   DropdownSection,
 } from '@nextui-org/react'
 import { Key, useEffect, useState } from 'react'
-import { courses as coursesData } from '@/data/courses'
+import { allCourses } from '@/data/allCourses'
 import Fuse from 'fuse.js'
+import { DraggableCourse } from './DraggableCourse'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {
   const numberA = parseInt(courseIdA.match(/\d+/)![0])
@@ -24,14 +25,14 @@ function getCourseNumbers(courseIdA: string, courseIdB: string) {
 }
 
 export function Sidebar() {
-  const [courses, setCourses] = useState(coursesData)
+  const [courses, setCourses] = useState(allCourses)
   const [searchValue, setSearchValue] = useState('')
   const [selectedFilter, setSelectedFilter] = useState(new Set(['all-courses']))
   const [selectedSort, setSelectedSort] = useState(new Set(['']))
 
   useEffect(() => {
     if (searchValue) {
-      const fuse = new Fuse(coursesData, {
+      const fuse = new Fuse(allCourses, {
         threshold: 0.3,
         keys: ['course_id', 'course_name', 'course_description'],
       })
@@ -40,7 +41,7 @@ export function Sidebar() {
       setSelectedFilter(new Set(['all-courses']))
       setSelectedSort(new Set(['']))
     } else {
-      setCourses(coursesData)
+      setCourses(allCourses)
     }
   }, [searchValue])
 
@@ -51,7 +52,7 @@ export function Sidebar() {
     if (searchValue) {
       coursesToFilter = [...courses]
     } else {
-      coursesToFilter = [...coursesData]
+      coursesToFilter = [...allCourses]
     }
 
     try {
@@ -244,13 +245,12 @@ export function Sidebar() {
       <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 overflow-hidden">
         <div className="overflow-y-auto p-2">
           {courses.map((course) => (
-            <div
-              key={course.course_id}
-              className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2"
-            >
-              <p className="text-sm text-gray-400">{course.course_id}</p>
-              <p>{course.course_name}</p>
-            </div>
+            <DraggableCourse key={course.course_id} id={course.course_id}>
+              <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
+                <p className="text-sm text-gray-400">{course.course_id}</p>
+                <p>{course.course_name}</p>
+              </div>
+            </DraggableCourse>
           ))}
         </div>
       </div>
