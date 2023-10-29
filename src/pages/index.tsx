@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
@@ -14,8 +13,6 @@ import {
 import { useEffect, useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { DraggableCourse } from '@/components/DraggableCourse'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const id = useId()
@@ -50,7 +47,7 @@ export default function Home() {
   }, [activeId])
 
   return (
-    <main className={`flex flex-col h-screen ${inter.className} px-28`}>
+    <main className={`flex flex-col h-screen px-28 font-geist-sans`}>
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
