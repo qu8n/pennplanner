@@ -24,6 +24,14 @@ function getCourseNumbers(courseIdA: string, courseIdB: string) {
   return [numberA, numberB]
 }
 
+const filterMethods = {
+  'mcit-core-courses': 'MCIT core courses',
+  'mcit-open-electives': 'MCIT open electives',
+  'mse-ds-core-courses': 'MSE-DS core courses',
+  'mse-ds-technical-electives': 'MSE-DS technical electives',
+  'mse-ds-open-electives': 'MSE-DS open electives',
+}
+
 export function Sidebar() {
   const [courses, setCourses] = useState(allCourses)
   const [searchValue, setSearchValue] = useState('')
@@ -168,9 +176,23 @@ export function Sidebar() {
             <Button
               fullWidth
               variant="ghost"
-              startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
+              startContent={
+                selectedFilter.has('all-courses') ? (
+                  <AdjustmentsHorizontalIcon className="w-5 h-5" />
+                ) : null
+              }
+              className={
+                selectedFilter.has('all-courses')
+                  ? ''
+                  : 'border-3 border-blue-500 text-blue-700'
+              }
             >
-              Filter course type
+              {selectedFilter.has('all-courses')
+                ? 'Filter course type'
+                : filterMethods[
+                    selectedFilter.values().next()
+                      .value as keyof typeof filterMethods
+                  ]}
             </Button>
           </DropdownTrigger>
           <DropdownMenu
@@ -187,20 +209,22 @@ export function Sidebar() {
           >
             <DropdownItem key="all-courses">All courses</DropdownItem>
             <DropdownSection title="MCIT">
-              <DropdownItem key="mcit-core-courses">Core courses</DropdownItem>
+              <DropdownItem key="mcit-core-courses">
+                {filterMethods['mcit-core-courses']}
+              </DropdownItem>
               <DropdownItem key="mcit-open-electives">
-                Open electives
+                {filterMethods['mcit-open-electives']}
               </DropdownItem>
             </DropdownSection>
             <DropdownSection title="MSE-DS">
               <DropdownItem key="mse-ds-core-courses">
-                Core courses
+                {filterMethods['mse-ds-core-courses']}
               </DropdownItem>
               <DropdownItem key="mse-ds-technical-electives">
-                Technical electives
+                {filterMethods['mse-ds-technical-electives']}
               </DropdownItem>
               <DropdownItem key="mse-ds-open-electives">
-                Open electives
+                {filterMethods['mse-ds-open-electives']}
               </DropdownItem>
             </DropdownSection>
           </DropdownMenu>
