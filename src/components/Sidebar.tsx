@@ -32,6 +32,13 @@ const filterMethods = {
   'mse-ds-open-electives': 'MSE-DS open electives',
 }
 
+const sortMethods = {
+  'name-asc': 'Course name (ascending)',
+  'name-desc': 'Course name (descending)',
+  'number-asc': 'Course number (ascending)',
+  'number-desc': 'Course number (descending)',
+}
+
 export function Sidebar() {
   const [courses, setCourses] = useState(allCourses)
   const [searchValue, setSearchValue] = useState('')
@@ -235,15 +242,29 @@ export function Sidebar() {
             <Button
               fullWidth
               variant="bordered"
-              startContent={<BarsArrowDownIcon className="w-5 h-5" />}
+              startContent={
+                selectedSort.has('') ? (
+                  <BarsArrowDownIcon className="w-5 h-5" />
+                ) : null
+              }
+              className={
+                selectedSort.has('')
+                  ? ''
+                  : 'border-3 border-blue-500 text-blue-700'
+              }
             >
-              Sort by
+              {selectedSort.has('')
+                ? 'Sort by'
+                : sortMethods[
+                    selectedSort.values().next()
+                      .value as keyof typeof sortMethods
+                  ]}
             </Button>
           </DropdownTrigger>
           <DropdownMenu
             aria-label="sort"
             selectionMode="single"
-            disallowEmptySelection
+            // disallowEmptySelection
             selectedKeys={selectedSort}
             onSelectionChange={(keys) => {
               setSelectedSort(
@@ -252,15 +273,17 @@ export function Sidebar() {
             }}
             onAction={(key) => handleSort(key as string)}
           >
+            <DropdownItem key="name-asc">
+              {sortMethods['name-asc']}
+            </DropdownItem>
+            <DropdownItem key="name-desc">
+              {sortMethods['name-desc']}
+            </DropdownItem>
             <DropdownItem key="number-asc">
-              Course number (ascending)
+              {sortMethods['number-asc']}
             </DropdownItem>
             <DropdownItem key="number-desc">
-              Course number (descending)
-            </DropdownItem>
-            <DropdownItem key="name-asc">Course name (ascending)</DropdownItem>
-            <DropdownItem key="name-desc">
-              Course name (descending)
+              {sortMethods['number-desc']}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
