@@ -13,10 +13,11 @@ import {
   DropdownItem,
   DropdownSection,
 } from '@nextui-org/react'
-import { Key, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import Fuse from 'fuse.js'
 import { DraggableCourse } from './DraggableCourse'
+import { Course } from '@/shared/types'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {
   const numberA = parseInt(courseIdA.match(/\d+/)![0])
@@ -39,114 +40,96 @@ const sortMethods = {
   'number-desc': 'Course number (descending)',
 }
 
+function handleFilter(selectedFilter: string, coursesToFilter: Course[]) {
+  let filteredCourses: Course[] = []
+  switch (selectedFilter) {
+    case 'all-courses':
+      filteredCourses = [...coursesToFilter]
+      break
+    case 'mcit-core-courses':
+      filteredCourses = [...coursesToFilter].filter((course) => {
+        return course.mcit_core_course
+      })
+      break
+    case 'mcit-open-electives':
+      filteredCourses = [...coursesToFilter].filter((course) => {
+        return course.mcit_open_elective
+      })
+      break
+    case 'mse-ds-core-courses':
+      filteredCourses = [...coursesToFilter].filter((course) => {
+        return course.mse_ds_core_course
+      })
+      break
+    case 'mse-ds-technical-electives':
+      filteredCourses = [...coursesToFilter].filter((course) => {
+        return course.mse_ds_technical_elective
+      })
+      break
+    case 'mse-ds-open-electives':
+      filteredCourses = [...coursesToFilter].filter((course) => {
+        return course.mse_ds_open_elective
+      })
+      break
+  }
+  return filteredCourses
+}
+
+function handleSort(sortMethod: string, coursesToSort: Course[]) {
+  let sortedCourses: Course[] = []
+  switch (sortMethod) {
+    case '':
+    case 'name-asc':
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        a.course_name.localeCompare(b.course_name),
+      )
+      break
+    case 'name-desc':
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        b.course_name.localeCompare(a.course_name),
+      )
+      break
+    case 'number-asc':
+      sortedCourses = [...coursesToSort].sort((a, b) => {
+        const [numberA, numberB] = getCourseNumbers(a.course_id, b.course_id)
+        return numberA - numberB
+      })
+      break
+    case 'number-desc':
+      sortedCourses = [...coursesToSort].sort((a, b) => {
+        const [numberA, numberB] = getCourseNumbers(a.course_id, b.course_id)
+        return numberB - numberA
+      })
+      break
+  }
+  return sortedCourses
+}
+
+function handleSearch(searchValue: string, coursesToSearch: Course[]) {
+  const fuse = new Fuse(coursesToSearch, {
+    threshold: 0.3,
+    keys: ['course_id', 'course_name', 'course_description'],
+  })
+  const results = fuse.search(searchValue)
+  return results.map((result) => result.item)
+}
+
 export function Sidebar() {
-  const [courses, setCourses] = useState(allCourses)
-  const [searchValue, setSearchValue] = useState('')
-  const [selectedFilter, setSelectedFilter] = useState(new Set(['all-courses']))
-  const [selectedSort, setSelectedSort] = useState(new Set(['']))
+  const [courses, setCourses] = useState<Course[]>(allCourses)
+  const [coursesQuery, setCoursesQuery] = useState({
+    search: '',
+    filter: 'all-courses',
+    sort: '',
+  })
 
   useEffect(() => {
-    if (searchValue) {
-      const fuse = new Fuse(allCourses, {
-        threshold: 0.3,
-        keys: ['course_id', 'course_name', 'course_description'],
-      })
-      const results = fuse.search(searchValue)
-      setCourses(results.map((result) => result.item))
-      setSelectedFilter(new Set(['all-courses']))
-      setSelectedSort(new Set(['']))
-    } else {
-      setCourses(allCourses)
-    }
-  }, [searchValue])
-
-  function handleFilter(filterMethod: string) {
-    let filteredCourses: typeof courses = []
-
-    let coursesToFilter: typeof courses = []
-    if (searchValue) {
-      coursesToFilter = [...courses]
-    } else {
-      coursesToFilter = [...allCourses]
-    }
-
-    try {
-      switch (filterMethod) {
-        case 'all-courses':
-          filteredCourses = coursesToFilter
-          break
-        case 'mcit-core-courses':
-          filteredCourses = coursesToFilter.filter((course) => {
-            return course.mcit_core_course
-          })
-          break
-        case 'mcit-open-electives':
-          filteredCourses = coursesToFilter.filter((course) => {
-            return course.mcit_open_elective
-          })
-          break
-        case 'mse-ds-core-courses':
-          filteredCourses = coursesToFilter.filter((course) => {
-            return course.mse_ds_core_course
-          })
-          break
-        case 'mse-ds-technical-electives':
-          filteredCourses = coursesToFilter.filter((course) => {
-            return course.mse_ds_technical_elective
-          })
-          break
-        case 'mse-ds-open-electives':
-          filteredCourses = coursesToFilter.filter((course) => {
-            return course.mse_ds_open_elective
-          })
-          break
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setCourses(filteredCourses)
-    }
-  }
-
-  function handleSort(sortMethod: string) {
-    let sortedCourses: typeof courses = []
-    try {
-      switch (sortMethod) {
-        case 'number-asc':
-          sortedCourses = [...courses].sort((a, b) => {
-            const [numberA, numberB] = getCourseNumbers(
-              a.course_id,
-              b.course_id,
-            )
-            return numberA - numberB
-          })
-          break
-        case 'number-desc':
-          sortedCourses = [...courses].sort((a, b) => {
-            const [numberA, numberB] = getCourseNumbers(
-              a.course_id,
-              b.course_id,
-            )
-            return numberB - numberA
-          })
-          break
-        case 'name-asc':
-          sortedCourses = [...courses].sort((a, b) =>
-            a.course_name.localeCompare(b.course_name),
-          )
-          break
-        case 'name-desc':
-          sortedCourses = [...courses].sort((a, b) =>
-            b.course_name.localeCompare(a.course_name),
-          )
-          break
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setCourses(sortedCourses)
-    }
-  }
+    let coursesToQuery: Course[] = allCourses
+    if (coursesQuery.search)
+      coursesToQuery = handleSearch(coursesQuery.search, coursesToQuery)
+    coursesToQuery = handleFilter(coursesQuery.filter, coursesToQuery)
+    coursesToQuery = handleSort(coursesQuery.sort, coursesToQuery)
+    setCourses(coursesToQuery)
+  }, [coursesQuery])
 
   return (
     <>
@@ -173,8 +156,10 @@ export function Sidebar() {
         }
         labelPlacement="inside"
         isClearable
-        value={searchValue}
-        onValueChange={setSearchValue}
+        value={coursesQuery.search}
+        onValueChange={(value) =>
+          setCoursesQuery({ ...coursesQuery, search: value })
+        }
       />
 
       <div className="flex gap-3 mt-3">
@@ -184,54 +169,46 @@ export function Sidebar() {
               fullWidth
               variant="ghost"
               startContent={
-                selectedFilter.has('all-courses') ? (
+                coursesQuery.filter === 'all-courses' ? (
                   <AdjustmentsHorizontalIcon className="w-5 h-5" />
                 ) : null
               }
               className={
-                selectedFilter.has('all-courses')
+                coursesQuery.filter === 'all-courses'
                   ? ''
                   : 'border-3 border-blue-500 text-blue-700'
               }
             >
-              {selectedFilter.has('all-courses')
+              {coursesQuery.filter === 'all-courses'
                 ? 'Filter course type'
                 : filterMethods[
-                    selectedFilter.values().next()
-                      .value as keyof typeof filterMethods
+                    coursesQuery.filter as keyof typeof filterMethods
                   ]}
             </Button>
           </DropdownTrigger>
           <DropdownMenu
             aria-label="filter"
             selectionMode="single"
-            selectedKeys={selectedFilter}
-            disallowEmptySelection
-            onSelectionChange={(keys) => {
-              setSelectedFilter(
-                new Set([(keys as Set<Key>).values().next().value]),
-              )
-            }}
-            onAction={(key) => handleFilter(key as string)}
+            onAction={(key) =>
+              setCoursesQuery({ ...coursesQuery, filter: key as string })
+            }
           >
             <DropdownItem key="all-courses">All courses</DropdownItem>
             <DropdownSection title="MCIT">
-              <DropdownItem key="mcit-core-courses">
-                {filterMethods['mcit-core-courses']}
-              </DropdownItem>
+              <DropdownItem key="mcit-core-courses">Core courses</DropdownItem>
               <DropdownItem key="mcit-open-electives">
-                {filterMethods['mcit-open-electives']}
+                Open electives
               </DropdownItem>
             </DropdownSection>
             <DropdownSection title="MSE-DS">
               <DropdownItem key="mse-ds-core-courses">
-                {filterMethods['mse-ds-core-courses']}
+                Core courses
               </DropdownItem>
               <DropdownItem key="mse-ds-technical-electives">
-                {filterMethods['mse-ds-technical-electives']}
+                Technical electives
               </DropdownItem>
               <DropdownItem key="mse-ds-open-electives">
-                {filterMethods['mse-ds-open-electives']}
+                Open electives
               </DropdownItem>
             </DropdownSection>
           </DropdownMenu>
@@ -243,35 +220,28 @@ export function Sidebar() {
               fullWidth
               variant="bordered"
               startContent={
-                selectedSort.has('') ? (
+                coursesQuery.sort === '' ? (
                   <BarsArrowDownIcon className="w-5 h-5" />
                 ) : null
               }
               className={
-                selectedSort.has('')
+                coursesQuery.sort === ''
                   ? ''
                   : 'border-3 border-blue-500 text-blue-700'
               }
             >
-              {selectedSort.has('')
+              {coursesQuery.sort === ''
                 ? 'Sort by'
-                : sortMethods[
-                    selectedSort.values().next()
-                      .value as keyof typeof sortMethods
-                  ]}
+                : sortMethods[coursesQuery.sort as keyof typeof sortMethods]}
             </Button>
           </DropdownTrigger>
           <DropdownMenu
             aria-label="sort"
             selectionMode="single"
-            // disallowEmptySelection
-            selectedKeys={selectedSort}
-            onSelectionChange={(keys) => {
-              setSelectedSort(
-                new Set([(keys as Set<Key>).values().next().value]),
-              )
-            }}
-            onAction={(key) => handleSort(key as string)}
+            disallowEmptySelection
+            onAction={(key) =>
+              setCoursesQuery({ ...coursesQuery, sort: key as string })
+            }
           >
             <DropdownItem key="name-asc">
               {sortMethods['name-asc']}
