@@ -12,6 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownSection,
+  ScrollShadow,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
@@ -34,13 +35,13 @@ const filterMethods = {
 }
 
 const sortMethods = {
-  'name-asc': 'Course name (ascending)',
-  'name-desc': 'Course name (descending)',
-  'number-asc': 'Course number (ascending)',
-  'number-desc': 'Course number (descending)',
+  'name-asc': 'Course name (A-Z)',
+  'name-desc': 'Course name (Z-A)',
+  'number-asc': 'Course number (0-9)',
+  'number-desc': 'Course number (9-0)',
 }
 
-function handleFilter(selectedFilter: string, coursesToFilter: Course[]) {
+function filterCourses(selectedFilter: string, coursesToFilter: Course[]) {
   let filteredCourses: Course[] = []
   switch (selectedFilter) {
     case 'all-courses':
@@ -75,7 +76,7 @@ function handleFilter(selectedFilter: string, coursesToFilter: Course[]) {
   return filteredCourses
 }
 
-function handleSort(sortMethod: string, coursesToSort: Course[]) {
+function sortCourses(sortMethod: string, coursesToSort: Course[]) {
   let sortedCourses: Course[] = []
   switch (sortMethod) {
     case '':
@@ -105,7 +106,7 @@ function handleSort(sortMethod: string, coursesToSort: Course[]) {
   return sortedCourses
 }
 
-function handleSearch(searchValue: string, coursesToSearch: Course[]) {
+function searchCourses(searchValue: string, coursesToSearch: Course[]) {
   const fuse = new Fuse(coursesToSearch, {
     threshold: 0.3,
     keys: ['course_id', 'course_name', 'course_description'],
@@ -125,9 +126,9 @@ export function Sidebar() {
   useEffect(() => {
     let coursesToQuery: Course[] = allCourses
     if (coursesQuery.search)
-      coursesToQuery = handleSearch(coursesQuery.search, coursesToQuery)
-    coursesToQuery = handleFilter(coursesQuery.filter, coursesToQuery)
-    coursesToQuery = handleSort(coursesQuery.sort, coursesToQuery)
+      coursesToQuery = searchCourses(coursesQuery.search, coursesToQuery)
+    coursesToQuery = filterCourses(coursesQuery.filter, coursesToQuery)
+    coursesToQuery = sortCourses(coursesQuery.sort, coursesToQuery)
     setCourses(coursesToQuery)
   }, [coursesQuery])
 
@@ -168,15 +169,11 @@ export function Sidebar() {
             <Button
               fullWidth
               variant="ghost"
-              startContent={
-                coursesQuery.filter === 'all-courses' ? (
-                  <AdjustmentsHorizontalIcon className="w-5 h-5" />
-                ) : null
-              }
+              startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
               className={
                 coursesQuery.filter === 'all-courses'
                   ? ''
-                  : 'border-3 border-blue-500 text-blue-700'
+                  : 'border-3 border-blue-500 text-blue-700 text-xs'
               }
             >
               {coursesQuery.filter === 'all-courses'
@@ -189,6 +186,7 @@ export function Sidebar() {
           <DropdownMenu
             aria-label="filter"
             selectionMode="single"
+            selectedKeys={[coursesQuery.filter]}
             onAction={(key) =>
               setCoursesQuery({ ...coursesQuery, filter: key as string })
             }
@@ -219,25 +217,24 @@ export function Sidebar() {
             <Button
               fullWidth
               variant="bordered"
-              startContent={
-                coursesQuery.sort === '' ? (
-                  <BarsArrowDownIcon className="w-5 h-5" />
-                ) : null
-              }
+              startContent={<BarsArrowDownIcon className="w-5 h-5" />}
               className={
                 coursesQuery.sort === ''
                   ? ''
-                  : 'border-3 border-blue-500 text-blue-700'
+                  : 'border-3 border-blue-500 text-blue-700 text-xs'
               }
             >
               {coursesQuery.sort === ''
                 ? 'Sort by'
-                : sortMethods[coursesQuery.sort as keyof typeof sortMethods]}
+                : `Sort by: ${
+                    sortMethods[coursesQuery.sort as keyof typeof sortMethods]
+                  }`}
             </Button>
           </DropdownTrigger>
           <DropdownMenu
             aria-label="sort"
             selectionMode="single"
+            selectedKeys={[coursesQuery.sort]}
             disallowEmptySelection
             onAction={(key) =>
               setCoursesQuery({ ...coursesQuery, sort: key as string })
@@ -260,7 +257,7 @@ export function Sidebar() {
       </div>
 
       <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 overflow-hidden">
-        <div className="overflow-y-auto p-2">
+        <ScrollShadow className="overflow-y-auto p-2">
           {courses.map((course) => (
             <DraggableCourse key={course.course_id} id={course.course_id}>
               <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
@@ -269,7 +266,7 @@ export function Sidebar() {
               </div>
             </DraggableCourse>
           ))}
-        </div>
+        </ScrollShadow>
       </div>
     </>
   )
