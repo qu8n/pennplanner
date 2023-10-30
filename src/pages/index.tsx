@@ -12,13 +12,23 @@ import {
 } from '@dnd-kit/core'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
-import { DraggableCourse } from '@/components/DraggableCourse'
+import { Draggable } from '@/components/Draggable'
+import { Course, Semester } from '@/shared/types'
+import { Droppable } from '@/components/Droppable'
+import { SemesterContainer } from '@/components/SemesterContainer'
 
 export default function Home() {
   const id = useId()
 
-  // const [semesters, setSemesters] = useState([])
-  // const [courses, setCourses] = useState(allCourses)
+  const [semesters, setSemesters] = useState<Semester[]>([
+    {
+      id: 'semester-1',
+      year: 2023,
+      semester: 'Fall',
+      courses: [],
+    },
+  ])
+  const [courses, setCourses] = useState<Course[]>(allCourses)
   const [activeId, setActiveId] = useState<string | null>(null)
 
   function handleDragStart(event: DragStartEvent) {
@@ -28,18 +38,27 @@ export default function Home() {
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
+
     if (!over) {
       return
     }
-    // setSemesters((semesters) =>
-    //   semesters.map((semester) => {
-    //     if (semester.id === over.id) {
-    //       semester.courses.push(courses.find((course) => course.id === active.id));
-    //     }
-    //     return semester;
-    //   }),
-    // );
-    // setCourses(courses.filter((course) => course.id !== active.id));
+
+    const activeCourse = courses.find(
+      (course) => course.course_id === active.id,
+    )
+    if (!activeCourse) {
+      return
+    }
+
+    setSemesters((semesters) =>
+      semesters.map((semester) => {
+        if (semester.id === over.id) {
+          semester.courses.push(activeCourse)
+        }
+        return semester
+      }),
+    )
+    setCourses(courses.filter((course) => course.course_id !== active.id))
   }
 
   const activeCourse = useMemo(() => {
@@ -56,7 +75,7 @@ export default function Home() {
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <aside className="flex-col flex w-[30rem] p-4">
-            <Sidebar />
+            <Sidebar courses={courses} setCourses={setCourses} />
           </aside>
 
           <div className="flex flex-1 flex-col">
@@ -67,28 +86,26 @@ export default function Home() {
             <Divider />
 
             <div className="flex flex-col overflow-y-auto p-4 gap-4">
-              <CoursePlan />
-              <CoursePlan />
-              <CoursePlan />
-              <CoursePlan />
-              <CoursePlan />
+              {/* <CoursePlan /> */}
+              {semesters.map((semester) => (
+                <Droppable id={semester.id} key={semester.id}>
+                  <SemesterContainer semester={semester} />
+                </Droppable>
+              ))}
             </div>
           </div>
         </div>
 
         <DragOverlay>
           {activeCourse ? (
-            <DraggableCourse
-              key={activeCourse.course_id}
-              id={activeCourse.course_id}
-            >
+            <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
               <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
                 <p className="text-sm text-gray-400">
                   {activeCourse.course_id}
                 </p>
                 <p>{activeCourse.course_name}</p>
               </div>
-            </DraggableCourse>
+            </Draggable>
           ) : null}
         </DragOverlay>
       </DndContext>

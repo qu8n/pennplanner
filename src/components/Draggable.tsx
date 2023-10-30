@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 
-export function DraggableCourse({
+export function Draggable({
   children,
   id,
 }: {

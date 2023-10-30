@@ -15,9 +15,9 @@ export type Course = {
   avg_rating?: number | null
 }
 
-export type CourseList = {
+export type Semester = {
   id: string
-  year?: number
-  semester?: string
+  year: number
+  semester: string
   courses: Course[]
 }
