@@ -27,6 +27,18 @@ export default function Home() {
       semester: 'Fall',
       courses: [],
     },
+    {
+      id: 'semester-2',
+      year: 2024,
+      semester: 'Spring',
+      courses: [],
+    },
+    {
+      id: 'semester-3',
+      year: 2024,
+      semester: 'Fall',
+      courses: [],
+    },
   ])
   const [courses, setCourses] = useState<Course[]>(allCourses)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -58,6 +70,7 @@ export default function Home() {
         return semester
       }),
     )
+
     setCourses(courses.filter((course) => course.course_id !== active.id))
   }
 
