@@ -1,3 +1,15 @@
+export type Year = {
+  year_id: string
+  year_semesters: Semester[]
+}
+
+export type Semester = {
+  semester_id: string
+  semester_year: number
+  semester_name: string
+  semester_courses: Course[]
+}
+
 export type Course = {
   course_id: string
   course_name: string
@@ -13,11 +25,4 @@ export type Course = {
   avg_difficulty?: number | null
   avg_hours_per_week?: number | null
   avg_rating?: number | null
-}
-
-export type Semester = {
-  id: string
-  year: number
-  semester: string
-  courses: Course[]
 }

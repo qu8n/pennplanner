@@ -25,22 +25,22 @@ export default function Home() {
 
   const [semesters, setSemesters] = useState<Semester[]>([
     {
-      id: 'semester-1',
-      year: 2023,
-      semester: 'Fall',
-      courses: [],
+      semester_id: 'semester-1',
+      semester_year: 2023,
+      semester_name: 'Fall',
+      semester_courses: [],
     },
     {
-      id: 'semester-2',
-      year: 2024,
-      semester: 'Spring',
-      courses: [],
+      semester_id: 'semester-2',
+      semester_year: 2024,
+      semester_name: 'Spring',
+      semester_courses: [],
     },
     {
-      id: 'semester-3',
-      year: 2024,
-      semester: 'Fall',
-      courses: [],
+      semester_id: 'semester-3',
+      semester_year: 2024,
+      semester_name: 'Fall',
+      semester_courses: [],
     },
   ])
   const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
@@ -57,20 +57,22 @@ export default function Home() {
     if (!uniqueId) {
       return null
     }
-    if (semesters.some((s) => s.id === uniqueId)) {
-      return semesters.find((s) => s.id === uniqueId) ?? null
+    if (semesters.some((s) => s.semester_id === uniqueId)) {
+      return semesters.find((s) => s.semester_id === uniqueId) ?? null
     }
     const id = String(uniqueId)
     const itemWithSemesterId = semesters.flatMap((semester) => {
-      const semesterId = semester.id
-      return semester.courses.map((course) => ({
+      const semesterId = semester.semester_id
+      return semester.semester_courses.map((course) => ({
         courseId: course.course_id,
         semesterId: semesterId,
       }))
     })
     const semesterId = itemWithSemesterId.find((item) => item.courseId === id)
       ?.semesterId
-    return semesters.find((semester) => semester.id === semesterId) ?? null
+    return (
+      semesters.find((semester) => semester.semester_id === semesterId) ?? null
+    )
   }
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -83,8 +85,8 @@ export default function Home() {
       return null
     }
     setSemesters((prevState) => {
-      const activeCourses = activesemester.courses
-      const overCourses = oversemester.courses
+      const activeCourses = activesemester.semester_courses
+      const overCourses = oversemester.semester_courses
       const activeIndex = activeCourses.findIndex(
         (i) => i.course_id === activeId,
       )
@@ -96,11 +98,13 @@ export default function Home() {
         return overIndex >= 0 ? overIndex + modifier : overCourses.length + 1
       }
       return prevState.map((c) => {
-        if (c.id === activesemester.id) {
-          c.courses = activeCourses.filter((i) => i.course_id !== activeId)
+        if (c.semester_id === activesemester.semester_id) {
+          c.semester_courses = activeCourses.filter(
+            (i) => i.course_id !== activeId,
+          )
           return c
-        } else if (c.id === oversemester.id) {
-          c.courses = [
+        } else if (c.semester_id === oversemester.semester_id) {
+          c.semester_courses = [
             ...overCourses.slice(0, newIndex()),
             activeCourses[activeIndex],
             ...overCourses.slice(newIndex(), overCourses.length),
@@ -128,18 +132,18 @@ export default function Home() {
     const overSemester = getSemesterFromId(overId)
 
     if (activeSemester && overSemester && activeSemester === overSemester) {
-      const activeIndex = activeSemester.courses.findIndex(
+      const activeIndex = activeSemester.semester_courses.findIndex(
         (i) => i.course_id === activeId,
       )
-      const overIndex = overSemester.courses.findIndex(
+      const overIndex = overSemester.semester_courses.findIndex(
         (i) => i.course_id === overId,
       )
       if (activeIndex !== overIndex) {
         setSemesters((prevState) => {
           return prevState.map((semester) => {
-            if (semester.id === activeSemester.id) {
-              semester.courses = arrayMove(
-                overSemester.courses,
+            if (semester.semester_id === activeSemester.semester_id) {
+              semester.semester_courses = arrayMove(
+                overSemester.semester_courses,
                 activeIndex,
                 overIndex,
               )
@@ -161,8 +165,8 @@ export default function Home() {
     }
     setSemesters((semesters) =>
       semesters.map((semester) => {
-        if (semester.id === over.id) {
-          semester.courses.push(activeCourse)
+        if (semester.semester_id === over.id) {
+          semester.semester_courses.push(activeCourse)
         }
         return semester
       }),
@@ -210,9 +214,9 @@ export default function Home() {
 
             <div className="flex flex-col overflow-y-auto p-4 gap-4">
               {semesters.map((semester) => (
-                <Droppable id={semester.id} key={semester.id}>
+                <Droppable id={semester.semester_id} key={semester.semester_id}>
                   <SemesterContainer
-                    key={semester.id}
+                    key={semester.semester_id}
                     semester={semester}
                   ></SemesterContainer>
                 </Droppable>
