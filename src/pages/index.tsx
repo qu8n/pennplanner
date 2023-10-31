@@ -43,7 +43,9 @@ export default function Home() {
       courses: [],
     },
   ])
-  const [courses, setCourses] = useState<Course[]>(allCourses)
+  const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
+  const [coursesToDisplay, setCoursesToDisplay] =
+    useState<Course[]>(courseCatalog)
   const [activeId, setActiveId] = useState<string | null>(null)
 
   function handleDragStart(event: DragStartEvent) {
@@ -151,13 +153,12 @@ export default function Home() {
     }
 
     // Handles dragging courses from sidebar to semester containers
-    const activeCourse = courses.find(
+    const activeCourse = courseCatalog.find(
       (course) => course.course_id === active.id,
     )
     if (!activeCourse) {
       return
     }
-
     setSemesters((semesters) =>
       semesters.map((semester) => {
         if (semester.id === over.id) {
@@ -167,7 +168,12 @@ export default function Home() {
       }),
     )
 
-    setCourses(courses.filter((course) => course.course_id !== active.id))
+    setCourseCatalog(
+      courseCatalog.filter((course) => course.course_id !== active.id),
+    )
+    setCoursesToDisplay(
+      coursesToDisplay.filter((course) => course.course_id !== active.id),
+    )
   }
 
   const sensors = useSensors(useSensor(PointerSensor))
@@ -188,7 +194,11 @@ export default function Home() {
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <aside className="flex-col flex w-[30rem] p-4">
-            <Sidebar courses={courses} setCourses={setCourses} />
+            <Sidebar
+              courseCatalog={courseCatalog}
+              coursesToDisplay={coursesToDisplay}
+              setCoursesToDisplay={setCoursesToDisplay}
+            />
           </aside>
 
           <div className="flex flex-1 flex-col">
