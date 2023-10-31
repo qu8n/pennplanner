@@ -11,12 +11,12 @@ export function Droppable({
   const { isOver, setNodeRef } = useDroppable({
     id,
   })
-  const style = {
-    backgroundColor: isOver ? 'green' : undefined,
-  }
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div
+      ref={setNodeRef}
+      className={`${isOver ? 'ring-2 ring-blue-500 rounded-lg' : null}`}
+    >
       {children}
     </div>
   )

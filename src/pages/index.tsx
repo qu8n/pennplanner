@@ -15,35 +15,125 @@ import {
 import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
-import { Course, Semester } from '@/shared/types'
+import { Course, Semester, Year } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
 import { geistSans } from '@/fonts/geistSans'
 
+const firstYear = 2022
+const semestersData: Semester[] = [
+  {
+    semester_id: 'semester-1',
+    semester_year: firstYear,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: 'semester-2',
+    semester_year: firstYear + 1,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: 'semester-3',
+    semester_year: firstYear + 1,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: 'semester-4',
+    semester_year: firstYear + 1,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '2',
+  },
+  {
+    semester_id: 'semester-5',
+    semester_year: firstYear + 2,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '2',
+  },
+  {
+    semester_id: 'semester-6',
+    semester_year: firstYear + 2,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '2',
+  },
+  {
+    semester_id: 'semester-7',
+    semester_year: firstYear + 2,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '3',
+  },
+  {
+    semester_id: 'semester-8',
+    semester_year: firstYear + 3,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '3',
+  },
+  {
+    semester_id: 'semester-9',
+    semester_year: firstYear + 3,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '3',
+  },
+  {
+    semester_id: 'semester-10',
+    semester_year: firstYear + 3,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '4',
+  },
+  {
+    semester_id: 'semester-11',
+    semester_year: firstYear + 4,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '4',
+  },
+  {
+    semester_id: 'semester-12',
+    semester_year: firstYear + 4,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '4',
+  },
+  {
+    semester_id: 'semester-13',
+    semester_year: firstYear + 4,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '5',
+  },
+  {
+    semester_id: 'semester-14',
+    semester_year: firstYear + 5,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '5',
+  },
+  {
+    semester_id: 'semester-15',
+    semester_year: firstYear + 5,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '5',
+  },
+]
+
 export default function Home() {
   const id = useId()
 
-  const [semesters, setSemesters] = useState<Semester[]>([
-    {
-      semester_id: 'semester-1',
-      semester_year: 2023,
-      semester_name: 'Fall',
-      semester_courses: [],
-    },
-    {
-      semester_id: 'semester-2',
-      semester_year: 2024,
-      semester_name: 'Spring',
-      semester_courses: [],
-    },
-    {
-      semester_id: 'semester-3',
-      semester_year: 2024,
-      semester_name: 'Fall',
-      semester_courses: [],
-    },
-  ])
+  const [semesters, setSemesters] = useState<Semester[]>(semestersData)
   const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
@@ -178,6 +268,18 @@ export default function Home() {
     return allCourses.find((c) => c.course_id === activeId)
   }, [activeId])
 
+  const semestersByYearId = semesters.reduce(
+    (acc, s) => {
+      const yearId = s.year_id
+      if (!acc[yearId]) {
+        acc[yearId] = []
+      }
+      acc[yearId].push(s)
+      return acc
+    },
+    {} as Record<string, Semester[]>,
+  )
+
   return (
     <main className={`flex flex-col h-screen px-28 ${geistSans.className}`}>
       <DndContext
@@ -205,19 +307,32 @@ export default function Home() {
             <Divider />
 
             <div className="flex flex-col overflow-y-auto p-4 gap-4">
-              {semesters.map((semester) => (
-                <Droppable id={semester.semester_id} key={semester.semester_id}>
-                  <SemesterContainer
-                    key={semester.semester_id}
-                    semester={semester}
-                  ></SemesterContainer>
-                </Droppable>
+              {['1', '2', '3', '4', '5'].map((yearId) => (
+                <div
+                  key={yearId}
+                  className="w-full p-4 rounded-xl flex flex-col gap-2 ring-2 ring-gray-300"
+                >
+                  <p className="font-semibold text-lg ml-2">Year {yearId}</p>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    {semestersByYearId[yearId].map((s) => (
+                      <Droppable id={s.semester_id} key={s.semester_id}>
+                        <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-y-2 h-72">
+                          <p className="font-medium text-medium">
+                            {s.semester_season} {s.semester_year}
+                          </p>
+                          <SemesterContainer key={s.semester_id} semester={s} />
+                        </div>
+                      </Droppable>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* <DragOverlay>
+        <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
               <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
@@ -228,7 +343,7 @@ export default function Home() {
               </div>
             </Draggable>
           ) : null}
-        </DragOverlay> */}
+        </DragOverlay>
       </DndContext>
     </main>
   )

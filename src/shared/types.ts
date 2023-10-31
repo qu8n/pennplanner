@@ -6,8 +6,9 @@ export type Year = {
 export type Semester = {
   semester_id: string
   semester_year: number
-  semester_name: string
+  semester_season: string
   semester_courses: Course[]
+  year_id: string
 }
 
 export type Course = {
