@@ -8,14 +8,6 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
-  theme: {
-    extend: {
-      fontFamily: {
-        'geist-sans': ['GeistSans', 'sans-serif'],
-        'geist-mono': ['GeistMono', 'monospace'],
-      },
-    },
-  },
   darkMode: 'class',
   plugins: [nextui()],
 }

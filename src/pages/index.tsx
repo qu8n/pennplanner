@@ -19,6 +19,7 @@ import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
+import { geistSans } from '@/fonts/geistSans'
 
 export default function Home() {
   const id = useId()
@@ -178,7 +179,7 @@ export default function Home() {
   }, [activeId])
 
   return (
-    <main className={`flex flex-col h-screen px-28 font-geist-sans`}>
+    <main className={`flex flex-col h-screen px-28 ${geistSans.className}`}>
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}

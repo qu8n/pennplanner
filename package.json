@@ -13,6 +13,7 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
     "@heroicons/react": "^2.0.18",
+    "@next/font": "^14.0.1",
     "@nextui-org/react": "^2.1.13",
     "@smastrom/react-rating": "^1.3.2",
     "framer-motion": "^10.16.4",
