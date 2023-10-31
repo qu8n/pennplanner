@@ -61,32 +61,30 @@ export default function Home() {
       return semesters.find((s) => s.semester_id === uniqueId) ?? null
     }
     const id = String(uniqueId)
-    const itemWithSemesterId = semesters.flatMap((semester) => {
-      const semesterId = semester.semester_id
-      return semester.semester_courses.map((course) => ({
-        courseId: course.course_id,
-        semesterId: semesterId,
+    const itemWithSemesterId = semesters.flatMap((s) => {
+      const semester_id = s.semester_id
+      return s.semester_courses.map((c) => ({
+        course_id: c.course_id,
+        semester_id: semester_id,
       }))
     })
-    const semesterId = itemWithSemesterId.find((item) => item.courseId === id)
-      ?.semesterId
-    return (
-      semesters.find((semester) => semester.semester_id === semesterId) ?? null
-    )
+    const semester_id = itemWithSemesterId.find((i) => i.course_id === id)
+      ?.semester_id
+    return semesters.find((s) => s.semester_id === semester_id) ?? null
   }
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over, delta } = event
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
-    const activesemester = getSemesterFromId(activeId)
-    const oversemester = getSemesterFromId(overId)
-    if (!activesemester || !oversemester || activesemester === oversemester) {
+    const activeSemester = getSemesterFromId(activeId)
+    const overSemester = getSemesterFromId(overId)
+    if (!activeSemester || !overSemester || activeSemester === overSemester) {
       return null
     }
-    setSemesters((prevState) => {
-      const activeCourses = activesemester.semester_courses
-      const overCourses = oversemester.semester_courses
+    setSemesters((semesters) => {
+      const activeCourses = activeSemester.semester_courses
+      const overCourses = overSemester.semester_courses
       const activeIndex = activeCourses.findIndex(
         (i) => i.course_id === activeId,
       )
@@ -97,21 +95,21 @@ export default function Home() {
         const modifier = putOnBelowLastCourse ? 1 : 0
         return overIndex >= 0 ? overIndex + modifier : overCourses.length + 1
       }
-      return prevState.map((c) => {
-        if (c.semester_id === activesemester.semester_id) {
-          c.semester_courses = activeCourses.filter(
-            (i) => i.course_id !== activeId,
+      return semesters.map((s) => {
+        if (s.semester_id === activeSemester.semester_id) {
+          s.semester_courses = activeCourses.filter(
+            (c) => c.course_id !== activeId,
           )
-          return c
-        } else if (c.semester_id === oversemester.semester_id) {
-          c.semester_courses = [
+          return s
+        } else if (s.semester_id === overSemester.semester_id) {
+          s.semester_courses = [
             ...overCourses.slice(0, newIndex()),
             activeCourses[activeIndex],
             ...overCourses.slice(newIndex(), overCourses.length),
           ]
-          return c
+          return s
         } else {
-          return c
+          return s
         }
       })
     })
@@ -119,11 +117,9 @@ export default function Home() {
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
-
     if (!over) {
       return
     }
-
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
 
@@ -140,16 +136,16 @@ export default function Home() {
       )
       if (activeIndex !== overIndex) {
         setSemesters((prevState) => {
-          return prevState.map((semester) => {
-            if (semester.semester_id === activeSemester.semester_id) {
-              semester.semester_courses = arrayMove(
+          return prevState.map((s) => {
+            if (s.semester_id === activeSemester.semester_id) {
+              s.semester_courses = arrayMove(
                 overSemester.semester_courses,
                 activeIndex,
                 overIndex,
               )
-              return semester
+              return s
             } else {
-              return semester
+              return s
             }
           })
         })
@@ -157,33 +153,28 @@ export default function Home() {
     }
 
     // Handles dragging courses from sidebar to semester containers
-    const activeCourse = courseCatalog.find(
-      (course) => course.course_id === active.id,
-    )
+    const activeCourse = courseCatalog.find((c) => c.course_id === active.id)
     if (!activeCourse) {
       return
     }
     setSemesters((semesters) =>
-      semesters.map((semester) => {
-        if (semester.semester_id === over.id) {
-          semester.semester_courses.push(activeCourse)
+      semesters.map((s) => {
+        if (s.semester_id === over.id) {
+          s.semester_courses.push(activeCourse)
         }
-        return semester
+        return s
       }),
     )
-
-    setCourseCatalog(
-      courseCatalog.filter((course) => course.course_id !== active.id),
-    )
+    setCourseCatalog(courseCatalog.filter((c) => c.course_id !== active.id))
     setCoursesToDisplay(
-      coursesToDisplay.filter((course) => course.course_id !== active.id),
+      coursesToDisplay.filter((c) => c.course_id !== active.id),
     )
   }
 
   const sensors = useSensors(useSensor(PointerSensor))
 
   const activeCourse = useMemo(() => {
-    return allCourses.find((course) => course.course_id === activeId)
+    return allCourses.find((c) => c.course_id === activeId)
   }, [activeId])
 
   return (
