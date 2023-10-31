@@ -7,11 +7,13 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
+  useDroppable,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
 import {
   arrayMove,
+  rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
@@ -52,91 +54,38 @@ const CourseCardUI = React.forwardRef<HTMLDivElement, CourseCardUIProps>(
   },
 )
 
-function CourseCard({ id, course }: { id: string; course: Course }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
+function Course({ course }: { course: Course }) {
+  const { attributes, listeners, setNodeRef, transform } = useSortable({
+    id: course.course_id,
+  })
 
   return (
-    <CourseCardUI
-      id={id}
-      course={course}
+    <div
       ref={setNodeRef}
-      style={style}
       {...attributes}
       {...listeners}
-    />
+      style={{ transform: CSS.Translate.toString(transform) }}
+      id={course.course_id}
+    >
+      {course.course_name}
+    </div>
   )
 }
 
 export function SemesterContainer({ semester }: { semester: Semester }) {
-  const [activeId, setActiveId] = useState<string | null>(null)
-  const [courses, setCourses] = useState<Course[]>([])
-
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: semester.id })
-
-  useEffect(() => {
-    setCourses(semester.courses)
-  }, [semester.courses])
-
-  const sensors = useSensors(useSensor(PointerSensor))
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
-
+  // const { setNodeRef } = useDroppable({ id: semester.id })
   return (
-    <div className="border-2 border-gray-500">
-      {semester.year} {semester.semester}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-        onDragStart={handleDragStart}
-      >
-        <SortableContext
-          items={courses.map((course) => course.course_id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {courses.map((course) => (
-            <CourseCard
-              key={course.course_id}
-              id={course.course_id}
-              course={course}
-            />
-          ))}
-        </SortableContext>
-      </DndContext>
-    </div>
+    <SortableContext
+      id={semester.id}
+      items={semester.courses.map((course) => course.course_id)}
+      strategy={rectSortingStrategy}
+    >
+      {/* <div ref={setNodeRef}> */}
+      {semester.semester} {semester.year}
+      {semester.courses.map((course) => (
+        <Course key={course.course_id} course={course}></Course>
+      ))}
+      {/* </div> */}
+    </SortableContext>
   )
-
-  function handleDragStart(event: DragStartEvent) {
-    const { active } = event
-
-    setActiveId(active.id as string)
-  }
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
-
-    if (active.id !== over?.id) {
-      setCourses((courses) => {
-        const oldIndex = courses.findIndex(
-          (course) => course.course_id === active.id,
-        )
-        const newIndex = courses.findIndex(
-          (course) => course.course_id === over?.id,
-        )
-
-        return arrayMove(courses, oldIndex, newIndex)
-      })
-    }
-    setActiveId(null)
-  }
 }

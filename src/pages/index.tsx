@@ -1,21 +1,24 @@
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { CoursePlan } from '@/components/CoursePlan'
 import { Divider } from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
-  UniqueIdentifier,
   DragOverlay,
+  useSensors,
+  useSensor,
+  PointerSensor,
+  DragOverEvent,
 } from '@dnd-kit/core'
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { Draggable } from '@/components/Draggable'
 import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
+import { arrayMove } from '@dnd-kit/sortable'
 
 export default function Home() {
   const id = useId()
@@ -48,6 +51,66 @@ export default function Home() {
     setActiveId(active.id as string)
   }
 
+  const getSemesterFromId = (uniqueId: string | null) => {
+    if (!uniqueId) {
+      return null
+    }
+    if (semesters.some((s) => s.id === uniqueId)) {
+      return semesters.find((s) => s.id === uniqueId) ?? null
+    }
+    const id = String(uniqueId)
+    const itemWithSemesterId = semesters.flatMap((semester) => {
+      const semesterId = semester.id
+      return semester.courses.map((course) => ({
+        courseId: course.course_id,
+        semesterId: semesterId,
+      }))
+    })
+    const semesterId = itemWithSemesterId.find((item) => item.courseId === id)
+      ?.semesterId
+    return semesters.find((semester) => semester.id === semesterId) ?? null
+  }
+
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over, delta } = event
+    const activeId = String(active.id)
+    const overId = over ? String(over.id) : null
+    const activesemester = getSemesterFromId(activeId)
+    const oversemester = getSemesterFromId(overId)
+    if (!activesemester || !oversemester || activesemester === oversemester) {
+      return null
+    }
+    setSemesters((prevState) => {
+      const activeCourses = activesemester.courses
+      const overCourses = oversemester.courses
+      const activeIndex = activeCourses.findIndex(
+        (i) => i.course_id === activeId,
+      )
+      const overIndex = overCourses.findIndex((i) => i.course_id === overId)
+      const newIndex = () => {
+        const putOnBelowLastCourse =
+          overIndex === overCourses.length - 1 && delta.y > 0
+        const modifier = putOnBelowLastCourse ? 1 : 0
+        return overIndex >= 0 ? overIndex + modifier : overCourses.length + 1
+      }
+      return prevState.map((c) => {
+        if (c.id === activesemester.id) {
+          c.courses = activeCourses.filter((i) => i.course_id !== activeId)
+          return c
+        } else if (c.id === oversemester.id) {
+          c.courses = [
+            ...overCourses.slice(0, newIndex()),
+            activeCourses[activeIndex],
+            ...overCourses.slice(newIndex(), overCourses.length),
+          ]
+          return c
+        } else {
+          return c
+        }
+      })
+    })
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
 
@@ -55,6 +118,39 @@ export default function Home() {
       return
     }
 
+    const activeId = String(active.id)
+    const overId = over ? String(over.id) : null
+
+    // Enables sort-dragging courses within the same semester
+    const activeSemester = getSemesterFromId(activeId)
+    const overSemester = getSemesterFromId(overId)
+
+    if (activeSemester && overSemester && activeSemester === overSemester) {
+      const activeIndex = activeSemester.courses.findIndex(
+        (i) => i.course_id === activeId,
+      )
+      const overIndex = overSemester.courses.findIndex(
+        (i) => i.course_id === overId,
+      )
+      if (activeIndex !== overIndex) {
+        setSemesters((prevState) => {
+          return prevState.map((semester) => {
+            if (semester.id === activeSemester.id) {
+              semester.courses = arrayMove(
+                overSemester.courses,
+                activeIndex,
+                overIndex,
+              )
+              return semester
+            } else {
+              return semester
+            }
+          })
+        })
+      }
+    }
+
+    // Handles dragging courses from sidebar to semester containers
     const activeCourse = courses.find(
       (course) => course.course_id === active.id,
     )
@@ -74,6 +170,8 @@ export default function Home() {
     setCourses(courses.filter((course) => course.course_id !== active.id))
   }
 
+  const sensors = useSensors(useSensor(PointerSensor))
+
   const activeCourse = useMemo(() => {
     return allCourses.find((course) => course.course_id === activeId)
   }, [activeId])
@@ -83,6 +181,8 @@ export default function Home() {
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
+        sensors={sensors}
+        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
         <Navbar />
@@ -99,17 +199,19 @@ export default function Home() {
             <Divider />
 
             <div className="flex flex-col overflow-y-auto p-4 gap-4">
-              {/* <CoursePlan /> */}
               {semesters.map((semester) => (
                 <Droppable id={semester.id} key={semester.id}>
-                  <SemesterContainer semester={semester} />
+                  <SemesterContainer
+                    key={semester.id}
+                    semester={semester}
+                  ></SemesterContainer>
                 </Droppable>
               ))}
             </div>
           </div>
         </div>
 
-        <DragOverlay>
+        {/* <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
               <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
@@ -120,7 +222,7 @@ export default function Home() {
               </div>
             </Draggable>
           ) : null}
-        </DragOverlay>
+        </DragOverlay> */}
       </DndContext>
     </main>
   )
