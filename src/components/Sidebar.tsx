@@ -16,7 +16,7 @@ import {
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
-import { Draggable } from './Draggable'
+import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {

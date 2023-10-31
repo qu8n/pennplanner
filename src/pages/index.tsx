@@ -14,9 +14,9 @@ import {
 } from '@dnd-kit/core'
 import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
-import { Draggable } from '@/components/Draggable'
+import { Draggable } from '@/components/DnDWrappers/Draggable'
 import { Course, Semester } from '@/shared/types'
-import { Droppable } from '@/components/Droppable'
+import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
 
@@ -123,7 +123,7 @@ export default function Home() {
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
 
-    // Enables sort-dragging courses within the same semester
+    // Handles sort-dragging courses within the same semester
     const activeSemester = getSemesterFromId(activeId)
     const overSemester = getSemesterFromId(overId)
 
