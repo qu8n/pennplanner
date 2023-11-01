@@ -1,9 +1,27 @@
 import { Semester } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
-import { Button } from '@nextui-org/react'
+import {
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Input,
+} from '@nextui-org/react'
 
-export function SemesterContainer({ semester }: { semester: Semester }) {
+export function SemesterContainer({
+  semester,
+  semesters,
+  setSemesters,
+  firstYear,
+  setFirstYear,
+}: {
+  semester: Semester
+  semesters: Semester[]
+  setSemesters: (semesters: Semester[]) => void
+  firstYear: number
+  setFirstYear: (year: number) => void
+}) {
   return (
     <>
       <div className="flex flex-row gap-2">
@@ -11,13 +29,36 @@ export function SemesterContainer({ semester }: { semester: Semester }) {
           {semester.semester_season} {semester.semester_year}
         </p>
         {semester.semester_id === '1' ? (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="ml-auto -mt-1 border-1 border-gray-400"
-          >
-            Change year
-          </Button>
+          <Popover>
+            <PopoverTrigger>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="ml-auto -mt-1 border-1 border-gray-400"
+              >
+                Change year
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="py-3">
+                <Input
+                  type="email"
+                  label="First year"
+                  placeholder={String(new Date().getFullYear())}
+                  value={String(firstYear)}
+                  onValueChange={(value) => {
+                    const firstYearDiff = Number(value) - firstYear
+                    setFirstYear(Number(value))
+                    const newSemesters = semesters.map((s) => ({
+                      ...s,
+                      semester_year: s.semester_year + firstYearDiff,
+                    }))
+                    setSemesters(newSemesters)
+                  }}
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
         ) : null}
       </div>
       <SortableContext

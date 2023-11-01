@@ -21,122 +21,123 @@ import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
 import { geistSans } from '@/fonts/geistSans'
 
-const firstYear = 2022
-const semestersData: Semester[] = [
-  {
-    semester_id: '1',
-    semester_year: firstYear,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_id: '1',
-  },
-  {
-    semester_id: '2',
-    semester_year: firstYear + 1,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_id: '1',
-  },
-  {
-    semester_id: '3',
-    semester_year: firstYear + 1,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_id: '1',
-  },
-  {
-    semester_id: '4',
-    semester_year: firstYear + 1,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_id: '2',
-  },
-  {
-    semester_id: '5',
-    semester_year: firstYear + 2,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_id: '2',
-  },
-  {
-    semester_id: '6',
-    semester_year: firstYear + 2,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_id: '2',
-  },
-  {
-    semester_id: '7',
-    semester_year: firstYear + 2,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_id: '3',
-  },
-  {
-    semester_id: '8',
-    semester_year: firstYear + 3,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_id: '3',
-  },
-  {
-    semester_id: '9',
-    semester_year: firstYear + 3,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_id: '3',
-  },
-  {
-    semester_id: '10',
-    semester_year: firstYear + 3,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_id: '4',
-  },
-  {
-    semester_id: '11',
-    semester_year: firstYear + 4,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_id: '4',
-  },
-  {
-    semester_id: '12',
-    semester_year: firstYear + 4,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_id: '4',
-  },
-  {
-    semester_id: '13',
-    semester_year: firstYear + 4,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_id: '5',
-  },
-  {
-    semester_id: '14',
-    semester_year: firstYear + 5,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_id: '5',
-  },
-  {
-    semester_id: '15',
-    semester_year: firstYear + 5,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_id: '5',
-  },
-]
-
 export default function Home() {
   const id = useId()
+
+  const [firstYear, setFirstYear] = useState<number>(new Date().getFullYear())
+  const semestersData: Semester[] = [
+    {
+      semester_id: '1',
+      semester_year: firstYear,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_id: '1',
+    },
+    {
+      semester_id: '2',
+      semester_year: firstYear + 1,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '1',
+    },
+    {
+      semester_id: '3',
+      semester_year: firstYear + 1,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_id: '1',
+    },
+    {
+      semester_id: '4',
+      semester_year: firstYear + 1,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_id: '2',
+    },
+    {
+      semester_id: '5',
+      semester_year: firstYear + 2,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '2',
+    },
+    {
+      semester_id: '6',
+      semester_year: firstYear + 2,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_id: '2',
+    },
+    {
+      semester_id: '7',
+      semester_year: firstYear + 2,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_id: '3',
+    },
+    {
+      semester_id: '8',
+      semester_year: firstYear + 3,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '3',
+    },
+    {
+      semester_id: '9',
+      semester_year: firstYear + 3,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_id: '3',
+    },
+    {
+      semester_id: '10',
+      semester_year: firstYear + 3,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_id: '4',
+    },
+    {
+      semester_id: '11',
+      semester_year: firstYear + 4,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '4',
+    },
+    {
+      semester_id: '12',
+      semester_year: firstYear + 4,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_id: '4',
+    },
+    {
+      semester_id: '13',
+      semester_year: firstYear + 4,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_id: '5',
+    },
+    {
+      semester_id: '14',
+      semester_year: firstYear + 5,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '5',
+    },
+    {
+      semester_id: '15',
+      semester_year: firstYear + 5,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_id: '5',
+    },
+  ]
 
   const [semesters, setSemesters] = useState<Semester[]>(semestersData)
   const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
+
   const [activeId, setActiveId] = useState<string | null>(null)
 
   function handleDragStart(event: DragStartEvent) {
@@ -301,7 +302,6 @@ export default function Home() {
       className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800`}
     >
       <Navbar totalCU={totalCU} />
-
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
@@ -335,7 +335,14 @@ export default function Home() {
                     {semestersByYearId[yearId].map((s) => (
                       <Droppable id={s.semester_id} key={s.semester_id}>
                         <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-y-2 h-72">
-                          <SemesterContainer key={s.semester_id} semester={s} />
+                          <SemesterContainer
+                            key={s.semester_id}
+                            semester={s}
+                            semesters={semesters}
+                            setSemesters={setSemesters}
+                            firstYear={firstYear}
+                            setFirstYear={setFirstYear}
+                          />
                         </div>
                       </Droppable>
                     ))}

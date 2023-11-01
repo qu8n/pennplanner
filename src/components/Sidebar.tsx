@@ -264,7 +264,7 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden bg-gray-100 ring-1 ring-gray-400">
+      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden ring-1 ring-gray-400">
         <ScrollShadow className="overflow-y-auto p-2">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>
