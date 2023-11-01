@@ -5,11 +5,8 @@ import {
   DocumentDuplicateIcon,
 } from '@heroicons/react/24/outline'
 import { Button, Progress } from '@nextui-org/react'
-import { useState } from 'react'
 
-export function Toolbar() {
-  const [progressValue, setProgressValue] = useState(45)
-
+export function Toolbar({ totalCU }: { totalCU: number }) {
   return (
     <>
       <Progress
@@ -18,12 +15,12 @@ export function Toolbar() {
         label={
           <div className="flex flex-row items-center gap-1">
             <span className="flex-none text-xs ml-1">
-              4.5 / 10.0 course units
+              {totalCU} / 10 course units
             </span>
             <InformationCircleIcon className="flex-none w-4 h-4 text-gray-400" />
           </div>
         }
-        value={progressValue}
+        value={totalCU * 10}
         className="grow mr-4"
       />
 

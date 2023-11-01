@@ -11,6 +11,8 @@ import {
   NavbarMenuItem,
 } from '@nextui-org/react'
 import { BookmarkSquareIcon } from '@heroicons/react/24/outline'
+import Confetti from 'react-confetti'
+import { useWindowSize } from 'react-use'
 
 const mobileMenuItems = [
   'My Plans',
@@ -20,16 +22,31 @@ const mobileMenuItems = [
   'Sign Up',
 ]
 
-export function Navbar() {
+export function Navbar({ totalCU }: { totalCU: number }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { width, height } = useWindowSize()
 
   return (
     <NextUINavbar
-      // isBordered
       maxWidth="full"
       onMenuOpenChange={setIsMenuOpen}
       className="h-10 border-b-1 border-gray-400"
     >
+      {/* Confetti lives here to not be overlayed by narbar */}
+      {totalCU === 10 && (
+        <Confetti
+          width={width}
+          height={height}
+          confettiSource={{
+            w: 200,
+            h: 10,
+            x: width / 2,
+            y: 100,
+          }}
+          recycle={false}
+        />
+      )}
+
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

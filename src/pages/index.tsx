@@ -268,23 +268,40 @@ export default function Home() {
     return allCourses.find((c) => c.course_id === activeId)
   }, [activeId])
 
-  const semestersByYearId = semesters.reduce(
-    (acc, s) => {
-      const yearId = s.year_id
-      if (!acc[yearId]) {
-        acc[yearId] = []
-      }
-      acc[yearId].push(s)
-      return acc
-    },
-    {} as Record<string, Semester[]>,
+  const semestersByYearId = useMemo(
+    () =>
+      semesters.reduce(
+        (acc, s) => {
+          const yearId = s.year_id
+          if (!acc[yearId]) {
+            acc[yearId] = []
+          }
+          acc[yearId].push(s)
+          return acc
+        },
+        {} as Record<string, Semester[]>,
+      ),
+    [semesters],
   )
+
+  const totalCU = useMemo(() => {
+    return semesters.reduce((acc, s) => {
+      return (
+        acc +
+        s.semester_courses.reduce(
+          (acc, c) => acc + (c.course_unit ? c.course_unit : 0),
+          0,
+        )
+      )
+    }, 0)
+  }, [semesters])
 
   return (
     <main
       className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800`}
     >
-      <Navbar />
+      <Navbar totalCU={totalCU} />
+
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
@@ -303,7 +320,7 @@ export default function Home() {
 
           <div className="flex flex-1 flex-col">
             <div className="flex flex-row items-center h-16 p-4 gap-2 bg-gray-100 rounded-xl ring-1 ring-gray-400 mx-1 mt-2">
-              <Toolbar />
+              <Toolbar totalCU={totalCU} />
             </div>
 
             <ScrollShadow className="flex flex-col overflow-y-auto p-4 gap-4 mt-2">
