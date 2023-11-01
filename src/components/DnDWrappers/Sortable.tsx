@@ -21,7 +21,7 @@ export function Sortable({
       {...listeners}
       style={{ transform: CSS.Translate.toString(transform) }}
       id={course.course_id}
-      className={`${isDragging && 'opacity-50'} bg-white`}
+      className={`${isDragging && 'opacity-50'}`}
     >
       {children}
     </div>

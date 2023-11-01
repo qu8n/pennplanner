@@ -337,18 +337,18 @@ export default function Home() {
           <div className="flex flex-1 flex-col">
             <Toolbar totalCU={totalCU} />
 
-            <ScrollShadow className="flex flex-col overflow-y-auto p-4 gap-4 mt-2">
-              {['1', '2', '3', '4', '5'].map((yearId) => (
-                <div
-                  key={yearId}
-                  className="w-full p-4 rounded-xl flex flex-col gap-2 bg-gray-100"
-                >
-                  <p className="font-semibold text-lg ml-2">Year {yearId}</p>
+            <div className="flex flex-col overflow-y-auto mx-1 mt-4 mb-1 bg-neutral-50 shadow-md rounded-2xl py-2 pl-6 pr-2">
+              <ScrollShadow>
+                {['1', '2', '3', '4', '5'].map((yearId) => (
+                  <div
+                    key={yearId}
+                    className="w-full rounded-xl flex flex-col py-4 pr-2"
+                  >
+                    <p className="font-semibold text-lg ml-2">Year {yearId}</p>
 
-                  <div className="grid grid-cols-3 gap-4">
-                    {semestersByYearId[yearId].map((s) => (
-                      <Droppable id={s.semester_id} key={s.semester_id}>
-                        <div className="border-1 border-gray-400 rounded-lg p-4 flex flex-col gap-y-2 h-72 shadow-sm bg-gray-50">
+                    <div className="grid grid-cols-3 gap-4 mt-2">
+                      {semestersByYearId[yearId].map((s) => (
+                        <Droppable id={s.semester_id} key={s.semester_id}>
                           <SemesterContainer
                             key={s.semester_id}
                             semester={s}
@@ -357,13 +357,13 @@ export default function Home() {
                             firstYear={firstYear}
                             setFirstYear={setFirstYear}
                           />
-                        </div>
-                      </Droppable>
-                    ))}
+                        </Droppable>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </ScrollShadow>
+                ))}
+              </ScrollShadow>
+            </div>
           </div>
         </div>
 

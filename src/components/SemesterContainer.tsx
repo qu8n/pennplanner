@@ -8,6 +8,7 @@ import {
   PopoverContent,
   Input,
   Chip,
+  Divider,
 } from '@nextui-org/react'
 
 export function SemesterContainer({
@@ -29,23 +30,21 @@ export function SemesterContainer({
   )
 
   return (
-    <>
-      <div className="flex flex-row gap-2">
-        <p className="font-medium text-medium">
+    <div className="rounded-2xl bg-neutral-200/[.6] p-4 flex flex-col gap-y-2 h-72 shadow-inner">
+      <div className="flex flex-row gap-2 items-center">
+        <p className="font-medium">
           {semester.semester_season} {semester.semester_year}
         </p>
         {totalCU > 0 ? (
-          <Chip variant="flat" size="sm" className="text-xs text-gray-500">
-            {totalCU}
-          </Chip>
+          <span className="text-xs text-neutral-500">({totalCU} CU)</span>
         ) : null}
         {semester.semester_id === '1' ? (
           <Popover>
             <PopoverTrigger>
               <Button
                 size="sm"
-                variant="ghost"
-                className="ml-auto -mt-1 border-1 border-gray-300 bg-gray-200/[.5]"
+                variant="flat"
+                className="ml-auto -mt-1 ring-2 bg-neutral-200/[.6] ring-neutral-400/[.3] rounded-3xl"
               >
                 Change year
               </Button>
@@ -72,6 +71,9 @@ export function SemesterContainer({
           </Popover>
         ) : null}
       </div>
+
+      <Divider className="mb-1" />
+
       <SortableContext
         id={semester.semester_id}
         items={semester.semester_courses.map((c) => c.course_id)}
@@ -79,13 +81,13 @@ export function SemesterContainer({
       >
         {semester.semester_courses.map((c) => (
           <Sortable key={c.course_id} course={c}>
-            <div className="bg-white border-1 border-gray-400 rounded-md flex flex-col px-2 py-1 shadow-sm">
+            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-300/[.8] ring-2 ring-neutral-400/[.4]">
               <p className="text-sm font-semibold">{c.course_id}</p>
               <p className="text-xs line-clamp-1">{c.course_name}</p>
             </div>
           </Sortable>
         ))}
       </SortableContext>
-    </>
+    </div>
   )
 }
