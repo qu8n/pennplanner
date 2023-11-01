@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   Input,
+  Chip,
 } from '@nextui-org/react'
 
 export function SemesterContainer({
@@ -22,12 +23,22 @@ export function SemesterContainer({
   firstYear: number
   setFirstYear: (year: number) => void
 }) {
+  const totalCU = semester.semester_courses.reduce(
+    (acc, curr) => acc + curr.course_unit,
+    0,
+  )
+
   return (
     <>
       <div className="flex flex-row gap-2">
         <p className="font-medium text-medium">
           {semester.semester_season} {semester.semester_year}
         </p>
+        {totalCU > 0 ? (
+          <Chip variant="flat" size="sm" className="text-xs text-gray-500">
+            {totalCU}
+          </Chip>
+        ) : null}
         {semester.semester_id === '1' ? (
           <Popover>
             <PopoverTrigger>
