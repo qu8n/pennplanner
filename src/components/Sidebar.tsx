@@ -147,11 +147,9 @@ export function Sidebar({
         <p className="text-xs">Back to My Plans</p>
       </div>
 
-      <div className="flex flex-col mt-4">
+      <div className="flex flex-col mt-2">
         <h1 className="text-2xl font-semibold">My Plan</h1>
-        <p className="text-sm text-gray-400 italic">
-          By Quan Nguyen. Last updated on Oct. 23, 2023
-        </p>
+        <p className="text-xs text-gray-400 italic">Created by Quan Nguyen</p>
       </div>
 
       <Input
@@ -176,11 +174,11 @@ export function Sidebar({
           <DropdownTrigger>
             <Button
               fullWidth
-              variant="ghost"
+              variant="bordered"
               startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
               className={
                 coursesQuery.filter === 'all-courses'
-                  ? 'border-1 border-gray-400'
+                  ? 'border-1 border-gray-300 bg-gray-200/[.5]'
                   : 'border-2 border-blue-400 text-blue-700 text-xs'
               }
             >
@@ -228,7 +226,7 @@ export function Sidebar({
               startContent={<BarsArrowDownIcon className="w-5 h-5" />}
               className={
                 coursesQuery.sort === ''
-                  ? 'border-1 border-gray-400'
+                  ? 'border-1 border-gray-300 bg-gray-200/[.5]'
                   : 'border-2 border-blue-400 text-blue-700 text-xs'
               }
             >
@@ -264,7 +262,7 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden ring-1 ring-gray-400">
+      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden ring-1 ring-gray-400 bg-gray-50">
         <ScrollShadow className="overflow-y-auto p-2">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>

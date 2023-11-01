@@ -17,8 +17,8 @@ export function Droppable({
       ref={setNodeRef}
       className={`${
         isOver
-          ? 'border-2 border-blue-500 rounded-lg border-dashed'
-          : 'border-2 border-transparent'
+          ? 'border-3 border-blue-500 rounded-xl border-dashed'
+          : 'border-3 border-transparent'
       }`}
     >
       {children}

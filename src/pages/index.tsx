@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { Button, Divider, ScrollShadow } from '@nextui-org/react'
+import { ScrollShadow } from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
@@ -319,7 +319,7 @@ export default function Home() {
           </aside>
 
           <div className="flex flex-1 flex-col">
-            <div className="flex flex-row items-center h-16 p-4 gap-2 bg-gray-100 rounded-xl ring-1 ring-gray-400 mx-1 mt-2">
+            <div className="flex flex-row items-center h-16 p-4 gap-2 bg-gray-50 rounded-xl ring-1 ring-gray-400 mx-1 mt-1">
               <Toolbar totalCU={totalCU} />
             </div>
 
@@ -327,14 +327,14 @@ export default function Home() {
               {['1', '2', '3', '4', '5'].map((yearId) => (
                 <div
                   key={yearId}
-                  className="w-full p-4 rounded-xl flex flex-col gap-2 ring-1 ring-gray-400"
+                  className="w-full p-4 rounded-xl flex flex-col gap-2 bg-gray-100"
                 >
                   <p className="font-semibold text-lg ml-2">Year {yearId}</p>
 
                   <div className="grid grid-cols-3 gap-4">
                     {semestersByYearId[yearId].map((s) => (
                       <Droppable id={s.semester_id} key={s.semester_id}>
-                        <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-y-2 h-72">
+                        <div className="border-1 border-gray-400 rounded-lg p-4 flex flex-col gap-y-2 h-72 shadow-sm bg-gray-50">
                           <SemesterContainer
                             key={s.semester_id}
                             semester={s}
@@ -356,7 +356,7 @@ export default function Home() {
         <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="ring-1 ring-gray-400 mb-3 rounded-md flex flex-col p-2 shadow-md">
+              <div className="bg-white border-1 border-gray-400 shadow-md rounded-md flex flex-col px-2 py-1 scale-105">
                 <p className="text-sm font-semibold">
                   {activeCourse.course_id}
                 </p>

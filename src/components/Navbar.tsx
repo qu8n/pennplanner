@@ -30,7 +30,7 @@ export function Navbar({ totalCU }: { totalCU: number }) {
     <NextUINavbar
       maxWidth="full"
       onMenuOpenChange={setIsMenuOpen}
-      className="h-10 border-b-1 border-gray-400"
+      className="h-12"
     >
       {/* Confetti lives here to not be overlayed by narbar */}
       {totalCU === 10 && (
@@ -52,8 +52,8 @@ export function Navbar({ totalCU }: { totalCU: number }) {
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="sm:hidden"
         />
-        <NavbarBrand className="gap-1">
-          <BookmarkSquareIcon className="h-6 w-6 text-blue-500" />
+        <NavbarBrand className="gap-1 -ml-3">
+          <BookmarkSquareIcon className="h-7 w-7 text-blue-500" />
           <p className="font-semibold">PennPlanner</p>
         </NavbarBrand>
       </NavbarContent>
@@ -81,7 +81,7 @@ export function Navbar({ totalCU }: { totalCU: number }) {
             href="#"
             variant="light"
             size="md"
-            className="rounded-none"
+            className="rounded-xl"
           >
             Login / Signup
           </Button>

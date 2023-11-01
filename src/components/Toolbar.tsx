@@ -28,21 +28,21 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
       <Button
         variant="bordered"
         startContent={<DocumentDuplicateIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-400"
+        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
       >
         Duplicate plan
       </Button>
       <Button
         variant="bordered"
         startContent={<ArrowDownOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-400"
+        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
       >
         Export plan
       </Button>
       <Button
         variant="bordered"
         startContent={<ArrowTopRightOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-400"
+        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
       >
         Share plan
       </Button>
