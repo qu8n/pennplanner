@@ -8,7 +8,7 @@ import { Button, Progress } from '@nextui-org/react'
 
 export function Toolbar({ totalCU }: { totalCU: number }) {
   return (
-    <>
+    <div className="flex flex-row items-center h-16 py-10 px-6 gap-2 bg-gray-50 rounded-2xl mx-1 mt-1 shadow-md">
       <Progress
         isStriped
         aria-label="progress"
@@ -17,7 +17,7 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
             <span className="flex-none text-xs ml-1">
               {totalCU} / 10 course units
             </span>
-            <InformationCircleIcon className="flex-none w-4 h-4 text-gray-400" />
+            <InformationCircleIcon className="flex-none w-4 h-4 text-neutral-400" />
           </div>
         }
         value={totalCU * 10}
@@ -28,24 +28,26 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
       <Button
         variant="bordered"
         startContent={<DocumentDuplicateIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
+        className="flex-none w-38 border-none rounded-3xl bg-neutral-200/[.6]"
       >
         Duplicate plan
       </Button>
+
       <Button
         variant="bordered"
         startContent={<ArrowDownOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
+        className="flex-none w-38 border-none rounded-3xl bg-neutral-200/[.6]"
       >
         Export plan
       </Button>
+
       <Button
         variant="bordered"
         startContent={<ArrowTopRightOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38 border-1 border-gray-300 bg-gray-200/[.5]"
+        className="flex-none w-38 border-none rounded-3xl bg-neutral-200/[.6]"
       >
         Share plan
       </Button>
-    </>
+    </div>
   )
 }

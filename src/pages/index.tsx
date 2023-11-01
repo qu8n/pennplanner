@@ -302,7 +302,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 py-4`}
+      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 py-4 bg-neutral-200`}
     >
       {totalCU === 10 && (
         <Confetti
@@ -335,9 +335,7 @@ export default function Home() {
           </aside>
 
           <div className="flex flex-1 flex-col">
-            <div className="flex flex-row items-center h-16 p-4 gap-2 bg-gray-50 rounded-xl ring-1 ring-gray-400 mx-1 mt-1">
-              <Toolbar totalCU={totalCU} />
-            </div>
+            <Toolbar totalCU={totalCU} />
 
             <ScrollShadow className="flex flex-col overflow-y-auto p-4 gap-4 mt-2">
               {['1', '2', '3', '4', '5'].map((yearId) => (
