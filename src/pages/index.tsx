@@ -20,9 +20,12 @@ import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
 import { geistSans } from '@/fonts/geistSans'
+import Confetti from 'react-confetti'
+import { useWindowSize } from 'react-use'
 
 export default function Home() {
   const id = useId()
+  const { width, height } = useWindowSize()
 
   const [firstYear, setFirstYear] = useState<number>(new Date().getFullYear())
   const semestersData: Semester[] = [
@@ -299,9 +302,22 @@ export default function Home() {
 
   return (
     <main
-      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800`}
+      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 py-4`}
     >
-      <Navbar totalCU={totalCU} />
+      {totalCU === 10 && (
+        <Confetti
+          width={width}
+          height={height}
+          confettiSource={{
+            w: 200,
+            h: 10,
+            x: width / 2,
+            y: 55,
+          }}
+          recycle={false}
+        />
+      )}
+
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
