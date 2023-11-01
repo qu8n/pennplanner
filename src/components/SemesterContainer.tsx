@@ -11,7 +11,7 @@ export function SemesterContainer({ semester }: { semester: Semester }) {
     >
       {semester.semester_courses.map((c) => (
         <Sortable key={c.course_id} course={c}>
-          <div className="bg-white ring-2 ring-gray-300 rounded-md flex flex-col px-2 py-1">
+          <div className="bg-white ring-1 ring-gray-400 rounded-md flex flex-col px-2 py-1">
             <p className="text-xs text-gray-400">{c.course_id}</p>
             <p className="text-sm">{c.course_name}</p>
           </div>

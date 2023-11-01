@@ -29,23 +29,23 @@ export function Toolbar() {
 
       {/* Duplicate this plan as the owner; copy this plan as visitor */}
       <Button
-        variant="ghost"
+        variant="bordered"
         startContent={<DocumentDuplicateIcon className="w-5 h-5" />}
-        className="flex-none w-38"
+        className="flex-none w-38 border-1 border-gray-400"
       >
-        Make a copy
+        Duplicate plan
       </Button>
       <Button
-        variant="ghost"
+        variant="bordered"
         startContent={<ArrowDownOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38"
+        className="flex-none w-38 border-1 border-gray-400"
       >
-        Download plan
+        Export plan
       </Button>
       <Button
-        variant="ghost"
+        variant="bordered"
         startContent={<ArrowTopRightOnSquareIcon className="w-5 h-5" />}
-        className="flex-none w-38"
+        className="flex-none w-38 border-1 border-gray-400"
       >
         Share plan
       </Button>

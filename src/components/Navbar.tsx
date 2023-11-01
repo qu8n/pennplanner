@@ -28,7 +28,7 @@ export function Navbar() {
       // isBordered
       maxWidth="full"
       onMenuOpenChange={setIsMenuOpen}
-      className="h-10 border-b-2 border-gray-300"
+      className="h-10 border-b-1 border-gray-400"
     >
       <NavbarContent>
         <NavbarMenuToggle

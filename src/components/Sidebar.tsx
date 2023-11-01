@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
+import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {
   const numberA = parseInt(courseIdA.match(/\d+/)![0])
@@ -179,8 +180,8 @@ export function Sidebar({
               startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
               className={
                 coursesQuery.filter === 'all-courses'
-                  ? ''
-                  : 'border-3 border-blue-500 text-blue-700 text-xs'
+                  ? 'border-1 border-gray-400'
+                  : 'border-2 border-blue-400 text-blue-700 text-xs'
               }
             >
               {coursesQuery.filter === 'all-courses'
@@ -227,8 +228,8 @@ export function Sidebar({
               startContent={<BarsArrowDownIcon className="w-5 h-5" />}
               className={
                 coursesQuery.sort === ''
-                  ? ''
-                  : 'border-3 border-blue-500 text-blue-700 text-xs'
+                  ? 'border-1 border-gray-400'
+                  : 'border-2 border-blue-400 text-blue-700 text-xs'
               }
             >
               {coursesQuery.sort === ''
@@ -263,13 +264,31 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex flex-col grow ring-2 rounded-xl ring-gray-300 overflow-hidden">
+      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden bg-gray-100 ring-1 ring-gray-400">
         <ScrollShadow className="overflow-y-auto p-2">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>
-              <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
-                <p className="text-sm text-gray-400">{course.course_id}</p>
-                <p>{course.course_name}</p>
+              <div className="ring-1 shadow-sm ring-gray-400 mb-3 rounded-md flex flex-col py-2 px-3">
+                <p className="font-semibold">{course.course_id}</p>
+                <p className="text-sm">{course.course_name}</p>
+                <div className="flex flex-row gap-2 text-xs mt-1">
+                  <Rating
+                    readOnly={true}
+                    style={{ maxWidth: 75 }}
+                    value={course.avg_rating ?? 0}
+                    itemStyles={{
+                      itemShapes: ThinRoundedStar,
+                      activeFillColor: '#3b82f6',
+                      inactiveFillColor: '#cbd5e1',
+                    }}
+                  />
+                  <span className="text-gray-500">
+                    {course.avg_rating ?? ''}
+                    {course.review_count
+                      ? ` (${course.review_count} reviews)`
+                      : 'n/a'}
+                  </span>
+                </div>
               </div>
             </Draggable>
           ))}

@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { Divider } from '@nextui-org/react'
+import { Button, Divider, ScrollShadow } from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
@@ -24,105 +24,105 @@ import { geistSans } from '@/fonts/geistSans'
 const firstYear = 2022
 const semestersData: Semester[] = [
   {
-    semester_id: 'semester-1',
+    semester_id: '1',
     semester_year: firstYear,
     semester_season: 'Fall',
     semester_courses: [],
     year_id: '1',
   },
   {
-    semester_id: 'semester-2',
+    semester_id: '2',
     semester_year: firstYear + 1,
     semester_season: 'Spring',
     semester_courses: [],
     year_id: '1',
   },
   {
-    semester_id: 'semester-3',
+    semester_id: '3',
     semester_year: firstYear + 1,
     semester_season: 'Summer',
     semester_courses: [],
     year_id: '1',
   },
   {
-    semester_id: 'semester-4',
+    semester_id: '4',
     semester_year: firstYear + 1,
     semester_season: 'Fall',
     semester_courses: [],
     year_id: '2',
   },
   {
-    semester_id: 'semester-5',
+    semester_id: '5',
     semester_year: firstYear + 2,
     semester_season: 'Spring',
     semester_courses: [],
     year_id: '2',
   },
   {
-    semester_id: 'semester-6',
+    semester_id: '6',
     semester_year: firstYear + 2,
     semester_season: 'Summer',
     semester_courses: [],
     year_id: '2',
   },
   {
-    semester_id: 'semester-7',
+    semester_id: '7',
     semester_year: firstYear + 2,
     semester_season: 'Fall',
     semester_courses: [],
     year_id: '3',
   },
   {
-    semester_id: 'semester-8',
+    semester_id: '8',
     semester_year: firstYear + 3,
     semester_season: 'Spring',
     semester_courses: [],
     year_id: '3',
   },
   {
-    semester_id: 'semester-9',
+    semester_id: '9',
     semester_year: firstYear + 3,
     semester_season: 'Summer',
     semester_courses: [],
     year_id: '3',
   },
   {
-    semester_id: 'semester-10',
+    semester_id: '10',
     semester_year: firstYear + 3,
     semester_season: 'Fall',
     semester_courses: [],
     year_id: '4',
   },
   {
-    semester_id: 'semester-11',
+    semester_id: '11',
     semester_year: firstYear + 4,
     semester_season: 'Spring',
     semester_courses: [],
     year_id: '4',
   },
   {
-    semester_id: 'semester-12',
+    semester_id: '12',
     semester_year: firstYear + 4,
     semester_season: 'Summer',
     semester_courses: [],
     year_id: '4',
   },
   {
-    semester_id: 'semester-13',
+    semester_id: '13',
     semester_year: firstYear + 4,
     semester_season: 'Fall',
     semester_courses: [],
     year_id: '5',
   },
   {
-    semester_id: 'semester-14',
+    semester_id: '14',
     semester_year: firstYear + 5,
     semester_season: 'Spring',
     semester_courses: [],
     year_id: '5',
   },
   {
-    semester_id: 'semester-15',
+    semester_id: '15',
     semester_year: firstYear + 5,
     semester_season: 'Summer',
     semester_courses: [],
@@ -281,7 +281,10 @@ export default function Home() {
   )
 
   return (
-    <main className={`flex flex-col h-screen px-28 ${geistSans.className}`}>
+    <main
+      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800`}
+    >
+      <Navbar />
       <DndContext
         id={id} // resolves "`aria-describedby` did not match" warning
         onDragStart={handleDragStart}
@@ -289,7 +292,6 @@ export default function Home() {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <aside className="flex-col flex w-[30rem] p-4">
             <Sidebar
@@ -300,17 +302,15 @@ export default function Home() {
           </aside>
 
           <div className="flex flex-1 flex-col">
-            <div className="flex flex-row items-center h-16 p-4 gap-2">
+            <div className="flex flex-row items-center h-16 p-4 gap-2 bg-gray-100 rounded-xl ring-1 ring-gray-400 mx-1 mt-2">
               <Toolbar />
             </div>
 
-            <Divider />
-
-            <div className="flex flex-col overflow-y-auto p-4 gap-4">
+            <ScrollShadow className="flex flex-col overflow-y-auto p-4 gap-4 mt-2">
               {['1', '2', '3', '4', '5'].map((yearId) => (
                 <div
                   key={yearId}
-                  className="w-full p-4 rounded-xl flex flex-col gap-2 ring-2 ring-gray-300"
+                  className="w-full p-4 rounded-xl flex flex-col gap-2 ring-1 ring-gray-400"
                 >
                   <p className="font-semibold text-lg ml-2">Year {yearId}</p>
 
@@ -318,9 +318,20 @@ export default function Home() {
                     {semestersByYearId[yearId].map((s) => (
                       <Droppable id={s.semester_id} key={s.semester_id}>
                         <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-y-2 h-72">
-                          <p className="font-medium text-medium">
-                            {s.semester_season} {s.semester_year}
-                          </p>
+                          <div className="flex flex-row gap-2">
+                            <p className="font-medium text-medium">
+                              {s.semester_season} {s.semester_year}
+                            </p>
+                            {s.semester_id === '1' ? (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="ml-auto -mt-1 border-1 border-gray-400"
+                              >
+                                Change year
+                              </Button>
+                            ) : null}
+                          </div>
                           <SemesterContainer key={s.semester_id} semester={s} />
                         </div>
                       </Droppable>
@@ -328,14 +339,14 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-            </div>
+            </ScrollShadow>
           </div>
         </div>
 
         <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="ring-2 ring-gray-300 mb-3 rounded-md flex flex-col p-2">
+              <div className="ring-1 ring-gray-400 mb-3 rounded-md flex flex-col p-2">
                 <p className="text-sm text-gray-400">
                   {activeCourse.course_id}
                 </p>
