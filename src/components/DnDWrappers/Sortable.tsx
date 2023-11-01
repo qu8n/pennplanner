@@ -9,9 +9,10 @@ export function Sortable({
   children: React.ReactNode
   course: Course
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: course.course_id,
-  })
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({
+      id: course.course_id,
+    })
 
   return (
     <div
@@ -20,6 +21,7 @@ export function Sortable({
       {...listeners}
       style={{ transform: CSS.Translate.toString(transform) }}
       id={course.course_id}
+      className={`${isDragging && 'opacity-50'} bg-white`}
     >
       {children}
     </div>

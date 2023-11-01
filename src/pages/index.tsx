@@ -318,20 +318,6 @@ export default function Home() {
                     {semestersByYearId[yearId].map((s) => (
                       <Droppable id={s.semester_id} key={s.semester_id}>
                         <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-y-2 h-72">
-                          <div className="flex flex-row gap-2">
-                            <p className="font-medium text-medium">
-                              {s.semester_season} {s.semester_year}
-                            </p>
-                            {s.semester_id === '1' ? (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="ml-auto -mt-1 border-1 border-gray-400"
-                              >
-                                Change year
-                              </Button>
-                            ) : null}
-                          </div>
                           <SemesterContainer key={s.semester_id} semester={s} />
                         </div>
                       </Droppable>
@@ -346,11 +332,11 @@ export default function Home() {
         <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="ring-1 ring-gray-400 mb-3 rounded-md flex flex-col p-2">
-                <p className="text-sm text-gray-400">
+              <div className="ring-1 ring-gray-400 mb-3 rounded-md flex flex-col p-2 shadow-md">
+                <p className="text-sm font-semibold">
                   {activeCourse.course_id}
                 </p>
-                <p>{activeCourse.course_name}</p>
+                <p className="text-xs">{activeCourse.course_name}</p>
               </div>
             </Draggable>
           ) : null}
