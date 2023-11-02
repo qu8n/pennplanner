@@ -20,6 +20,7 @@ import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
+import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {
   const numberA = parseInt(courseIdA.match(/\d+/)![0])
@@ -269,7 +270,7 @@ export function Sidebar({
       <Divider className="mt-3" />
 
       <div className="flex flex-col grow overflow-hidden">
-        <ScrollShadow className="overflow-y-auto pb-2 pt-3 pl-1 pr-2">
+        <ScrollShadow className="overflow-y-auto pb-2 pt-3 px-1">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>
               <div className="bg-neutral-100 ring-1 ring-neutral-300 shadow-sm mb-3 rounded-2xl flex flex-col py-2 px-3">
@@ -300,6 +301,21 @@ export function Sidebar({
       </div>
 
       <Divider />
+
+      {/* For non-logged in users */}
+      <div className="mt-4 flex flex-row items-center gap-4">
+        <button className="flex flex-row items-center gap-1 text-white rounded-xl py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600">
+          <BookmarkSquareIcon className="h-4 w-4 text-white-500" />
+          <span className="text-sm">Create your </span>
+          <span className="font-medium text-sm">PennPlanner</span>
+        </button>
+        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
+          Login
+        </button>
+        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
+          About
+        </button>
+      </div>
     </aside>
   )
 }
