@@ -13,6 +13,7 @@ import {
   DropdownItem,
   DropdownSection,
   ScrollShadow,
+  Divider,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
@@ -141,19 +142,11 @@ export function Sidebar({
   }, [coursesQuery])
 
   return (
-    <aside className="flex-col flex w-[30rem] p-6 bg-neutral-100 rounded-2xl my-1 mr-3 shadow-md">
-      <div className="flex flex-row items-center gap-1 text-gray-500">
-        <ArrowLeftIcon className="w-3 h-3" />
-        <p className="text-xs">Back to My Plans</p>
-      </div>
-
-      <div className="flex flex-col mt-2">
-        <h1 className="text-2xl font-semibold">My Plan</h1>
-        <p className="text-xs text-gray-400 italic">Created by Quan Nguyen</p>
-      </div>
+    <aside className="flex-col flex w-[26rem] p-6 bg-white rounded-2xl shadow-md my-6">
+      <h2 className="font-semibold text-lg">Course Catalog</h2>
 
       <Input
-        className="h-14"
+        className="h-14 mt-3"
         type="text"
         label={
           <div className="flex flex-row gap-2 items-center">
@@ -161,7 +154,7 @@ export function Sidebar({
             Search course name, number, or description
           </div>
         }
-        variant="underlined"
+        variant="flat"
         labelPlacement="inside"
         isClearable
         value={coursesQuery.search}
@@ -176,18 +169,24 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
+              startContent={
+                coursesQuery.filter === 'all-courses' ? (
+                  <AdjustmentsHorizontalIcon className="w-4 h-4" />
+                ) : null
+              }
               className={`${
                 coursesQuery.filter === 'all-courses'
-                  ? 'border-2 bg-stone-300/[.8]'
-                  : 'text-xs bg-stone-500 text-neutral-100 border-none'
-              } rounded-3xl`}
+                  ? 'border-none bg-gray-200'
+                  : 'border-1 border-blue-500 text-blue-500 bg-white'
+              } rounded-xl`}
             >
-              {coursesQuery.filter === 'all-courses'
-                ? 'Filter course type'
-                : filterMethods[
-                    coursesQuery.filter as keyof typeof filterMethods
-                  ]}
+              <span className="line-clamp-1">
+                {coursesQuery.filter === 'all-courses'
+                  ? 'Filter course type'
+                  : filterMethods[
+                      coursesQuery.filter as keyof typeof filterMethods
+                    ]}
+              </span>
             </Button>
           </DropdownTrigger>
           <DropdownMenu
@@ -224,18 +223,22 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={<BarsArrowDownIcon className="w-5 h-5" />}
+              startContent={
+                coursesQuery.sort === '' ? (
+                  <BarsArrowDownIcon className="w-4 h-4" />
+                ) : null
+              }
               className={`${
                 coursesQuery.sort === ''
-                  ? 'border-2 bg-stone-300/[.8]'
-                  : 'text-xs bg-stone-500 text-neutral-100 border-none'
-              } rounded-3xl`}
+                  ? 'border-none bg-gray-200'
+                  : 'border-1 border-blue-500 text-blue-500 bg-white'
+              } rounded-xl`}
             >
-              {coursesQuery.sort === ''
-                ? 'Sort by'
-                : `Sort by: ${
-                    sortMethods[coursesQuery.sort as keyof typeof sortMethods]
-                  }`}
+              <span className="line-clamp-1">
+                {coursesQuery.sort === ''
+                  ? 'Sort by'
+                  : sortMethods[coursesQuery.sort as keyof typeof sortMethods]}
+              </span>
             </Button>
           </DropdownTrigger>
           <DropdownMenu
@@ -263,11 +266,13 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex flex-col grow overflow-hidden">
-        <ScrollShadow className="overflow-y-auto p-2">
+      <Divider className="mt-3" />
+
+      <div className="flex flex-col grow overflow-hidden">
+        <ScrollShadow className="overflow-y-auto pb-2 pt-3 pl-1 pr-2">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>
-              <div className="ring-2 shadow-sm ring-neutral-300 mb-3 rounded-2xl flex flex-col py-2 px-3 bg-neutral-200/[.2]">
+              <div className="bg-neutral-100 ring-1 ring-neutral-300 shadow-sm mb-3 rounded-2xl flex flex-col py-2 px-3">
                 <p className="font-semibold">{course.course_id}</p>
                 <p className="text-sm">{course.course_name}</p>
                 <div className="flex flex-row gap-2 text-xs mt-1">
@@ -293,6 +298,8 @@ export function Sidebar({
           ))}
         </ScrollShadow>
       </div>
+
+      <Divider />
     </aside>
   )
 }

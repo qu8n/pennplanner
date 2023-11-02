@@ -11,6 +11,14 @@ import {
   Divider,
 } from '@nextui-org/react'
 
+const seasonalColors: {
+  [key: string]: string
+} = {
+  Fall: 'bg-orange-100/[.6]',
+  Spring: 'bg-emerald-100/[.6]',
+  Summer: 'bg-yellow-100/[.6]',
+}
+
 export function SemesterContainer({
   semester,
   semesters,
@@ -30,13 +38,19 @@ export function SemesterContainer({
   )
 
   return (
-    <div className="rounded-2xl bg-neutral-200/[.6] p-4 flex flex-col gap-y-2 h-72 shadow-inner">
+    <div
+      className={`${
+        seasonalColors[semester.semester_season]
+      } rounded-md p-4 flex flex-col gap-y-2 h-72 shadow-sm`}
+    >
       <div className="flex flex-row gap-2 items-center">
         <p className="font-medium">
           {semester.semester_season} {semester.semester_year}
         </p>
         {totalCU > 0 ? (
-          <span className="text-xs text-neutral-500">({totalCU} CU)</span>
+          <Chip size="sm" className="text-xs bg-neutral-400 text-white">
+            {totalCU} CU
+          </Chip>
         ) : null}
         {semester.semester_id === '1' ? (
           <Popover>
@@ -44,7 +58,7 @@ export function SemesterContainer({
               <Button
                 size="sm"
                 variant="flat"
-                className="ml-auto -mt-1 bg-neutral-200/[.6] ring-2 ring-neutral-400/[.3] rounded-3xl"
+                className="ml-auto -mt-1 bg-transparent ring-1 ring-neutral-400/[.3] rounded-3xl"
               >
                 Change year
               </Button>
@@ -81,7 +95,7 @@ export function SemesterContainer({
       >
         {semester.semester_courses.map((c) => (
           <Sortable key={c.course_id} course={c}>
-            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-200 ring-2 ring-neutral-400/[.4]">
+            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-50 ring-1 ring-neutral-300">
               <p className="text-sm font-semibold">{c.course_id}</p>
               <p className="text-xs line-clamp-1">{c.course_name}</p>
             </div>

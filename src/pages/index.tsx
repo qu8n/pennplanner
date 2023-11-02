@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { ScrollShadow } from '@nextui-org/react'
+import { Divider, ScrollShadow, Spacer } from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
@@ -302,7 +302,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 py-4 bg-neutral-200`}
+      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 bg-neutral-200`}
     >
       {totalCU === 10 && (
         <Confetti
@@ -332,17 +332,23 @@ export default function Home() {
             setCoursesToDisplay={setCoursesToDisplay}
           />
 
-          <div className="flex flex-1 flex-col">
+          <Spacer x={4} />
+
+          <div className="flex flex-1 flex-col bg-white shadow-md rounded-2xl p-6 my-6">
             <Toolbar totalCU={totalCU} />
 
-            <div className="flex flex-col overflow-y-auto mx-1 mt-4 mb-1 bg-white shadow-md rounded-2xl py-2 pl-6 pr-2">
-              <ScrollShadow>
+            <Divider className="mt-4" />
+
+            <div className="flex flex-col grow overflow-hidden pl-2">
+              <ScrollShadow className="overflow-y-auto">
                 {['1', '2', '3', '4', '5'].map((yearId) => (
                   <div
                     key={yearId}
                     className="w-full rounded-xl flex flex-col py-4 pr-2"
                   >
-                    <p className="font-semibold text-lg ml-2">Year {yearId}</p>
+                    <h2 className="font-semibold text-lg ml-2">
+                      Year {yearId}
+                    </h2>
 
                     <div className="grid grid-cols-3 gap-4 mt-2">
                       {semestersByYearId[yearId].map((s) => (
@@ -362,13 +368,15 @@ export default function Home() {
                 ))}
               </ScrollShadow>
             </div>
+
+            <Divider />
           </div>
         </div>
 
         <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="bg-white border-1 border-gray-400 shadow-md rounded-md flex flex-col px-2 py-1 scale-105">
+              <div className="bg-neutral-50 ring-1 ring-neutral-300 shadow-md rounded-md flex flex-col px-2 py-1 scale-105">
                 <p className="text-sm font-semibold">
                   {activeCourse.course_id}
                 </p>
