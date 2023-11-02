@@ -326,18 +326,16 @@ export default function Home() {
         onDragEnd={handleDragEnd}
       >
         <div className="flex flex-1 overflow-hidden">
-          <aside className="flex-col flex w-[30rem] p-4">
-            <Sidebar
-              courseCatalog={courseCatalog}
-              coursesToDisplay={coursesToDisplay}
-              setCoursesToDisplay={setCoursesToDisplay}
-            />
-          </aside>
+          <Sidebar
+            courseCatalog={courseCatalog}
+            coursesToDisplay={coursesToDisplay}
+            setCoursesToDisplay={setCoursesToDisplay}
+          />
 
           <div className="flex flex-1 flex-col">
             <Toolbar totalCU={totalCU} />
 
-            <div className="flex flex-col overflow-y-auto mx-1 mt-4 mb-1 bg-neutral-50 shadow-md rounded-2xl py-2 pl-6 pr-2">
+            <div className="flex flex-col overflow-y-auto mx-1 mt-4 mb-1 bg-white shadow-md rounded-2xl py-2 pl-6 pr-2">
               <ScrollShadow>
                 {['1', '2', '3', '4', '5'].map((yearId) => (
                   <div

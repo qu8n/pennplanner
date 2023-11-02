@@ -141,7 +141,7 @@ export function Sidebar({
   }, [coursesQuery])
 
   return (
-    <>
+    <aside className="flex-col flex w-[30rem] p-6 bg-neutral-100 rounded-2xl my-1 mr-3 shadow-md">
       <div className="flex flex-row items-center gap-1 text-gray-500">
         <ArrowLeftIcon className="w-3 h-3" />
         <p className="text-xs">Back to My Plans</p>
@@ -153,7 +153,7 @@ export function Sidebar({
       </div>
 
       <Input
-        className="mt-4"
+        className="h-14"
         type="text"
         label={
           <div className="flex flex-row gap-2 items-center">
@@ -161,6 +161,7 @@ export function Sidebar({
             Search course name, number, or description
           </div>
         }
+        variant="underlined"
         labelPlacement="inside"
         isClearable
         value={coursesQuery.search}
@@ -176,11 +177,11 @@ export function Sidebar({
               fullWidth
               variant="bordered"
               startContent={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
-              className={
+              className={`${
                 coursesQuery.filter === 'all-courses'
-                  ? 'border-1 border-gray-300 bg-gray-200/[.5]'
-                  : 'border-2 border-blue-400 text-blue-700 text-xs'
-              }
+                  ? 'border-2 bg-stone-300/[.8]'
+                  : 'text-xs bg-stone-500 text-neutral-100 border-none'
+              } rounded-3xl`}
             >
               {coursesQuery.filter === 'all-courses'
                 ? 'Filter course type'
@@ -224,11 +225,11 @@ export function Sidebar({
               fullWidth
               variant="bordered"
               startContent={<BarsArrowDownIcon className="w-5 h-5" />}
-              className={
+              className={`${
                 coursesQuery.sort === ''
-                  ? 'border-1 border-gray-300 bg-gray-200/[.5]'
-                  : 'border-2 border-blue-400 text-blue-700 text-xs'
-              }
+                  ? 'border-2 bg-stone-300/[.8]'
+                  : 'text-xs bg-stone-500 text-neutral-100 border-none'
+              } rounded-3xl`}
             >
               {coursesQuery.sort === ''
                 ? 'Sort by'
@@ -262,11 +263,11 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex flex-col grow rounded-xl overflow-hidden ring-1 ring-gray-400 bg-gray-50">
+      <div className="mt-3 flex flex-col grow overflow-hidden">
         <ScrollShadow className="overflow-y-auto p-2">
           {coursesToDisplay.map((course) => (
             <Draggable key={course.course_id} id={course.course_id}>
-              <div className="ring-1 shadow-sm ring-gray-400 mb-3 rounded-md flex flex-col py-2 px-3">
+              <div className="ring-2 shadow-sm ring-neutral-300 mb-3 rounded-2xl flex flex-col py-2 px-3 bg-neutral-200/[.2]">
                 <p className="font-semibold">{course.course_id}</p>
                 <p className="text-sm">{course.course_name}</p>
                 <div className="flex flex-row gap-2 text-xs mt-1">
@@ -292,6 +293,6 @@ export function Sidebar({
           ))}
         </ScrollShadow>
       </div>
-    </>
+    </aside>
   )
 }

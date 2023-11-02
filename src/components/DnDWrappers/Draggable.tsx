@@ -13,7 +13,7 @@ export function Draggable({
 
   return (
     <div
-      className={`${isDragging && 'opacity-50'} bg-white`}
+      className={`${isDragging && 'opacity-50'}`}
       ref={setNodeRef}
       {...listeners}
       {...attributes}

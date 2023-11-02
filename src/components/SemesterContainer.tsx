@@ -44,7 +44,7 @@ export function SemesterContainer({
               <Button
                 size="sm"
                 variant="flat"
-                className="ml-auto -mt-1 ring-2 bg-neutral-200/[.6] ring-neutral-400/[.3] rounded-3xl"
+                className="ml-auto -mt-1 bg-neutral-200/[.6] ring-2 ring-neutral-400/[.3] rounded-3xl"
               >
                 Change year
               </Button>
@@ -81,7 +81,7 @@ export function SemesterContainer({
       >
         {semester.semester_courses.map((c) => (
           <Sortable key={c.course_id} course={c}>
-            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-300/[.8] ring-2 ring-neutral-400/[.4]">
+            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-200 ring-2 ring-neutral-400/[.4]">
               <p className="text-sm font-semibold">{c.course_id}</p>
               <p className="text-xs line-clamp-1">{c.course_name}</p>
             </div>
