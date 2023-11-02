@@ -11,6 +11,7 @@ import {
   useSensor,
   PointerSensor,
   DragOverEvent,
+  Active,
 } from '@dnd-kit/core'
 import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
@@ -22,6 +23,8 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { geistSans } from '@/fonts/geistSans'
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
+import { CourseTiny } from '@/components/CourseTiny'
+import { CourseBig } from '@/components/CourseBig'
 
 export default function Home() {
   const id = useId()
@@ -141,11 +144,12 @@ export default function Home() {
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
 
-  const [activeId, setActiveId] = useState<string | null>(null)
+  const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
-    setActiveId(active.id as string)
+    console.log(active)
+    setActiveDragEvent(active)
   }
 
   const getSemesterFromId = (uniqueId: string | null) => {
@@ -269,8 +273,8 @@ export default function Home() {
   const sensors = useSensors(useSensor(PointerSensor))
 
   const activeCourse = useMemo(() => {
-    return allCourses.find((c) => c.course_id === activeId)
-  }, [activeId])
+    return allCourses.find((c) => c.course_id === activeDragEvent?.id)
+  }, [activeDragEvent])
 
   const semestersByYearId = useMemo(
     () =>
@@ -302,7 +306,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 bg-neutral-200`}
+      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 bg-neutral-300`}
     >
       {totalCU === 10 && (
         <Confetti
@@ -376,11 +380,12 @@ export default function Home() {
         <DragOverlay>
           {activeCourse ? (
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="bg-neutral-50 ring-1 ring-neutral-300 shadow-md rounded-md flex flex-col px-2 py-1 scale-105">
-                <p className="text-sm font-semibold">
-                  {activeCourse.course_id}
-                </p>
-                <p className="text-xs">{activeCourse.course_name}</p>
+              <div className="scale-105">
+                {activeDragEvent?.data.current ? (
+                  <CourseTiny c={activeCourse} isDragging={true} />
+                ) : (
+                  <CourseBig c={activeCourse} isDragging={true} />
+                )}
               </div>
             </Draggable>
           ) : null}

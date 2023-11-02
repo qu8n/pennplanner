@@ -10,6 +10,7 @@ import {
   Chip,
   Divider,
 } from '@nextui-org/react'
+import { CourseTiny } from './CourseTiny'
 
 const seasonalColors: {
   [key: string]: string
@@ -95,10 +96,7 @@ export function SemesterContainer({
       >
         {semester.semester_courses.map((c) => (
           <Sortable key={c.course_id} course={c}>
-            <div className="flex flex-col px-2 py-1 shadow-sm rounded-lg bg-neutral-50 ring-1 ring-neutral-300">
-              <p className="text-sm font-semibold">{c.course_id}</p>
-              <p className="text-xs line-clamp-1">{c.course_name}</p>
-            </div>
+            <CourseTiny c={c} />
           </Sortable>
         ))}
       </SortableContext>

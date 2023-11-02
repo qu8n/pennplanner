@@ -2,6 +2,9 @@ import {
   AdjustmentsHorizontalIcon,
   ArrowLeftIcon,
   BarsArrowDownIcon,
+  BookOpenIcon,
+  DocumentMagnifyingGlassIcon,
+  EyeIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline'
 import {
@@ -14,6 +17,7 @@ import {
   DropdownSection,
   ScrollShadow,
   Divider,
+  Tooltip,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
@@ -21,6 +25,7 @@ import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
+import { CourseBig } from './CourseBig'
 
 function getCourseNumbers(courseIdA: string, courseIdB: string) {
   const numberA = parseInt(courseIdA.match(/\d+/)![0])
@@ -271,30 +276,9 @@ export function Sidebar({
 
       <div className="flex flex-col grow overflow-hidden">
         <ScrollShadow className="overflow-y-auto pb-2 pt-3 px-1">
-          {coursesToDisplay.map((course) => (
-            <Draggable key={course.course_id} id={course.course_id}>
-              <div className="bg-neutral-100 ring-1 ring-neutral-300 shadow-sm mb-3 rounded-2xl flex flex-col py-2 px-3">
-                <p className="font-semibold">{course.course_id}</p>
-                <p className="text-sm">{course.course_name}</p>
-                <div className="flex flex-row gap-2 text-xs mt-1">
-                  <Rating
-                    readOnly={true}
-                    style={{ maxWidth: 75 }}
-                    value={course.avg_rating ?? 0}
-                    itemStyles={{
-                      itemShapes: ThinRoundedStar,
-                      activeFillColor: '#3b82f6',
-                      inactiveFillColor: '#cbd5e1',
-                    }}
-                  />
-                  <span className="text-gray-500">
-                    {course.avg_rating ?? ''}
-                    {course.review_count
-                      ? ` (${course.review_count} reviews)`
-                      : 'n/a'}
-                  </span>
-                </div>
-              </div>
+          {coursesToDisplay.map((c) => (
+            <Draggable key={c.course_id} id={c.course_id}>
+              <CourseBig c={c} />
             </Draggable>
           ))}
         </ScrollShadow>
