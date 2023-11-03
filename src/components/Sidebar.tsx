@@ -1,10 +1,6 @@
 import {
   AdjustmentsHorizontalIcon,
-  ArrowLeftIcon,
   BarsArrowDownIcon,
-  BookOpenIcon,
-  DocumentMagnifyingGlassIcon,
-  EyeIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline'
 import {
@@ -17,13 +13,11 @@ import {
   DropdownSection,
   ScrollShadow,
   Divider,
-  Tooltip,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
-import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
 import { CourseBig } from './CourseBig'
 
@@ -126,10 +120,14 @@ export function Sidebar({
   courseCatalog,
   coursesToDisplay,
   setCoursesToDisplay,
+  setModalCourse,
+  onModalOpen,
 }: {
   courseCatalog: Course[]
   coursesToDisplay: Course[]
   setCoursesToDisplay: (courses: Course[]) => void
+  setModalCourse: (modalCourse: Course) => void
+  onModalOpen: () => void
 }) {
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
@@ -278,7 +276,11 @@ export function Sidebar({
         <ScrollShadow className="overflow-y-auto pb-2 pt-3 px-1">
           {coursesToDisplay.map((c) => (
             <Draggable key={c.course_id} id={c.course_id}>
-              <CourseBig c={c} />
+              <CourseBig
+                c={c}
+                setModalCourse={setModalCourse}
+                onModalOpen={onModalOpen}
+              />
             </Draggable>
           ))}
         </ScrollShadow>

@@ -6,9 +6,13 @@ import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 export function CourseBig({
   c,
   isDragging,
+  setModalCourse,
+  onModalOpen,
 }: {
   c: Course
   isDragging?: boolean
+  setModalCourse: (modalCourse: Course) => void
+  onModalOpen: () => void
 }) {
   return (
     <div
@@ -43,6 +47,10 @@ export function CourseBig({
           variant="light"
           isIconOnly
           className="-mr-1"
+          onPress={() => {
+            setModalCourse(c)
+            onModalOpen()
+          }}
         >
           <BookOpenIcon className="w-4 h-4 text-gray-500" />
         </Button>

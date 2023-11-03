@@ -5,9 +5,13 @@ import { Button, Tooltip } from '@nextui-org/react'
 export function CourseTiny({
   c,
   isDragging,
+  setModalCourse,
+  onModalOpen,
 }: {
   c: Course
   isDragging?: boolean
+  setModalCourse: (modalCourse: Course) => void
+  onModalOpen: () => void
 }) {
   return (
     <div
@@ -19,13 +23,18 @@ export function CourseTiny({
         <p className="text-sm font-semibold">{c.course_id}</p>
         <p className="text-xs line-clamp-1">{c.course_name}</p>
       </div>
+
       <Tooltip closeDelay={0} showArrow={true} content="View course details">
         <Button
           size="sm"
           radius="lg"
           variant="light"
           isIconOnly
-          className="-mr-2"
+          className="-mr-1"
+          onPress={() => {
+            setModalCourse(c)
+            onModalOpen()
+          }}
         >
           <BookOpenIcon className="w-3 h-3 text-gray-500" />
         </Button>

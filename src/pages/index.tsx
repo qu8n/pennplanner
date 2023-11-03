@@ -1,7 +1,6 @@
-import { Navbar } from '@/components/Navbar'
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { Divider, ScrollShadow, Spacer } from '@nextui-org/react'
+import { Divider, ScrollShadow, Spacer, useDisclosure } from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
@@ -16,7 +15,7 @@ import {
 import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
-import { Course, Semester, Year } from '@/shared/types'
+import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
@@ -25,6 +24,7 @@ import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { CourseTiny } from '@/components/CourseTiny'
 import { CourseBig } from '@/components/CourseBig'
+import { CourseModal } from '@/components/CourseModal'
 
 export default function Home() {
   const id = useId()
@@ -143,12 +143,13 @@ export default function Home() {
   const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
-
   const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
+  const [modalCourse, setModalCourse] = useState<Course | null>(null)
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
-    console.log(active)
     setActiveDragEvent(active)
   }
 
@@ -334,6 +335,8 @@ export default function Home() {
             courseCatalog={courseCatalog}
             coursesToDisplay={coursesToDisplay}
             setCoursesToDisplay={setCoursesToDisplay}
+            setModalCourse={setModalCourse}
+            onModalOpen={onOpen}
           />
 
           <Spacer x={4} />
@@ -364,6 +367,8 @@ export default function Home() {
                             setSemesters={setSemesters}
                             firstYear={firstYear}
                             setFirstYear={setFirstYear}
+                            setModalCourse={setModalCourse}
+                            onModalOpen={onOpen}
                           />
                         </Droppable>
                       ))}
@@ -382,15 +387,31 @@ export default function Home() {
             <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
               <div className="scale-105">
                 {activeDragEvent?.data.current ? (
-                  <CourseTiny c={activeCourse} isDragging={true} />
+                  <CourseTiny
+                    c={activeCourse}
+                    isDragging={true}
+                    setModalCourse={setModalCourse}
+                    onModalOpen={onOpen}
+                  />
                 ) : (
-                  <CourseBig c={activeCourse} isDragging={true} />
+                  <CourseBig
+                    c={activeCourse}
+                    isDragging={true}
+                    setModalCourse={setModalCourse}
+                    onModalOpen={onOpen}
+                  />
                 )}
               </div>
             </Draggable>
           ) : null}
         </DragOverlay>
       </DndContext>
+
+      <CourseModal
+        isModalOpen={isOpen}
+        onModalOpen={onOpenChange}
+        modalCourse={modalCourse}
+      />
     </main>
   )
 }

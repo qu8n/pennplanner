@@ -1,4 +1,4 @@
-import { Semester } from '@/shared/types'
+import { Course, Semester } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
@@ -26,12 +26,16 @@ export function SemesterContainer({
   setSemesters,
   firstYear,
   setFirstYear,
+  setModalCourse,
+  onModalOpen,
 }: {
   semester: Semester
   semesters: Semester[]
   setSemesters: (semesters: Semester[]) => void
   firstYear: number
-  setFirstYear: (year: number) => void
+  setFirstYear: (firstYear: number) => void
+  setModalCourse: (modalCourse: Course) => void
+  onModalOpen: () => void
 }) {
   const totalCU = semester.semester_courses.reduce(
     (acc, curr) => acc + curr.course_unit,
@@ -49,7 +53,7 @@ export function SemesterContainer({
           {semester.semester_season} {semester.semester_year}
         </p>
         {totalCU > 0 ? (
-          <Chip size="sm" className="text-xs bg-neutral-400 text-white">
+          <Chip variant="flat" size="sm" className="text-xs" color="primary">
             {totalCU} CU
           </Chip>
         ) : null}
@@ -96,7 +100,11 @@ export function SemesterContainer({
       >
         {semester.semester_courses.map((c) => (
           <Sortable key={c.course_id} course={c}>
-            <CourseTiny c={c} />
+            <CourseTiny
+              c={c}
+              setModalCourse={setModalCourse}
+              onModalOpen={onModalOpen}
+            />
           </Sortable>
         ))}
       </SortableContext>

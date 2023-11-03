@@ -1,8 +1,3 @@
-export type Year = {
-  year_id: string
-  year_semesters: Semester[]
-}
-
 export type Semester = {
   semester_id: string
   semester_year: number
