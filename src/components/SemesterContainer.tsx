@@ -11,6 +11,7 @@ import {
   Divider,
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
 const seasonalColors: {
   [key: string]: string
@@ -62,14 +63,15 @@ export function SemesterContainer({
           </Chip>
         ) : null}
         {semester.semester_id === '1' ? (
-          <Popover>
+          <Popover placement="bottom">
             <PopoverTrigger>
               <Button
                 size="sm"
                 variant="flat"
+                startContent={<ArrowPathIcon className="w-4 h-4" />}
                 className="ml-auto -mt-1 bg-transparent ring-1 ring-neutral-400/[.3] rounded-3xl"
               >
-                Change year
+                First year
               </Button>
             </PopoverTrigger>
             <PopoverContent>

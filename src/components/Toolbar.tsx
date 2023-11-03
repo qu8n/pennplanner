@@ -1,10 +1,18 @@
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import {
-  ArrowDownOnSquareIcon,
   ArrowTopRightOnSquareIcon,
   DocumentDuplicateIcon,
+  LinkIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Progress } from '@nextui-org/react'
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Progress,
+  Tooltip,
+} from '@nextui-org/react'
+import toast from 'react-hot-toast'
 
 export function Toolbar({ totalCU }: { totalCU: number }) {
   return (
@@ -14,36 +22,51 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
           <h2 className="flex-none font-semibold text-lg">Degree Planner</h2>
           <div className="flex flex-row items-center gap-1 mt-1">
             <span className="text-xs">{totalCU} / 10 course units (CU)</span>
-            <InformationCircleIcon className="flex-none w-4 h-4 text-neutral-400" />
+            <Tooltip
+              closeDelay={0}
+              placement="top"
+              size="md"
+              content="A course unit (CU) is the basic unit of progress toward the degree. One CU is usually converted to a four-semester-hour course."
+            >
+              <InformationCircleIcon className="flex-none w-4 h-4 text-neutral-400" />
+            </Tooltip>
           </div>
         </div>
         <Progress isStriped aria-label="progress" value={totalCU * 10} />
       </div>
 
       {/* Duplicate this plan as the owner; copy this plan as visitor */}
-      <Button
-        variant="bordered"
-        startContent={<DocumentDuplicateIcon className="w-4 h-4" />}
-        className="flex-none w-38 border-none rounded-xl bg-gray-200"
+      <Tooltip
+        closeDelay={0}
+        placement="top"
+        content="Create a copy of this plan in your account"
       >
-        Duplicate plan
-      </Button>
+        <Button
+          variant="bordered"
+          startContent={<DocumentDuplicateIcon className="w-4 h-4" />}
+          className="flex-none w-38 border-none rounded-xl bg-gray-200"
+        >
+          Make a copy
+        </Button>
+      </Tooltip>
 
-      <Button
-        variant="bordered"
-        startContent={<ArrowDownOnSquareIcon className="w-4 h-4" />}
-        className="flex-none w-38 border-none rounded-xl bg-gray-200"
+      <Tooltip
+        closeDelay={0}
+        placement="top"
+        content="Copy this plan's URL to share with others"
       >
-        Export plan
-      </Button>
-
-      <Button
-        variant="bordered"
-        startContent={<ArrowTopRightOnSquareIcon className="w-4 h-4" />}
-        className="flex-none w-38 border-none rounded-xl bg-gray-200"
-      >
-        Share plan
-      </Button>
+        <Button
+          variant="bordered"
+          startContent={<LinkIcon className="w-4 h-4" />}
+          className="flex-none w-38 border-none rounded-xl bg-gray-200"
+          onPress={() => {
+            window.navigator.clipboard.writeText(window.location.href)
+            toast.success('Plan URL copied to clipboard')
+          }}
+        >
+          Copy plan URL
+        </Button>
+      </Tooltip>
     </div>
   )
 }

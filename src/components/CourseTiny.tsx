@@ -57,7 +57,7 @@ export function CourseTiny({
           type="button"
           className={`${
             isDragging ? '' : 'group-hover:block'
-          } hidden absolute w-6 h-6 text-red-500 bg-white rounded-full shadow-md ring-1 ring-neutral-200 -left-4`}
+          } hidden absolute w-6 h-6 text-red-500 bg-white rounded-full shadow-lg ring-1 ring-neutral-200 -top-2 -left-2`}
           onClick={() => {
             if (setCourseCatalog && setSemesters) {
               setCourseCatalog([...courseCatalog!, c])
