@@ -362,7 +362,7 @@ export default function Home() {
                         <Droppable id={s.semester_id} key={s.semester_id}>
                           <SemesterContainer
                             key={s.semester_id}
-                            semester={s}
+                            s={s}
                             semesters={semesters}
                             setSemesters={setSemesters}
                             firstYear={firstYear}
