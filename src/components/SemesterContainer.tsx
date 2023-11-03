@@ -28,6 +28,8 @@ export function SemesterContainer({
   setFirstYear,
   setModalCourse,
   onModalOpen,
+  setCourseCatalog,
+  courseCatalog,
 }: {
   semester: Semester
   semesters: Semester[]
@@ -36,6 +38,8 @@ export function SemesterContainer({
   setFirstYear: (firstYear: number) => void
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
+  setCourseCatalog?: (courseCatalog: Course[]) => void
+  courseCatalog?: Course[]
 }) {
   const totalCU = semester.semester_courses.reduce(
     (acc, curr) => acc + curr.course_unit,
@@ -104,6 +108,10 @@ export function SemesterContainer({
               c={c}
               setModalCourse={setModalCourse}
               onModalOpen={onModalOpen}
+              setCourseCatalog={setCourseCatalog}
+              courseCatalog={courseCatalog}
+              setSemesters={setSemesters}
+              semesters={semesters}
             />
           </Sortable>
         ))}

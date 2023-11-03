@@ -369,6 +369,8 @@ export default function Home() {
                             setFirstYear={setFirstYear}
                             setModalCourse={setModalCourse}
                             onModalOpen={onOpen}
+                            setCourseCatalog={setCourseCatalog}
+                            courseCatalog={courseCatalog}
                           />
                         </Droppable>
                       ))}

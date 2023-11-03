@@ -40,7 +40,7 @@ export function CourseBig({
           </span>
         </div>
       </div>
-      <Tooltip closeDelay={0} showArrow={true} content="View course details">
+      <Tooltip closeDelay={0} content="View course details">
         <Button
           size="sm"
           radius="lg"

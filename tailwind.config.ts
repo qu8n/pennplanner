@@ -10,5 +10,10 @@ const config: Config = {
   ],
   darkMode: 'class',
   plugins: [nextui()],
+  variants: {
+    extend: {
+      display: ['group-hover'],
+    },
+  },
 }
 export default config

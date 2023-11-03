@@ -143,7 +143,7 @@ export function Sidebar({
     coursesToQuery = sortCourses(coursesQuery.sort, coursesToQuery)
     setCoursesToDisplay(coursesToQuery)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coursesQuery])
+  }, [coursesQuery, courseCatalog])
 
   return (
     <aside className="flex-col flex w-[26rem] p-6 bg-white rounded-2xl shadow-md my-6">
