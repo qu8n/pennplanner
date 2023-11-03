@@ -346,7 +346,7 @@ export default function Home() {
 
             <Divider className="mt-4" />
 
-            <div className="flex flex-col grow overflow-hidden pl-2">
+            <div className="flex flex-col grow overflow-hidden pl-1">
               <ScrollShadow className="overflow-y-auto">
                 {['1', '2', '3', '4', '5'].map((yearId) => (
                   <div
