@@ -9,6 +9,9 @@ import {
   Input,
   Chip,
   Divider,
+  Select,
+  SelectItem,
+  SelectSection,
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
@@ -61,48 +64,67 @@ export function SemesterContainer({
         seasonalBorderColors[s.semester_season]
       } border-1 rounded-md p-4 flex flex-col gap-y-2 h-72 shadow-sm`}
     >
-      <div className="flex flex-row gap-2 items-center justify-between">
-        <div className="flex gap-2">
-          <p className="font-medium">
+      <div className="flex flex-row gap-2 justify-between">
+        {s.semester_id === '1' ? (
+          <Select
+            variant="flat"
+            disallowEmptySelection
+            size="sm"
+            labelPlacement="outside"
+            selectedKeys={[String(firstYear)]}
+            className="w-32 -mt-2 rounded-lg ring-1 ring-neutral-200"
+            onChange={(e) => {
+              const value = e.target.value
+              const firstYearDiff = Number(value) - firstYear
+              setFirstYear(Number(value))
+              const newSemesters = semesters.map((s) => ({
+                ...s,
+                semester_year: s.semester_year + firstYearDiff,
+              }))
+              setSemesters(newSemesters)
+            }}
+            renderValue={(items) => {
+              return items.map((item) => {
+                return (
+                  <p
+                    key={item.textValue}
+                    className="font-medium text-[16px] text-black"
+                  >
+                    {s.semester_season} {s.semester_year}
+                  </p>
+                )
+              })
+            }}
+          >
+            <SelectSection title="First semester">
+              {Array.from(
+                { length: new Date().getFullYear() - 2019 + 1 },
+                (_, i) => 2019 + i,
+              )
+                .reverse()
+                .map((year) => {
+                  const yearStr = String(year)
+                  return (
+                    <SelectItem key={yearStr}>
+                      {`${s.semester_season} ${yearStr}`}
+                    </SelectItem>
+                  )
+                })}
+            </SelectSection>
+          </Select>
+        ) : (
+          <p className="font-medium -mt-1 mb-1">
             {s.semester_season} {s.semester_year}
           </p>
-          {s.semester_id === '1' ? (
-            <Popover placement="bottom">
-              <PopoverTrigger>
-                <Button
-                  size="sm"
-                  variant="flat"
-                  startContent={<ArrowPathIcon className="w-4 h-4" />}
-                  className="-mt-1 bg-transparent ring-1 ring-neutral-400/[.3] rounded-3xl"
-                >
-                  Change
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div className="py-3">
-                  <Input
-                    type="email"
-                    label="First year"
-                    placeholder={String(new Date().getFullYear())}
-                    value={String(firstYear)}
-                    onValueChange={(value) => {
-                      const firstYearDiff = Number(value) - firstYear
-                      setFirstYear(Number(value))
-                      const newSemesters = semesters.map((s) => ({
-                        ...s,
-                        semester_year: s.semester_year + firstYearDiff,
-                      }))
-                      setSemesters(newSemesters)
-                    }}
-                  />
-                </div>
-              </PopoverContent>
-            </Popover>
-          ) : null}
-        </div>
+        )}
 
         {totalCU > 0 ? (
-          <Chip variant="flat" size="sm" className="text-xs" color="primary">
+          <Chip
+            variant="flat"
+            size="sm"
+            className="text-xs -mt-1 mb-1"
+            color="primary"
+          >
             {totalCU} CU
           </Chip>
         ) : null}
