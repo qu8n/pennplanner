@@ -16,7 +16,7 @@ export function CourseTiny({
   return (
     <div
       className={`${
-        isDragging ? 'shadow-md' : 'shadow-sm'
+        isDragging ? 'shadow-md cursor-grabbing' : 'shadow-sm hover:cursor-grab'
       } flex flex-row items-center justify-between px-2 py-1 rounded-lg bg-neutral-50 ring-1 ring-neutral-300`}
     >
       <div className="flex flex-col">

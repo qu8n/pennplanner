@@ -17,7 +17,7 @@ export function CourseBig({
   return (
     <div
       className={`${
-        isDragging ? 'shadow-md' : 'shadow-sm'
+        isDragging ? 'shadow-md cursor-grabbing' : 'shadow-sm hover:cursor-grab'
       } flex flex-row items-center justify-between bg-neutral-100 ring-1 ring-neutral-300 mb-3 rounded-2xl py-2 px-3 gap-1`}
     >
       <div className="flex flex-col">
