@@ -146,15 +146,15 @@ export function Sidebar({
   }, [coursesQuery, courseCatalog])
 
   return (
-    <aside className="flex-col flex w-[26rem] p-6 bg-white rounded-2xl shadow-md my-6">
-      <h2 className="font-semibold text-lg">Course Catalog</h2>
+    <aside className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md">
+      <h2 className="text-lg font-semibold">Course Catalog</h2>
 
       <Input
-        className="h-14 mt-3"
+        className="mt-3 h-14"
         type="text"
         label={
-          <div className="flex flex-row gap-2 items-center">
-            <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0 w-4 h-4" />
+          <div className="flex flex-row items-center gap-2">
+            <MagnifyingGlassIcon className="pointer-events-none h-4 w-4 flex-shrink-0 text-2xl text-default-400" />
             Search course name, number, or description
           </div>
         }
@@ -167,7 +167,7 @@ export function Sidebar({
         }
       />
 
-      <div className="flex gap-3 mt-3">
+      <div className="mt-3 flex gap-3">
         <Dropdown>
           <DropdownTrigger>
             <Button
@@ -175,13 +175,13 @@ export function Sidebar({
               variant="bordered"
               startContent={
                 coursesQuery.filter === 'all-courses' ? (
-                  <AdjustmentsHorizontalIcon className="w-4 h-4" />
+                  <AdjustmentsHorizontalIcon className="h-4 w-4" />
                 ) : null
               }
               className={`${
                 coursesQuery.filter === 'all-courses'
                   ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-500 text-blue-500 bg-white'
+                  : 'border-1 border-blue-500 bg-white text-blue-500'
               } rounded-xl`}
             >
               <span className="line-clamp-1">
@@ -229,13 +229,13 @@ export function Sidebar({
               variant="bordered"
               startContent={
                 coursesQuery.sort === '' ? (
-                  <BarsArrowDownIcon className="w-4 h-4" />
+                  <BarsArrowDownIcon className="h-4 w-4" />
                 ) : null
               }
               className={`${
                 coursesQuery.sort === ''
                   ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-500 text-blue-500 bg-white'
+                  : 'border-1 border-blue-500 bg-white text-blue-500'
               } rounded-xl`}
             >
               <span className="line-clamp-1">
@@ -272,8 +272,8 @@ export function Sidebar({
 
       <Divider className="mt-3" />
 
-      <div className="flex flex-col grow overflow-hidden">
-        <ScrollShadow className="overflow-y-auto pb-2 pt-3 px-1">
+      <div className="flex grow flex-col overflow-hidden">
+        <ScrollShadow className="overflow-y-auto px-1 pb-2 pt-3">
           {coursesToDisplay.map((c) => (
             <Draggable key={c.course_id} id={c.course_id}>
               <CourseBig
@@ -290,22 +290,22 @@ export function Sidebar({
 
       {/* For non-logged in users */}
       <div className="mt-4 flex flex-row items-center gap-2">
-        <button className="flex flex-row items-center gap-1 text-white rounded-xl py-2 px-3 bg-gradient-to-r from-blue-500 to-blue-600">
-          <BookmarkSquareIcon className="h-4 w-4 text-white-500" />
+        <button className="flex flex-row items-center gap-1 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-3 py-2 text-white">
+          <BookmarkSquareIcon className="text-white-500 h-4 w-4" />
           <span className="text-sm">Create your </span>
-          <span className="font-medium text-sm">PennPlanner</span>
+          <span className="text-sm font-medium">PennPlanner</span>
         </button>
 
         <div className="flex">
-          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
             Login
           </button>
 
-          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
             About
           </button>
 
-          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
             Feedback
           </button>
         </div>

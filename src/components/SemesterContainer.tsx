@@ -62,9 +62,9 @@ export function SemesterContainer({
     <div
       className={`${seasonalBgColors[s.semester_season]} ${
         seasonalBorderColors[s.semester_season]
-      } border-1 rounded-md p-4 flex flex-col gap-y-2 h-72 shadow`}
+      } flex h-72 flex-col gap-y-2 rounded-md border-1 p-4 shadow`}
     >
-      <div className="flex flex-row gap-2 justify-between">
+      <div className="flex flex-row justify-between gap-2">
         {s.semester_id === '1' ? (
           <Select
             classNames={{
@@ -75,7 +75,7 @@ export function SemesterContainer({
             size="sm"
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
-            className="w-[115px] -mt-2 -ml-2"
+            className="-ml-2 -mt-2 w-[115px]"
             onChange={(e) => {
               const value = e.target.value
               const firstYearDiff = Number(value) - firstYear
@@ -91,7 +91,7 @@ export function SemesterContainer({
                 return (
                   <p
                     key={item.textValue}
-                    className="font-medium text-[16px] text-black"
+                    className="text-[16px] font-medium text-black"
                   >
                     {s.semester_season} {s.semester_year}
                   </p>
@@ -116,7 +116,7 @@ export function SemesterContainer({
             </SelectSection>
           </Select>
         ) : (
-          <p className="font-medium -mt-1 mb-1">
+          <p className="-mt-1 mb-1 font-medium">
             {s.semester_season} {s.semester_year}
           </p>
         )}
@@ -125,7 +125,7 @@ export function SemesterContainer({
           <Chip
             variant="flat"
             size="sm"
-            className="text-xs -mt-1 mb-1"
+            className="-mt-1 mb-1 text-xs"
             color="primary"
           >
             {totalCU} CU

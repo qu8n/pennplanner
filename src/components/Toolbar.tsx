@@ -17,11 +17,11 @@ export function Toolbar({
   setCourseCatalog: (courseCatalog: Course[]) => void
 }) {
   return (
-    <div className="flex flex-row h-16 gap-2 pl-2 items-center">
-      <div className="grow pr-4 flex flex-col gap-1">
+    <div className="flex h-16 flex-row items-center gap-2 pl-2">
+      <div className="flex grow flex-col gap-1 pr-4">
         <div className="flex flex-row justify-between">
-          <h2 className="flex-none font-semibold text-lg">Degree Planner</h2>
-          <div className="flex flex-row items-center gap-1 mt-1">
+          <h2 className="flex-none text-lg font-semibold">Degree Planner</h2>
+          <div className="mt-1 flex flex-row items-center gap-1">
             <span className="text-xs">{totalCU} / 10 course units (CU)</span>
             <Tooltip
               closeDelay={0}
@@ -29,7 +29,7 @@ export function Toolbar({
               size="md"
               content="A course unit (CU) is the basic unit of progress toward the degree. One CU is usually converted to a four-semester-hour course."
             >
-              <InformationCircleIcon className="flex-none w-4 h-4 text-neutral-400" />
+              <InformationCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
             </Tooltip>
           </div>
         </div>
@@ -44,8 +44,8 @@ export function Toolbar({
       >
         <Button
           variant="bordered"
-          startContent={<ArrowPathIcon className="w-4 h-4" />}
-          className="flex-none w-38 border-none rounded-xl bg-gray-200"
+          startContent={<ArrowPathIcon className="h-4 w-4" />}
+          className="w-38 flex-none rounded-xl border-none bg-gray-200"
           onPress={() => {
             setSemesters(
               semesters.map((s) => ({
@@ -54,17 +54,24 @@ export function Toolbar({
               })),
             )
             setCourseCatalog(allCourses)
+            toast('Plan has been reset', {
+              icon: '🔄',
+            })
           }}
         >
           Reset plan
         </Button>
       </Tooltip>
 
-      <Tooltip closeDelay={0} placement="top" content="Copy this plan's URL">
+      <Tooltip
+        closeDelay={0}
+        placement="top"
+        content="Copy this plan's URL to your clipboard"
+      >
         <Button
           variant="bordered"
-          startContent={<LinkIcon className="w-4 h-4" />}
-          className="flex-none w-38 border-none rounded-xl bg-gray-200"
+          startContent={<LinkIcon className="h-4 w-4" />}
+          className="w-38 flex-none rounded-xl border-none bg-gray-200"
           onPress={() => {
             window.navigator.clipboard.writeText(window.location.href)
             toast.success('Plan URL copied to clipboard')

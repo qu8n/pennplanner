@@ -17,13 +17,13 @@ export function CourseBig({
   return (
     <div
       className={`${
-        isDragging ? 'shadow-md cursor-grabbing' : 'shadow hover:cursor-grab'
-      } flex flex-row items-center justify-between bg-neutral-100 ring-1 ring-neutral-300 mb-3 rounded-2xl py-2 px-3 gap-1`}
+        isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
+      } mb-3 flex flex-row items-center justify-between gap-1 rounded-2xl bg-neutral-100 px-3 py-2 ring-1 ring-neutral-300`}
     >
       <div className="flex flex-col">
-        <p className="font-semibold text-sm">{c.course_id}</p>
+        <p className="text-sm font-semibold">{c.course_id}</p>
         <p className="text-xs">{c.course_name}</p>
-        <div className="flex flex-row gap-2 text-xs mt-1">
+        <div className="mt-1 flex flex-row gap-2 text-xs">
           <Rating
             readOnly={true}
             style={{ maxWidth: 75 }}
@@ -52,7 +52,7 @@ export function CourseBig({
             onModalOpen()
           }}
         >
-          <BookOpenIcon className="w-4 h-4 text-gray-500" />
+          <BookOpenIcon className="h-4 w-4 text-gray-500" />
         </Button>
       </Tooltip>
     </div>

@@ -26,14 +26,14 @@ export function CourseModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col">
-              <p className="text-neutral-500 font-semibold">
+              <p className="font-semibold text-neutral-500">
                 {modalCourse?.course_id}
               </p>
               <p className="text-2xl font-normal">{modalCourse?.course_name}</p>
             </ModalHeader>
 
             <ModalBody className="-mt-4">
-              <div className="font-normal text-sm flex flex-col">
+              <div className="flex flex-col text-sm font-normal">
                 <div className="flex flex-row gap-2">
                   <span className="mr-[1.3rem]">Rating:</span>
                   <Rating
@@ -67,7 +67,7 @@ export function CourseModal({
                   {modalCourse?.avg_difficulty ?? 'N/A'}
                 </div>
 
-                <div className="flex flex-row gap-2 items-center">
+                <div className="flex flex-row items-center gap-2">
                   <span>Workload: </span>
                   <Rating
                     readOnly={true}
@@ -128,7 +128,7 @@ export function CourseModal({
                     }
                     showArrow
                   >
-                    <InformationCircleIcon className="flex-none w-4 h-4 text-neutral-400" />
+                    <InformationCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
                   </Tooltip>
                 </div>
 
@@ -140,7 +140,7 @@ export function CourseModal({
                       .replace(/\s/g, '-')
                       .replace(/\d$/, '')}`}
                     underline="hover"
-                    className="text-xs mt-2 text-neutral-500"
+                    className="mt-2 text-xs text-neutral-500"
                   >
                     View course reviews on MCIT Central
                   </Link>

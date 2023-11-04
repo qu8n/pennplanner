@@ -307,7 +307,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex flex-col h-screen px-28 ${geistSans.className} text-gray-800 bg-neutral-300`}
+      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-neutral-300 text-gray-800`}
     >
       {totalCU === 10 && (
         <Confetti
@@ -341,7 +341,7 @@ export default function Home() {
 
           <Spacer x={4} />
 
-          <div className="flex flex-1 flex-col bg-white shadow-md rounded-2xl p-6 my-6">
+          <div className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md">
             <Toolbar
               totalCU={totalCU}
               semesters={semesters}
@@ -351,18 +351,18 @@ export default function Home() {
 
             <Divider className="mt-4" />
 
-            <div className="flex flex-col grow overflow-hidden pl-1">
+            <div className="flex grow flex-col overflow-hidden pl-1">
               <ScrollShadow className="overflow-y-auto">
                 {['1', '2', '3', '4', '5'].map((yearId) => (
                   <div
                     key={yearId}
-                    className="w-full rounded-xl flex flex-col py-4 pr-2"
+                    className="flex w-full flex-col rounded-xl py-4 pr-2"
                   >
-                    <h2 className="font-semibold text-lg ml-2">
+                    <h2 className="ml-2 text-lg font-semibold">
                       Year {yearId}
                     </h2>
 
-                    <div className="grid grid-cols-3 gap-4 mt-2">
+                    <div className="mt-2 grid grid-cols-3 gap-4">
                       {semestersByYearId[yearId].map((s) => (
                         <Droppable id={s.semester_id} key={s.semester_id}>
                           <SemesterContainer

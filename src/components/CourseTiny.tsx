@@ -24,12 +24,12 @@ export function CourseTiny({
   return (
     <div
       className={`${
-        isDragging ? 'shadow-md cursor-grabbing' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between px-2 py-1 rounded-lg bg-neutral-50 ring-1 ring-neutral-300`}
+        isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
+      } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-1 ring-neutral-300`}
     >
       <div className="flex flex-col">
         <p className="text-sm font-semibold">{c.course_id}</p>
-        <p className="text-xs line-clamp-1">{c.course_name}</p>
+        <p className="line-clamp-1 text-xs">{c.course_name}</p>
       </div>
 
       <Tooltip closeDelay={0} content="View course details">
@@ -44,7 +44,7 @@ export function CourseTiny({
             onModalOpen()
           }}
         >
-          <BookOpenIcon className="w-3 h-3 text-gray-500" />
+          <BookOpenIcon className="h-3 w-3 text-gray-500" />
         </Button>
       </Tooltip>
 
@@ -57,7 +57,7 @@ export function CourseTiny({
           type="button"
           className={`${
             isDragging ? '' : 'group-hover:block'
-          } hidden absolute w-6 h-6 text-red-500 bg-white rounded-full shadow-lg ring-1 ring-neutral-200 -top-2 -left-2`}
+          } absolute -left-2 -top-2 hidden h-6 w-6 rounded-full bg-white text-red-500 shadow-lg ring-1 ring-neutral-200`}
           onClick={() => {
             if (setCourseCatalog && setSemesters) {
               setCourseCatalog([...courseCatalog!, c])
@@ -74,7 +74,7 @@ export function CourseTiny({
         >
           <span className="sr-only">Close</span>
           <XMarkIcon
-            className="w-4 h-4 mx-auto pointer-events-none"
+            className="pointer-events-none mx-auto h-4 w-4"
             aria-hidden="true"
           />
         </button>
