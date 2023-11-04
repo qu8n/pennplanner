@@ -54,7 +54,7 @@ export function CourseModal({
                   {modalCourse?.avg_rating ?? ''}
                   {modalCourse?.review_count
                     ? ` (${modalCourse?.review_count} reviews)`
-                    : 'N/A'}
+                    : 'n/a'}
                 </div>
 
                 <div className="flex flex-row gap-2">
@@ -69,7 +69,7 @@ export function CourseModal({
                       inactiveFillColor: '#cbd5e1',
                     }}
                   />
-                  {modalCourse?.avg_difficulty ?? 'N/A'}
+                  {modalCourse?.avg_difficulty ?? 'n/a'}
                 </div>
 
                 <div className="flex flex-row items-center gap-2">
@@ -92,7 +92,7 @@ export function CourseModal({
                   />
                   {modalCourse?.avg_hours_per_week
                     ? `${modalCourse?.avg_hours_per_week} hours/week`
-                    : 'N/A'}
+                    : 'n/a'}
                   <Tooltip
                     placement="right"
                     content={

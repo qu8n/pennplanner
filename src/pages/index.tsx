@@ -276,7 +276,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-blue-950 text-gray-800`}
+      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-neutral-300 text-gray-800`}
     >
       {totalCU === 10 && (
         <Confetti

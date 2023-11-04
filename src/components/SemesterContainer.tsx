@@ -58,6 +58,11 @@ export function SemesterContainer({
     0,
   )
 
+  const totalHoursPerWeek = s.semester_courses.reduce(
+    (acc, curr) => acc + (curr.avg_hours_per_week || 0),
+    0,
+  )
+
   return (
     <div
       className={`${seasonalBgColors[s.semester_season]} ${
@@ -124,14 +129,15 @@ export function SemesterContainer({
         )}
 
         {totalCU > 0 ? (
-          <Chip
-            variant="flat"
-            size="sm"
-            className="-mt-1 mb-1 text-xs"
-            color="primary"
-          >
-            {totalCU} CU
-          </Chip>
+          <div className="-mt-1 mb-1 flex gap-1">
+            <Chip variant="flat" size="sm" className="text-xs">
+              ~{Math.round(totalHoursPerWeek)} hrs/wk
+            </Chip>
+
+            <Chip variant="flat" size="sm" className="text-xs" color="default">
+              {totalCU} CU
+            </Chip>
+          </div>
         ) : null}
       </div>
 
