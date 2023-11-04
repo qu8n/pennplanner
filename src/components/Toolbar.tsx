@@ -55,7 +55,6 @@ export function Toolbar({
         content="Remove all courses from your planner"
       >
         <Button
-          variant="bordered"
           startContent={<ArrowPathIcon className="h-4 w-4" />}
           className="w-38 flex-none rounded-xl border-none bg-gray-200"
           onPress={onOpen}
@@ -111,7 +110,6 @@ export function Toolbar({
         content="Copy this plan's URL to your clipboard"
       >
         <Button
-          variant="bordered"
           startContent={<LinkIcon className="h-4 w-4" />}
           className="w-38 flex-none rounded-xl border-none bg-gray-200"
           onPress={() => {

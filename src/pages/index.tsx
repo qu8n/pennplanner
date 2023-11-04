@@ -1,6 +1,12 @@
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
-import { Divider, ScrollShadow, Spacer, useDisclosure } from '@nextui-org/react'
+import {
+  Button,
+  Divider,
+  ScrollShadow,
+  Spacer,
+  useDisclosure,
+} from '@nextui-org/react'
 import {
   DndContext,
   DragEndEvent,
@@ -25,6 +31,7 @@ import { useWindowSize } from 'react-use'
 import { CourseTiny } from '@/components/CourseTiny'
 import { CourseBig } from '@/components/CourseBig'
 import { CourseModal } from '@/components/CourseModal'
+import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 
 export default function Home() {
   const id = useId()
@@ -94,48 +101,6 @@ export default function Home() {
       semester_season: 'Summer',
       semester_courses: [],
       year_id: '2',
-    },
-    {
-      semester_id: '9',
-      semester_year: firstYear + 3,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_id: '3',
-    },
-    {
-      semester_id: '10',
-      semester_year: firstYear + 4,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '3',
-    },
-    {
-      semester_id: '11',
-      semester_year: firstYear + 4,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_id: '3',
-    },
-    {
-      semester_id: '12',
-      semester_year: firstYear + 4,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_id: '4',
-    },
-    {
-      semester_id: '13',
-      semester_year: firstYear + 5,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '4',
-    },
-    {
-      semester_id: '14',
-      semester_year: firstYear + 5,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_id: '4',
     },
   ]
 
@@ -292,6 +257,10 @@ export default function Home() {
       ),
     [semesters],
   )
+  const numOfYears = useMemo(
+    () => Object.keys(semestersByYearId).length,
+    [semestersByYearId],
+  )
 
   const totalCU = useMemo(() => {
     return semesters.reduce((acc, s) => {
@@ -352,36 +321,73 @@ export default function Home() {
             <Divider className="mt-4" />
 
             <div className="flex grow flex-col overflow-hidden pl-1">
-              <ScrollShadow className="overflow-y-auto">
-                {['0', '1', '2', '3', '4'].map((yearId) => (
-                  <div
-                    key={yearId}
-                    className="flex w-full flex-col rounded-xl py-4 pr-2"
-                  >
-                    <h2 className="ml-2 text-lg font-semibold">
-                      Year {Number(yearId) + 1}
-                    </h2>
+              <ScrollShadow className="flex flex-col items-center overflow-y-auto">
+                {Object.keys(semestersByYearId)
+                  .sort()
+                  .map((yearId) => (
+                    <div
+                      key={yearId}
+                      className="flex w-full flex-col rounded-xl py-4 pr-2"
+                    >
+                      <h2 className="ml-2 text-lg font-semibold">
+                        Year {Number(yearId) + 1}
+                      </h2>
 
-                    <div className="mt-2 grid grid-cols-3 gap-4">
-                      {semestersByYearId[yearId].map((s) => (
-                        <Droppable id={s.semester_id} key={s.semester_id}>
-                          <SemesterContainer
-                            key={s.semester_id}
-                            s={s}
-                            semesters={semesters}
-                            setSemesters={setSemesters}
-                            firstYear={firstYear}
-                            setFirstYear={setFirstYear}
-                            setModalCourse={setModalCourse}
-                            onModalOpen={onOpen}
-                            setCourseCatalog={setCourseCatalog}
-                            courseCatalog={courseCatalog}
-                          />
-                        </Droppable>
-                      ))}
+                      <div className="mt-2 grid grid-cols-3 gap-4">
+                        {semestersByYearId[yearId].map((s) => (
+                          <Droppable id={s.semester_id} key={s.semester_id}>
+                            <SemesterContainer
+                              key={s.semester_id}
+                              s={s}
+                              semesters={semesters}
+                              setSemesters={setSemesters}
+                              firstYear={firstYear}
+                              setFirstYear={setFirstYear}
+                              setModalCourse={setModalCourse}
+                              onModalOpen={onOpen}
+                              setCourseCatalog={setCourseCatalog}
+                              courseCatalog={courseCatalog}
+                            />
+                          </Droppable>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+
+                {numOfYears < 7 ? (
+                  <Button
+                    startContent={<SquaresPlusIcon className="h-5 w-5" />}
+                    className="my-6 rounded-xl border-none bg-gray-200 p-5"
+                    onPress={() => {
+                      setSemesters((semesters) => [
+                        ...semesters,
+                        {
+                          semester_id: String(semesters.length),
+                          semester_year: firstYear + numOfYears,
+                          semester_season: 'Fall',
+                          semester_courses: [],
+                          year_id: String(numOfYears),
+                        },
+                        {
+                          semester_id: String(semesters.length + 1),
+                          semester_year: firstYear + numOfYears + 1,
+                          semester_season: 'Spring',
+                          semester_courses: [],
+                          year_id: String(numOfYears),
+                        },
+                        {
+                          semester_id: String(semesters.length + 2),
+                          semester_year: firstYear + numOfYears + 1,
+                          semester_season: 'Summer',
+                          semester_courses: [],
+                          year_id: String(numOfYears),
+                        },
+                      ])
+                    }}
+                  >
+                    Add calendar year
+                  </Button>
+                ) : null}
               </ScrollShadow>
             </div>
 
