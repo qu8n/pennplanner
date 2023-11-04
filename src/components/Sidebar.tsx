@@ -282,11 +282,11 @@ export function Sidebar({
 
       {/* For non-logged in users */}
       <div className="mt-4 flex flex-row items-center gap-2">
-        <button className="flex flex-row items-center gap-1 rounded-xl bg-gradient-to-r from-blue-700 to-blue-800 px-3 py-2 text-white">
+        <Button className="custom-gradient flex flex-row items-center gap-1 rounded-xl px-3 py-2 text-white">
           <BookmarkSquareIcon className="text-white-500 h-5 w-5" />
           <span className="text-sm font-extralight">Create your </span>
           <span className="text-sm font-medium">PennPlanner</span>
-        </button>
+        </Button>
 
         <div className="flex">
           <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">

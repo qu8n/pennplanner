@@ -83,7 +83,7 @@ export function CourseBig({
       </div>
       <Tooltip closeDelay={0} content="View course details">
         <Button
-          size="md"
+          size="sm"
           variant="flat"
           isIconOnly
           className="-mr-1"
