@@ -1,9 +1,21 @@
+import { allCourses } from '@/data/allCourses'
+import { Course, Semester } from '@/shared/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, LinkIcon } from '@heroicons/react/24/outline'
 import { Button, Progress, Tooltip } from '@nextui-org/react'
 import toast from 'react-hot-toast'
 
-export function Toolbar({ totalCU }: { totalCU: number }) {
+export function Toolbar({
+  totalCU,
+  semesters,
+  setSemesters,
+  setCourseCatalog,
+}: {
+  totalCU: number
+  semesters: Semester[]
+  setSemesters: (semesters: Semester[]) => void
+  setCourseCatalog: (courseCatalog: Course[]) => void
+}) {
   return (
     <div className="flex flex-row h-16 gap-2 pl-2 items-center">
       <div className="grow pr-4 flex flex-col gap-1">
@@ -34,6 +46,15 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
           variant="bordered"
           startContent={<ArrowPathIcon className="w-4 h-4" />}
           className="flex-none w-38 border-none rounded-xl bg-gray-200"
+          onPress={() => {
+            setSemesters(
+              semesters.map((s) => ({
+                ...s,
+                semester_courses: [],
+              })),
+            )
+            setCourseCatalog(allCourses)
+          }}
         >
           Reset plan
         </Button>

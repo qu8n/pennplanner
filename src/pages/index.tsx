@@ -342,7 +342,12 @@ export default function Home() {
           <Spacer x={4} />
 
           <div className="flex flex-1 flex-col bg-white shadow-md rounded-2xl p-6 my-6">
-            <Toolbar totalCU={totalCU} />
+            <Toolbar
+              totalCU={totalCU}
+              semesters={semesters}
+              setSemesters={setSemesters}
+              setCourseCatalog={setCourseCatalog}
+            />
 
             <Divider className="mt-4" />
 
