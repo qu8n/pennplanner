@@ -289,19 +289,47 @@ export function Sidebar({
       <Divider />
 
       {/* For non-logged in users */}
-      <div className="mt-4 flex flex-row items-center gap-4">
-        <button className="flex flex-row items-center gap-1 text-white rounded-xl py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600">
+      <div className="mt-4 flex flex-row items-center gap-2">
+        <button className="flex flex-row items-center gap-1 text-white rounded-xl py-2 px-3 bg-gradient-to-r from-blue-500 to-blue-600">
           <BookmarkSquareIcon className="h-4 w-4 text-white-500" />
           <span className="text-sm">Create your </span>
           <span className="font-medium text-sm">PennPlanner</span>
         </button>
+
+        <div className="flex">
+          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+            Login
+          </button>
+
+          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+            About
+          </button>
+
+          <button className="text-xs text-neutral-500 py-1 px-1 hover:bg-neutral-100 rounded-xl">
+            Feedback
+          </button>
+        </div>
+      </div>
+
+      {/* For logged-in users */}
+      {/* <div className="mt-4 flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-1">
+          <BookmarkSquareIcon className="h-4 w-4 text-blue-700" />
+          <span className="font-medium text-sm text-blue-700">PennPlanner</span>
+        </div>
+
         <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
-          Login
+          Logout
         </button>
+
         <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
           About
         </button>
-      </div>
+
+        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
+          Feedback
+        </button>
+      </div> */}
     </aside>
   )
 }

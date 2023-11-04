@@ -1,17 +1,6 @@
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
-import {
-  ArrowTopRightOnSquareIcon,
-  DocumentDuplicateIcon,
-  LinkIcon,
-} from '@heroicons/react/24/outline'
-import {
-  Button,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Progress,
-  Tooltip,
-} from '@nextui-org/react'
+import { ArrowPathIcon, LinkIcon } from '@heroicons/react/24/outline'
+import { Button, Progress, Tooltip } from '@nextui-org/react'
 import toast from 'react-hot-toast'
 
 export function Toolbar({ totalCU }: { totalCU: number }) {
@@ -35,26 +24,22 @@ export function Toolbar({ totalCU }: { totalCU: number }) {
         <Progress isStriped aria-label="progress" value={totalCU * 10} />
       </div>
 
-      {/* Duplicate this plan as the owner; copy this plan as visitor */}
+      {/* For logged-in users only */}
       <Tooltip
         closeDelay={0}
         placement="top"
-        content="Create a copy of this plan in your account"
+        content="Remove all courses from your planner"
       >
         <Button
           variant="bordered"
-          startContent={<DocumentDuplicateIcon className="w-4 h-4" />}
+          startContent={<ArrowPathIcon className="w-4 h-4" />}
           className="flex-none w-38 border-none rounded-xl bg-gray-200"
         >
-          Make a copy
+          Reset plan
         </Button>
       </Tooltip>
 
-      <Tooltip
-        closeDelay={0}
-        placement="top"
-        content="Copy this plan's URL to share with others"
-      >
+      <Tooltip closeDelay={0} placement="top" content="Copy this plan's URL">
         <Button
           variant="bordered"
           startContent={<LinkIcon className="w-4 h-4" />}
