@@ -62,17 +62,20 @@ export function SemesterContainer({
     <div
       className={`${seasonalBgColors[s.semester_season]} ${
         seasonalBorderColors[s.semester_season]
-      } border-1 rounded-md p-4 flex flex-col gap-y-2 h-72 shadow-sm`}
+      } border-1 rounded-md p-4 flex flex-col gap-y-2 h-72 shadow`}
     >
       <div className="flex flex-row gap-2 justify-between">
         {s.semester_id === '1' ? (
           <Select
+            classNames={{
+              trigger: 'bg-transparent shadow-none',
+            }}
             variant="flat"
             disallowEmptySelection
             size="sm"
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
-            className="w-32 -mt-2 rounded-lg ring-1 ring-neutral-200"
+            className="w-[115px] -mt-2 -ml-2"
             onChange={(e) => {
               const value = e.target.value
               const firstYearDiff = Number(value) - firstYear
