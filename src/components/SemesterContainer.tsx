@@ -12,6 +12,7 @@ import {
   Select,
   SelectItem,
   SelectSection,
+  Tooltip,
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
@@ -58,9 +59,15 @@ export function SemesterContainer({
     0,
   )
 
-  const totalHoursPerWeek = s.semester_courses.reduce(
-    (acc, curr) => acc + (curr.avg_hours_per_week || 0),
-    0,
+  const totalHoursPerWeek = Math.round(
+    s.semester_courses.reduce(
+      (acc, curr) => acc + (curr.avg_hours_per_week || 0),
+      0,
+    ),
+  )
+
+  const hasNullHoursPerWeek = s.semester_courses.some(
+    (c) => c.avg_hours_per_week === null,
   )
 
   return (
@@ -130,13 +137,55 @@ export function SemesterContainer({
 
         {totalCU > 0 ? (
           <div className="-mt-1 mb-1 flex gap-1">
-            <Chip variant="flat" size="sm" className="text-xs">
-              ~{Math.round(totalHoursPerWeek)} hrs/wk
-            </Chip>
+            <Tooltip
+              closeDelay={0}
+              placement="top"
+              size="sm"
+              content={
+                hasNullHoursPerWeek ? (
+                  <div className="flex flex-col gap-2">
+                    <div>
+                      {s.semester_courses.map((c) => {
+                        return (
+                          <p
+                            key={c.course_id}
+                            className="flex flex-row gap-1 text-xs"
+                          >
+                            <span className="font-medium">{c.course_id}:</span>{' '}
+                            {c.avg_hours_per_week || 'n/a'} hrs/wk
+                          </p>
+                        )
+                      })}
+                    </div>
+                    <p className="text-xs">
+                      Not all courses&#39; workload have reviews.
+                    </p>
+                  </div>
+                ) : (
+                  'Total hours per week of workload on average'
+                )
+              }
+            >
+              <Chip variant="flat" size="sm" className="text-xs">
+                {hasNullHoursPerWeek ? '?' : `~${totalHoursPerWeek}`} hrs/wk
+              </Chip>
+            </Tooltip>
 
-            <Chip variant="flat" size="sm" className="text-xs" color="default">
-              {totalCU} CU
-            </Chip>
+            <Tooltip
+              closeDelay={0}
+              placement="top"
+              size="sm"
+              content="Total course units in this semester"
+            >
+              <Chip
+                variant="flat"
+                size="sm"
+                className="text-xs"
+                color="default"
+              >
+                {totalCU} CU
+              </Chip>
+            </Tooltip>
           </div>
         ) : null}
       </div>

@@ -41,7 +41,7 @@ export function Toolbar({
               closeDelay={0}
               placement="top"
               size="md"
-              content="A course unit (CU) is the basic unit of progress toward the degree. One CU is usually converted to a four-semester-hour course."
+              content="A course unit (CU) is the basic unit of progress toward the degree. 10 CUs are required to graduate."
             >
               <InformationCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
             </Tooltip>
