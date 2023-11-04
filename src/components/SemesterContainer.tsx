@@ -65,7 +65,7 @@ export function SemesterContainer({
       } flex h-72 flex-col gap-y-2 rounded-md border-1 p-4 shadow`}
     >
       <div className="flex flex-row justify-between gap-2">
-        {s.semester_id === '1' ? (
+        {s.semester_id === '0' ? (
           <Select
             classNames={{
               trigger: 'bg-transparent shadow-none',
@@ -73,6 +73,7 @@ export function SemesterContainer({
             variant="flat"
             disallowEmptySelection
             size="sm"
+            color="warning"
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
             className="-ml-2 -mt-2 w-[115px]"

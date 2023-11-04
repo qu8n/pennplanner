@@ -1,4 +1,4 @@
-export type Semester = {
+export interface Semester {
   semester_id: string
   semester_year: number
   semester_season: string
@@ -6,7 +6,7 @@ export type Semester = {
   year_id: string
 }
 
-export type Course = {
+export interface Course {
   course_id: string
   course_name: string
   course_unit: number

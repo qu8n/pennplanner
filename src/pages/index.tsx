@@ -33,109 +33,109 @@ export default function Home() {
   const [firstYear, setFirstYear] = useState<number>(new Date().getFullYear())
   const semestersData: Semester[] = [
     {
-      semester_id: '1',
+      semester_id: '0',
       semester_year: firstYear,
       semester_season: 'Fall',
       semester_courses: [],
-      year_id: '1',
+      year_id: '0',
+    },
+    {
+      semester_id: '1',
+      semester_year: firstYear + 1,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_id: '0',
     },
     {
       semester_id: '2',
       semester_year: firstYear + 1,
-      semester_season: 'Spring',
+      semester_season: 'Summer',
       semester_courses: [],
-      year_id: '1',
+      year_id: '0',
     },
     {
       semester_id: '3',
       semester_year: firstYear + 1,
-      semester_season: 'Summer',
+      semester_season: 'Fall',
       semester_courses: [],
       year_id: '1',
     },
     {
       semester_id: '4',
-      semester_year: firstYear + 1,
-      semester_season: 'Fall',
+      semester_year: firstYear + 2,
+      semester_season: 'Spring',
       semester_courses: [],
-      year_id: '2',
+      year_id: '1',
     },
     {
       semester_id: '5',
       semester_year: firstYear + 2,
-      semester_season: 'Spring',
+      semester_season: 'Summer',
       semester_courses: [],
-      year_id: '2',
+      year_id: '1',
     },
     {
       semester_id: '6',
       semester_year: firstYear + 2,
-      semester_season: 'Summer',
+      semester_season: 'Fall',
       semester_courses: [],
       year_id: '2',
     },
     {
       semester_id: '7',
-      semester_year: firstYear + 2,
-      semester_season: 'Fall',
+      semester_year: firstYear + 3,
+      semester_season: 'Spring',
       semester_courses: [],
-      year_id: '3',
+      year_id: '2',
     },
     {
       semester_id: '8',
       semester_year: firstYear + 3,
-      semester_season: 'Spring',
+      semester_season: 'Summer',
       semester_courses: [],
-      year_id: '3',
+      year_id: '2',
     },
     {
       semester_id: '9',
       semester_year: firstYear + 3,
-      semester_season: 'Summer',
+      semester_season: 'Fall',
       semester_courses: [],
       year_id: '3',
     },
     {
       semester_id: '10',
-      semester_year: firstYear + 3,
-      semester_season: 'Fall',
+      semester_year: firstYear + 4,
+      semester_season: 'Spring',
       semester_courses: [],
-      year_id: '4',
+      year_id: '3',
     },
     {
       semester_id: '11',
       semester_year: firstYear + 4,
-      semester_season: 'Spring',
+      semester_season: 'Summer',
       semester_courses: [],
-      year_id: '4',
+      year_id: '3',
     },
     {
       semester_id: '12',
       semester_year: firstYear + 4,
-      semester_season: 'Summer',
+      semester_season: 'Fall',
       semester_courses: [],
       year_id: '4',
     },
     {
       semester_id: '13',
-      semester_year: firstYear + 4,
-      semester_season: 'Fall',
+      semester_year: firstYear + 5,
+      semester_season: 'Spring',
       semester_courses: [],
-      year_id: '5',
+      year_id: '4',
     },
     {
       semester_id: '14',
       semester_year: firstYear + 5,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '5',
-    },
-    {
-      semester_id: '15',
-      semester_year: firstYear + 5,
       semester_season: 'Summer',
       semester_courses: [],
-      year_id: '5',
+      year_id: '4',
     },
   ]
 
@@ -353,13 +353,13 @@ export default function Home() {
 
             <div className="flex grow flex-col overflow-hidden pl-1">
               <ScrollShadow className="overflow-y-auto">
-                {['1', '2', '3', '4', '5'].map((yearId) => (
+                {['0', '1', '2', '3', '4'].map((yearId) => (
                   <div
                     key={yearId}
                     className="flex w-full flex-col rounded-xl py-4 pr-2"
                   >
                     <h2 className="ml-2 text-lg font-semibold">
-                      Year {yearId}
+                      Year {Number(yearId) + 1}
                     </h2>
 
                     <div className="mt-2 grid grid-cols-3 gap-4">
