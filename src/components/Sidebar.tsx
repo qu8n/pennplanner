@@ -21,12 +21,6 @@ import { Course } from '@/shared/types'
 import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
 import { CourseBig } from './CourseBig'
 
-function getCourseNumbers(courseIdA: string, courseIdB: string) {
-  const numberA = parseInt(courseIdA.match(/\d+/)![0])
-  const numberB = parseInt(courseIdB.match(/\d+/)![0])
-  return [numberA, numberB]
-}
-
 const filterMethods = {
   'mcit-core-courses': 'MCIT core courses',
   'mcit-open-electives': 'MCIT open electives',
@@ -36,10 +30,10 @@ const filterMethods = {
 }
 
 const sortMethods = {
-  'name-asc': 'Course name (A-Z)',
-  'name-desc': 'Course name (Z-A)',
-  'number-asc': 'Course number (0-9)',
-  'number-desc': 'Course number (9-0)',
+  'name-asc': 'Course name (asc)',
+  'name-desc': 'Course name (desc)',
+  'number-asc': 'Course number (asc)',
+  'number-desc': 'Course number (desc)',
 }
 
 function filterCourses(selectedFilter: string, coursesToFilter: Course[]) {
@@ -92,16 +86,14 @@ function sortCourses(sortMethod: string, coursesToSort: Course[]) {
       )
       break
     case 'number-asc':
-      sortedCourses = [...coursesToSort].sort((a, b) => {
-        const [numberA, numberB] = getCourseNumbers(a.course_id, b.course_id)
-        return numberA - numberB
-      })
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        a.course_id.localeCompare(b.course_id),
+      )
       break
     case 'number-desc':
-      sortedCourses = [...coursesToSort].sort((a, b) => {
-        const [numberA, numberB] = getCourseNumbers(a.course_id, b.course_id)
-        return numberB - numberA
-      })
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        b.course_id.localeCompare(a.course_id),
+      )
       break
   }
   return sortedCourses

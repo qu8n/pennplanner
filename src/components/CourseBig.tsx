@@ -22,8 +22,8 @@ export function CourseBig({
       } mb-3 flex flex-row items-center justify-between gap-1 rounded-2xl bg-neutral-100 px-3 py-2 ring-1 ring-neutral-300`}
     >
       <div className="flex flex-col">
-        <p className="text-sm font-semibold">{c.course_id}</p>
-        <p className="text-sm">{c.course_name}</p>
+        <p className="text-sm font-bold">{c.course_id}</p>
+        <p className="text-sm font-medium">{c.course_name}</p>
         <div className="mt-1 flex flex-col text-xs font-extralight text-neutral-500">
           <div className="flex flex-row gap-2">
             <span className="mr-[16px]">Rating:</span>
