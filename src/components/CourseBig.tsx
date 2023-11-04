@@ -1,7 +1,6 @@
 import { Course } from '@/shared/types'
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
-import { BookOpenIcon } from '@heroicons/react/24/outline'
-import { Button, Link, Tooltip } from '@nextui-org/react'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { Button, Tooltip } from '@nextui-org/react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
 export function CourseBig({
@@ -23,7 +22,7 @@ export function CourseBig({
     >
       <div className="flex flex-col">
         <p className="text-sm font-bold">{c.course_id}</p>
-        <p className="text-sm font-medium">{c.course_name}</p>
+        <p className="line-clamp-2 text-sm">{c.course_name}</p>
         <div className="mt-1 flex flex-col text-xs font-extralight text-neutral-500">
           <div className="flex flex-row gap-2">
             <span className="mr-[16px]">Rating:</span>
@@ -82,9 +81,8 @@ export function CourseBig({
       </div>
       <Tooltip closeDelay={0} content="View course details">
         <Button
-          size="sm"
-          radius="lg"
-          variant="light"
+          size="md"
+          variant="flat"
           isIconOnly
           className="-mr-1"
           onPress={() => {
@@ -92,7 +90,7 @@ export function CourseBig({
             onModalOpen()
           }}
         >
-          <BookOpenIcon className="h-4 w-4 text-gray-500" />
+          <MagnifyingGlassIcon className="h-4 w-4 text-gray-500" />
         </Button>
       </Tooltip>
     </div>

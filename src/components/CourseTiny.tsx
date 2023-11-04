@@ -1,5 +1,5 @@
 import { Course, Semester } from '@/shared/types'
-import { BookOpenIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 
 export function CourseTiny({
@@ -35,16 +35,15 @@ export function CourseTiny({
       <Tooltip closeDelay={0} content="View course details">
         <Button
           size="sm"
-          radius="lg"
-          variant="light"
+          variant="flat"
           isIconOnly
-          className="-mr-1"
+          className="p-0"
           onPress={() => {
             setModalCourse(c)
             onModalOpen()
           }}
         >
-          <BookOpenIcon className="h-3 w-3 text-gray-500" />
+          <MagnifyingGlassIcon className="h-3 w-3 text-gray-500" />
         </Button>
       </Tooltip>
 
