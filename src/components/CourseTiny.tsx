@@ -51,7 +51,7 @@ export function CourseTiny({
       <Tooltip
         closeDelay={0}
         placement="top-start"
-        content="Return course back to the sidebar course catalog"
+        content="Remove course from the planner and return it back to the course catalog"
       >
         <button
           type="button"

@@ -2,7 +2,17 @@ import { allCourses } from '@/data/allCourses'
 import { Course, Semester } from '@/shared/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, LinkIcon } from '@heroicons/react/24/outline'
-import { Button, Progress, Tooltip } from '@nextui-org/react'
+import {
+  Button,
+  Modal,
+  Progress,
+  Tooltip,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@nextui-org/react'
 import toast from 'react-hot-toast'
 
 export function Toolbar({
@@ -16,6 +26,8 @@ export function Toolbar({
   setSemesters: (semesters: Semester[]) => void
   setCourseCatalog: (courseCatalog: Course[]) => void
 }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
   return (
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
       <div className="flex grow flex-col gap-1 pr-4">
@@ -46,22 +58,52 @@ export function Toolbar({
           variant="bordered"
           startContent={<ArrowPathIcon className="h-4 w-4" />}
           className="w-38 flex-none rounded-xl border-none bg-gray-200"
-          onPress={() => {
-            setSemesters(
-              semesters.map((s) => ({
-                ...s,
-                semester_courses: [],
-              })),
-            )
-            setCourseCatalog(allCourses)
-            toast('Plan has been reset', {
-              icon: '🔄',
-            })
-          }}
+          onPress={onOpen}
         >
           Reset plan
         </Button>
       </Tooltip>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <h3>Are you sure?</h3>
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  You will remove all courses from your planner. This action
+                  cannot be undone.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="default" variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    setSemesters(
+                      semesters.map((s) => ({
+                        ...s,
+                        semester_courses: [],
+                      })),
+                    )
+                    setCourseCatalog(allCourses)
+                    toast('Plan has been reset', {
+                      icon: '🔄',
+                    })
+                    onClose()
+                  }}
+                >
+                  Reset anyway
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       <Tooltip
         closeDelay={0}
