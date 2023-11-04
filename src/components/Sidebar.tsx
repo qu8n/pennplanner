@@ -139,7 +139,7 @@ export function Sidebar({
 
   return (
     <aside className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md">
-      <h2 className="text-lg font-semibold">Course Catalog</h2>
+      <h2 className="text-xl font-bold text-blue-950">Course Catalog</h2>
 
       <Input
         className="mt-3 h-14"
@@ -282,9 +282,9 @@ export function Sidebar({
 
       {/* For non-logged in users */}
       <div className="mt-4 flex flex-row items-center gap-2">
-        <button className="flex flex-row items-center gap-1 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-3 py-2 text-white">
+        <button className="flex flex-row items-center gap-1 rounded-xl bg-gradient-to-r from-red-700 to-red-800 px-3 py-2 text-white">
           <BookmarkSquareIcon className="text-white-500 h-4 w-4" />
-          <span className="text-sm">Create your </span>
+          <span className="text-sm font-extralight">Create your </span>
           <span className="text-sm font-medium">PennPlanner</span>
         </button>
 

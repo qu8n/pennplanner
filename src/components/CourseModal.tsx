@@ -9,6 +9,7 @@ import {
   ModalFooter,
   Tooltip,
   Link,
+  Divider,
 } from '@nextui-org/react'
 
 export function CourseModal({
@@ -26,13 +27,17 @@ export function CourseModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col">
-              <p className="font-semibold text-neutral-500">
+              <p className="text-xl font-bold text-neutral-500">
                 {modalCourse?.course_id}
               </p>
-              <p className="text-2xl font-normal">{modalCourse?.course_name}</p>
+              <p className="text-2xl font-bold text-blue-950">
+                {modalCourse?.course_name}
+              </p>
             </ModalHeader>
 
-            <ModalBody className="-mt-4">
+            <Divider />
+
+            <ModalBody className="mt-2">
               <div className="flex flex-col text-sm font-normal">
                 <div className="flex flex-row gap-2">
                   <span className="mr-[1.3rem]">Rating:</span>

@@ -276,7 +276,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-neutral-300 text-gray-800`}
+      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-blue-950 text-gray-800`}
     >
       {totalCU === 10 && (
         <Confetti
@@ -308,7 +308,7 @@ export default function Home() {
             onModalOpen={onOpen}
           />
 
-          <Spacer x={4} />
+          <Spacer x={3} />
 
           <div className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md">
             <Toolbar
@@ -329,7 +329,7 @@ export default function Home() {
                       key={yearId}
                       className="flex w-full flex-col rounded-xl py-4 pr-2"
                     >
-                      <h2 className="ml-2 text-lg font-semibold">
+                      <h2 className="ml-2 text-lg font-semibold text-blue-950">
                         Year {Number(yearId) + 1}
                       </h2>
 

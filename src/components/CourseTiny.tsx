@@ -28,8 +28,10 @@ export function CourseTiny({
       } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-1 ring-neutral-300`}
     >
       <div className="flex flex-col">
-        <p className="text-sm font-semibold">{c.course_id}</p>
-        <p className="line-clamp-1 text-xs">{c.course_name}</p>
+        <p className="text-sm font-semibold text-neutral-500">{c.course_id}</p>
+        <p className="line-clamp-1 text-xs font-medium text-blue-950">
+          {c.course_name}
+        </p>
       </div>
 
       <Tooltip closeDelay={0} content="View course details">
