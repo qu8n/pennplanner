@@ -1,6 +1,7 @@
 import { Course } from '@/shared/types'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { BookOpenIcon } from '@heroicons/react/24/outline'
-import { Button, Tooltip } from '@nextui-org/react'
+import { Button, Link, Tooltip } from '@nextui-org/react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
 export function CourseBig({
@@ -22,22 +23,61 @@ export function CourseBig({
     >
       <div className="flex flex-col">
         <p className="text-sm font-semibold">{c.course_id}</p>
-        <p className="text-xs">{c.course_name}</p>
-        <div className="mt-1 flex flex-row gap-2 text-xs">
-          <Rating
-            readOnly={true}
-            style={{ maxWidth: 75 }}
-            value={c.avg_rating ?? 0}
-            itemStyles={{
-              itemShapes: ThinRoundedStar,
-              activeFillColor: '#3b82f6',
-              inactiveFillColor: '#cbd5e1',
-            }}
-          />
-          <span className="text-gray-500">
+        <p className="text-sm">{c.course_name}</p>
+        <div className="mt-1 flex flex-col text-xs font-extralight text-neutral-500">
+          <div className="flex flex-row gap-2">
+            <span className="mr-[16px]">Rating:</span>
+            <Rating
+              readOnly={true}
+              style={{ maxWidth: 60 }}
+              value={c.avg_rating ?? 0}
+              itemStyles={{
+                itemShapes: ThinRoundedStar,
+                activeFillColor: '#3b82f6',
+                inactiveFillColor: '#cbd5e1',
+              }}
+            />
             {c.avg_rating ?? ''}
             {c.review_count ? ` (${c.review_count} reviews)` : 'n/a'}
-          </span>
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <span className="mr-[3px]">Difficulty:</span>
+            <Rating
+              readOnly={true}
+              style={{ maxWidth: 60 }}
+              value={c.avg_difficulty ?? 0}
+              itemStyles={{
+                itemShapes: ThinRoundedStar,
+                activeFillColor: '#3b82f6',
+                inactiveFillColor: '#cbd5e1',
+              }}
+            />
+            {c.avg_difficulty ?? 'n/a'}
+          </div>
+
+          <div className="flex flex-row items-center gap-2">
+            <span className="-mr-[1px]">Workload: </span>
+            <Rating
+              readOnly={true}
+              style={{ maxWidth: 60 }}
+              value={
+                c.avg_hours_per_week
+                  ? c.avg_hours_per_week > 20
+                    ? 5
+                    : c.avg_hours_per_week / 4
+                  : 0
+              }
+              itemStyles={{
+                itemShapes: ThinRoundedStar,
+                activeFillColor: '#3b82f6',
+                inactiveFillColor: '#cbd5e1',
+              }}
+            />
+            {c.avg_hours_per_week
+              ? `${c.avg_hours_per_week} hours/week`
+              : 'n/a'}
+          </div>
         </div>
       </div>
       <Tooltip closeDelay={0} content="View course details">
