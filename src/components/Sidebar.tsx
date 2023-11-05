@@ -20,6 +20,8 @@ import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
 import { CourseBig } from './CourseBig'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 
 const filterMethods = {
   'mcit-core-courses': 'MCIT core courses',
@@ -121,6 +123,9 @@ export function Sidebar({
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
 }) {
+  const supabaseClient = useSupabaseClient()
+  const router = useRouter()
+
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
     filter: 'all-courses',
@@ -281,7 +286,7 @@ export function Sidebar({
       <Divider />
 
       {/* For non-logged in users */}
-      <div className="mt-4 flex flex-row items-center gap-2">
+      {/* <div className="mt-4 flex flex-row items-center gap-2">
         <Button className="custom-gradient flex flex-row items-center gap-1 rounded-xl px-3 py-2 text-white">
           <BookmarkSquareIcon className="text-white-500 h-5 w-5" />
           <span className="text-sm font-extralight">Create your </span>
@@ -301,27 +306,36 @@ export function Sidebar({
             Feedback
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* For logged-in users */}
-      {/* <div className="mt-4 flex flex-row items-center gap-4">
+      <div className="mt-4 flex flex-row items-center gap-4">
         <div className="flex flex-row items-center gap-1">
           <BookmarkSquareIcon className="h-4 w-4 text-blue-700" />
-          <span className="font-medium text-sm text-blue-700">PennPlanner</span>
+          <span className="text-sm font-semibold text-blue-700">
+            PennPlanner
+          </span>
         </div>
 
-        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
-          Logout
-        </button>
-
-        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
+        <Button
+          size="sm"
+          variant="light"
+          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
+        >
           About
-        </button>
+        </Button>
 
-        <button className="text-xs text-neutral-500 py-1 px-2 hover:bg-neutral-100 rounded-xl">
-          Feedback
-        </button>
-      </div> */}
+        <Button
+          variant="light"
+          size="sm"
+          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
+          onPress={() =>
+            supabaseClient.auth.signOut().then(() => router.push('/'))
+          }
+        >
+          Logout
+        </Button>
+      </div>
     </aside>
   )
 }
