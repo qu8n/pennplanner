@@ -34,6 +34,7 @@ import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
+import toast from 'react-hot-toast'
 
 const firstYearData = new Date().getFullYear()
 const semestersData: Semester[] = [
@@ -126,6 +127,7 @@ export default function Planner() {
   const supabaseClient = useSupabaseClient()
   const user = useUser()
   const router = useRouter()
+  const [userIsOwner, setUserIsOwner] = useState<boolean>(false)
 
   useEffect(() => {
     async function getUsername() {
@@ -139,13 +141,16 @@ export default function Planner() {
 
     if (user) {
       getUsername().then((username) => {
-        if (username !== router.query.username) {
-          router.push(`/signin`)
+        if (username === router.query.username) {
+          setUserIsOwner(true)
+        } else {
+          toast.error('You do not have access to this page.')
+          router.push(`/`)
         }
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   const id = useId()
   const { width, height } = useWindowSize()
@@ -331,7 +336,7 @@ export default function Planner() {
     [semestersByYearId],
   )
 
-  if (user) {
+  if (userIsOwner) {
     return (
       <>
         {totalCU === 10 && (
