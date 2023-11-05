@@ -33,7 +33,7 @@ export function Toolbar({
       <div className="flex grow flex-col gap-1 pr-4">
         <div className="flex flex-row justify-between">
           <h2 className="flex-none text-xl font-bold text-blue-950">
-            Degree Planner
+            Quan&#39;s Degree Planner
           </h2>
           <div className="mt-1 flex flex-row items-center gap-1">
             <span className="text-xs">{totalCU} / 10 course units (CU)</span>

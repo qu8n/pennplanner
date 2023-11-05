@@ -144,6 +144,10 @@ export function SemesterContainer({
               content={
                 hasNullHoursPerWeek ? (
                   <div className="flex flex-col gap-2">
+                    <p className="text-xs">
+                      Not all courses&#39; workload have reviews:
+                    </p>
+
                     <div>
                       {s.semester_courses.map((c) => {
                         return (
@@ -151,15 +155,12 @@ export function SemesterContainer({
                             key={c.course_id}
                             className="flex flex-row gap-1 text-xs"
                           >
-                            <span className="font-medium">{c.course_id}:</span>{' '}
+                            <span className="font-bold">{c.course_id}:</span>{' '}
                             {c.avg_hours_per_week || 'n/a'} hrs/wk
                           </p>
                         )
                       })}
                     </div>
-                    <p className="text-xs">
-                      Not all courses&#39; workload have reviews.
-                    </p>
                   </div>
                 ) : (
                   'Total hours per week of workload on average'

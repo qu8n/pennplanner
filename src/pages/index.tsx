@@ -33,79 +33,108 @@ import { CourseBig } from '@/components/CourseBig'
 import { CourseModal } from '@/components/CourseModal'
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 
+const firstYearData = new Date().getFullYear()
+const semestersData: Semester[] = [
+  {
+    semester_id: '0',
+    semester_year: firstYearData, // field not in db
+    semester_season: 'Fall',
+    semester_courses: [
+      {
+        course_id: 'CIT 5960',
+        course_name: 'Algorithms & Computation',
+        course_unit: 1,
+        course_description:
+          'This course focuses primarily on the design and analysis of algorithms. It begins with sorting and searching algorithms and then investigates graph algorithms. In order to study graph algorithms, general algorithm design patterns like dynamic programming and greedy algorithms are introduced. A section of this course is also devoted to understanding NP-Completeness.',
+        course_prereqs:
+          'CIT 5920 | Co-requisite: CIT 5940 (Taking concurrently is allowed but taking beforehand is preferred)',
+        mcit_core_course: true,
+        mcit_open_elective: false,
+        mse_ds_core_course: false,
+        mse_ds_technical_elective: false,
+        mse_ds_open_elective: true,
+        review_count: 58,
+        avg_difficulty: 4.57,
+        avg_hours_per_week: 20.09,
+        avg_rating: 3.4,
+      },
+    ],
+    year_id: '0',
+  },
+  {
+    semester_id: '1',
+    semester_year: firstYearData + 1,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '0',
+  },
+  {
+    semester_id: '2',
+    semester_year: firstYearData + 1,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '0',
+  },
+  {
+    semester_id: '3',
+    semester_year: firstYearData + 1,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: '4',
+    semester_year: firstYearData + 2,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: '5',
+    semester_year: firstYearData + 2,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '1',
+  },
+  {
+    semester_id: '6',
+    semester_year: firstYearData + 2,
+    semester_season: 'Fall',
+    semester_courses: [],
+    year_id: '2',
+  },
+  {
+    semester_id: '7',
+    semester_year: firstYearData + 3,
+    semester_season: 'Spring',
+    semester_courses: [],
+    year_id: '2',
+  },
+  {
+    semester_id: '8',
+    semester_year: firstYearData + 3,
+    semester_season: 'Summer',
+    semester_courses: [],
+    year_id: '2',
+  },
+]
+
 export default function Home() {
   const id = useId()
   const { width, height } = useWindowSize()
 
-  const [firstYear, setFirstYear] = useState<number>(new Date().getFullYear())
-  const semestersData: Semester[] = [
-    {
-      semester_id: '0',
-      semester_year: firstYear,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_id: '0',
-    },
-    {
-      semester_id: '1',
-      semester_year: firstYear + 1,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '0',
-    },
-    {
-      semester_id: '2',
-      semester_year: firstYear + 1,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_id: '0',
-    },
-    {
-      semester_id: '3',
-      semester_year: firstYear + 1,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_id: '1',
-    },
-    {
-      semester_id: '4',
-      semester_year: firstYear + 2,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '1',
-    },
-    {
-      semester_id: '5',
-      semester_year: firstYear + 2,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_id: '1',
-    },
-    {
-      semester_id: '6',
-      semester_year: firstYear + 2,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_id: '2',
-    },
-    {
-      semester_id: '7',
-      semester_year: firstYear + 3,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_id: '2',
-    },
-    {
-      semester_id: '8',
-      semester_year: firstYear + 3,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_id: '2',
-    },
-  ]
-
+  const [firstYear, setFirstYear] = useState<number>(firstYearData)
   const [semesters, setSemesters] = useState<Semester[]>(semestersData)
-  const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
+
+  const [courseCatalog, setCourseCatalog] = useState<Course[]>(
+    allCourses.filter((allCourse) => {
+      return !semesters.some((s) => {
+        return s.semester_courses.some(
+          (semesterCourse) => semesterCourse.course_id === allCourse.course_id,
+        )
+      })
+    }),
+  )
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
   const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
@@ -242,6 +271,18 @@ export default function Home() {
     return allCourses.find((c) => c.course_id === activeDragEvent?.id)
   }, [activeDragEvent])
 
+  const totalCU = useMemo(() => {
+    return semesters.reduce((acc, s) => {
+      return (
+        acc +
+        s.semester_courses.reduce(
+          (acc, c) => acc + (c.course_unit ? c.course_unit : 0),
+          0,
+        )
+      )
+    }, 0)
+  }, [semesters])
+
   const semestersByYearId = useMemo(
     () =>
       semesters.reduce(
@@ -257,22 +298,11 @@ export default function Home() {
       ),
     [semesters],
   )
+
   const numOfYears = useMemo(
     () => Object.keys(semestersByYearId).length,
     [semestersByYearId],
   )
-
-  const totalCU = useMemo(() => {
-    return semesters.reduce((acc, s) => {
-      return (
-        acc +
-        s.semester_courses.reduce(
-          (acc, c) => acc + (c.course_unit ? c.course_unit : 0),
-          0,
-        )
-      )
-    }, 0)
-  }, [semesters])
 
   return (
     <main
