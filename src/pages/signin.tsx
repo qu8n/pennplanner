@@ -18,20 +18,24 @@ export default function SignIn() {
   const router = useRouter()
   const [showSignUpForm, setShowSignUpForm] = useState(false)
   const [newUser, setNewUser] = useState({
-    id: user ? user.id : '',
-    username: user ? user.email?.split('@')[0] : '',
-    full_name: user ? user.user_metadata.full_name : '',
+    username: '',
+    full_name: '',
     first_year: new Date().getFullYear(),
   })
 
   useEffect(() => {
+    setNewUser({
+      ...newUser,
+      username: user?.email ? user.email?.split('@')[0] : '',
+      full_name: user ? user.user_metadata.full_name : '',
+    })
+
     async function getUsername() {
       const { data, error } = await supabaseClient
         .from('users')
         .select('username')
         .eq('id', user?.id)
         .single()
-      if (error) console.error(error)
       if (data) return data.username
     }
 
@@ -44,6 +48,7 @@ export default function SignIn() {
         }
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, router, supabaseClient])
 
   if (!user) {
@@ -90,16 +95,29 @@ export default function SignIn() {
           className="max-w-xs"
         />
 
-        <Input
-          type="text"
-          label="Full name"
-          variant="bordered"
-          value={newUser.full_name}
-          onValueChange={(value) =>
-            setNewUser({ ...newUser, full_name: value })
-          }
-          className="max-w-xs"
-        />
+        <div className="flex flex-row gap-2">
+          <Input
+            type="text"
+            label="First name"
+            variant="bordered"
+            value={newUser.full_name.split(' ')[0] ?? ''}
+            onValueChange={(value) =>
+              setNewUser({ ...newUser, full_name: value })
+            }
+            className="max-w-xs"
+          />
+
+          <Input
+            type="text"
+            label="Last name"
+            variant="bordered"
+            value={newUser.full_name.split(' ')[1] ?? ''}
+            onValueChange={(value) =>
+              setNewUser({ ...newUser, full_name: value })
+            }
+            className="max-w-xs"
+          />
+        </div>
 
         <Input
           type="text"
@@ -118,7 +136,7 @@ export default function SignIn() {
         />
 
         <Select
-          label="First semester"
+          label="First year"
           variant="bordered"
           disallowEmptySelection
           selectedKeys={[String(newUser.first_year)]}
@@ -128,17 +146,15 @@ export default function SignIn() {
           }}
           className="max-w-xs"
         >
-          <SelectSection title="First semester">
-            {Array.from(
-              { length: new Date().getFullYear() - 2019 + 1 },
-              (_, i) => 2019 + i,
-            )
-              .reverse()
-              .map((year) => {
-                const yearStr = String(year)
-                return <SelectItem key={yearStr}>{yearStr}</SelectItem>
-              })}
-          </SelectSection>
+          {Array.from(
+            { length: new Date().getFullYear() - 2019 + 1 },
+            (_, i) => 2019 + i,
+          )
+            .reverse()
+            .map((year) => {
+              const yearStr = String(year)
+              return <SelectItem key={yearStr}>{yearStr}</SelectItem>
+            })}
         </Select>
 
         <Button
@@ -146,7 +162,7 @@ export default function SignIn() {
           onPress={async () => {
             const { error } = await supabaseClient.from('users').insert([
               {
-                id: newUser.id,
+                id: user.id,
                 username: newUser.username,
                 full_name: newUser.full_name,
                 first_year: newUser.first_year,
