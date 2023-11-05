@@ -18,7 +18,7 @@ import {
   DragOverEvent,
   Active,
 } from '@dnd-kit/core'
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
 import { Course, Semester } from '@/shared/types'
@@ -32,6 +32,8 @@ import { CourseTiny } from '@/components/CourseTiny'
 import { CourseBig } from '@/components/CourseBig'
 import { CourseModal } from '@/components/CourseModal'
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 
 const firstYearData = new Date().getFullYear()
 const semestersData: Semester[] = [
@@ -121,6 +123,29 @@ const semestersData: Semester[] = [
 ]
 
 export default function Planner() {
+  const supabaseClient = useSupabaseClient()
+  const user = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    async function getUsername() {
+      const { data, error } = await supabaseClient
+        .from('users')
+        .select('username')
+        .eq('id', user?.id)
+        .single()
+      if (data) return data.username
+    }
+
+    if (user) {
+      getUsername().then((username) => {
+        if (username !== router.query.username) {
+          router.push(`/signin`)
+        }
+      })
+    }
+  }, [user, router, supabaseClient])
+
   const id = useId()
   const { width, height } = useWindowSize()
 

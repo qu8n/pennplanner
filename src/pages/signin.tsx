@@ -4,13 +4,25 @@ import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 // import { Database } from '@/types/supabase';
 import { useRouter } from 'next/router'
+import {
+  Button,
+  Input,
+  Select,
+  SelectItem,
+  SelectSection,
+} from '@nextui-org/react'
 
 export default function SignIn() {
   const supabaseClient = useSupabaseClient()
   const user = useUser()
   const router = useRouter()
-  const [showUsernameForm, setShowUsernameForm] = useState(false)
-  const [newUsername, setNewUsername] = useState('')
+  const [showSignUpForm, setShowSignUpForm] = useState(false)
+  const [newUser, setNewUser] = useState({
+    id: user ? user.id : '',
+    username: user ? user.email?.split('@')[0] : '',
+    full_name: user ? user.user_metadata.full_name : '',
+    first_year: new Date().getFullYear(),
+  })
 
   useEffect(() => {
     async function getUsername() {
@@ -28,7 +40,7 @@ export default function SignIn() {
         if (username) {
           router.push(`/${username}`)
         } else {
-          setShowUsernameForm(true)
+          setShowSignUpForm(true)
         }
       })
     }
@@ -64,39 +76,92 @@ export default function SignIn() {
     )
   }
 
-  if (showUsernameForm) {
+  if (showSignUpForm) {
     return (
-      <div>
-        <label
-          htmlFor="newUsername"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          New username
-        </label>
-        <input
+      <div className="flex max-w-xs flex-col gap-2">
+        <h1 className="text-xl font-bold text-blue-950">Get Started</h1>
+        <Input
+          fullWidth
+          variant="faded"
+          isDisabled
+          type="email"
+          label="Email address"
+          value={user?.email}
+          className="max-w-xs"
+        />
+
+        <Input
           type="text"
-          value={newUsername}
-          onKeyUp={async (e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              const { error } = await supabaseClient.from('users').insert([
-                {
-                  username: newUsername,
-                  id: user?.id,
-                  avatar_url: user?.user_metadata.avatar_url,
-                  full_name: user?.user_metadata.full_name,
-                },
-              ])
-              if (error) {
-                console.error(error)
-                return
-              } else {
-                router.push(`/${newUsername}`)
-              }
+          label="Full name"
+          variant="bordered"
+          value={newUser.full_name}
+          onValueChange={(value) =>
+            setNewUser({ ...newUser, full_name: value })
+          }
+          className="max-w-xs"
+        />
+
+        <Input
+          type="text"
+          label="Username"
+          variant="bordered"
+          startContent={
+            <div className="pointer-events-none">
+              <span className="text-small text-default-400">
+                pennplanner.com/
+              </span>
+            </div>
+          }
+          value={newUser.username}
+          onValueChange={(value) => setNewUser({ ...newUser, username: value })}
+          className="max-w-xs"
+        />
+
+        <Select
+          label="First semester"
+          variant="bordered"
+          disallowEmptySelection
+          selectedKeys={[String(newUser.first_year)]}
+          onChange={(e) => {
+            const value = e.target.value
+            setNewUser({ ...newUser, first_year: Number(value) })
+          }}
+          className="max-w-xs"
+        >
+          <SelectSection title="First semester">
+            {Array.from(
+              { length: new Date().getFullYear() - 2019 + 1 },
+              (_, i) => 2019 + i,
+            )
+              .reverse()
+              .map((year) => {
+                const yearStr = String(year)
+                return <SelectItem key={yearStr}>{yearStr}</SelectItem>
+              })}
+          </SelectSection>
+        </Select>
+
+        <Button
+          color="primary"
+          onPress={async () => {
+            const { error } = await supabaseClient.from('users').insert([
+              {
+                id: newUser.id,
+                username: newUser.username,
+                full_name: newUser.full_name,
+                first_year: newUser.first_year,
+              },
+            ])
+            if (error) {
+              console.error(error)
+              return
+            } else {
+              router.push(`/${newUser.username}`)
             }
           }}
-          onChange={(e) => setNewUsername(e.target.value)}
-        />
+        >
+          Start planning
+        </Button>
       </div>
     )
   }
