@@ -143,7 +143,7 @@ export function Sidebar({
   }, [coursesQuery, courseCatalog])
 
   return (
-    <aside className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md">
+    <>
       <h2 className="ml-1 text-xl font-bold text-blue-950">Course Catalog</h2>
 
       <Input
@@ -336,6 +336,6 @@ export function Sidebar({
           Logout
         </Button>
       </div>
-    </aside>
+    </>
   )
 }

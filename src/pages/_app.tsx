@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
+import { geistSans } from '@/fonts/geistSans'
 
 export default function App({
   Component,
@@ -34,7 +35,11 @@ export default function App({
         <div>
           <Toaster position="top-right" reverseOrder={false} />
         </div>
-        <Component {...pageProps} />
+        <main
+          className={`flex h-screen flex-col px-28 ${geistSans.className} bg-neutral-400 text-gray-800`}
+        >
+          <Component {...pageProps} />
+        </main>
       </NextUIProvider>
     </SessionContextProvider>
   )

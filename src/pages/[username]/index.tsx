@@ -25,7 +25,6 @@ import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
-import { geistSans } from '@/fonts/geistSans'
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { CourseTiny } from '@/components/CourseTiny'
@@ -34,6 +33,7 @@ import { CourseModal } from '@/components/CourseModal'
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
+import { motion } from 'framer-motion'
 
 const firstYearData = new Date().getFullYear()
 const semestersData: Semester[] = [
@@ -129,7 +129,7 @@ export default function Planner() {
 
   useEffect(() => {
     async function getUsername() {
-      const { data, error } = await supabaseClient
+      const { data } = await supabaseClient
         .from('users')
         .select('username')
         .eq('id', user?.id)
@@ -144,7 +144,8 @@ export default function Planner() {
         }
       })
     }
-  }, [user, router, supabaseClient])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const id = useId()
   const { width, height } = useWindowSize()
@@ -330,157 +331,172 @@ export default function Planner() {
     [semestersByYearId],
   )
 
-  return (
-    <main
-      className={`flex h-screen flex-col px-28 ${geistSans.className} bg-neutral-400 text-gray-800`}
-    >
-      {totalCU === 10 && (
-        <Confetti
-          width={width}
-          height={height}
-          confettiSource={{
-            w: 200,
-            h: 10,
-            x: width / 2,
-            y: 55,
-          }}
-          recycle={false}
-        />
-      )}
-
-      <DndContext
-        id={id} // resolves "`aria-describedby` did not match" warning
-        onDragStart={handleDragStart}
-        sensors={sensors}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar
-            courseCatalog={courseCatalog}
-            coursesToDisplay={coursesToDisplay}
-            setCoursesToDisplay={setCoursesToDisplay}
-            setModalCourse={setModalCourse}
-            onModalOpen={onOpen}
+  if (user) {
+    return (
+      <>
+        {totalCU === 10 && (
+          <Confetti
+            width={width}
+            height={height}
+            confettiSource={{
+              w: 200,
+              h: 10,
+              x: width / 2,
+              y: 55,
+            }}
+            recycle={false}
           />
+        )}
 
-          <Spacer x={3} />
+        <DndContext
+          id={id} // resolves "`aria-describedby` did not match" warning
+          onDragStart={handleDragStart}
+          sensors={sensors}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="flex flex-1 overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+              className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md"
+            >
+              <Sidebar
+                courseCatalog={courseCatalog}
+                coursesToDisplay={coursesToDisplay}
+                setCoursesToDisplay={setCoursesToDisplay}
+                setModalCourse={setModalCourse}
+                onModalOpen={onOpen}
+              />
+            </motion.div>
 
-          <div className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md">
-            <Toolbar
-              totalCU={totalCU}
-              semesters={semesters}
-              setSemesters={setSemesters}
-              setCourseCatalog={setCourseCatalog}
-            />
+            <Spacer x={3} />
 
-            <Divider className="mt-4" />
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
+              className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md"
+            >
+              <Toolbar
+                totalCU={totalCU}
+                semesters={semesters}
+                setSemesters={setSemesters}
+                setCourseCatalog={setCourseCatalog}
+              />
 
-            <div className="flex grow flex-col overflow-hidden pl-1">
-              <ScrollShadow className="flex flex-col items-center overflow-y-auto">
-                {Object.keys(semestersByYearId)
-                  .sort()
-                  .map((yearId) => (
-                    <div
-                      key={yearId}
-                      className="flex w-full flex-col rounded-xl py-4 pr-2"
-                    >
-                      <h2 className="ml-2 text-lg font-semibold text-blue-950">
-                        Year {Number(yearId) + 1}
-                      </h2>
+              <Divider className="mt-4" />
 
-                      <div className="mt-2 grid grid-cols-3 gap-4">
-                        {semestersByYearId[yearId].map((s) => (
-                          <Droppable id={s.semester_id} key={s.semester_id}>
-                            <SemesterContainer
-                              key={s.semester_id}
-                              s={s}
-                              semesters={semesters}
-                              setSemesters={setSemesters}
-                              firstYear={firstYear}
-                              setFirstYear={setFirstYear}
-                              setModalCourse={setModalCourse}
-                              onModalOpen={onOpen}
-                              setCourseCatalog={setCourseCatalog}
-                              courseCatalog={courseCatalog}
-                            />
-                          </Droppable>
-                        ))}
+              <div className="flex grow flex-col overflow-hidden pl-1">
+                <ScrollShadow className="flex flex-col items-center overflow-y-auto">
+                  {Object.keys(semestersByYearId)
+                    .sort()
+                    .map((yearId) => (
+                      <div
+                        key={yearId}
+                        className="flex w-full flex-col rounded-xl py-4 pr-2"
+                      >
+                        <h2 className="ml-2 text-lg font-semibold text-blue-950">
+                          Year {Number(yearId) + 1}
+                        </h2>
+
+                        <div className="mt-2 grid grid-cols-3 gap-4">
+                          {semestersByYearId[yearId].map((s) => (
+                            <Droppable id={s.semester_id} key={s.semester_id}>
+                              <SemesterContainer
+                                key={s.semester_id}
+                                s={s}
+                                semesters={semesters}
+                                setSemesters={setSemesters}
+                                firstYear={firstYear}
+                                setFirstYear={setFirstYear}
+                                setModalCourse={setModalCourse}
+                                onModalOpen={onOpen}
+                                setCourseCatalog={setCourseCatalog}
+                                courseCatalog={courseCatalog}
+                              />
+                            </Droppable>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
 
-                {numOfYears < 7 ? (
-                  <Button
-                    startContent={<SquaresPlusIcon className="h-5 w-5" />}
-                    className="my-6 rounded-xl border-none bg-gray-200 p-5"
-                    onPress={() => {
-                      setSemesters((semesters) => [
-                        ...semesters,
-                        {
-                          semester_id: String(semesters.length),
-                          semester_year: firstYear + numOfYears,
-                          semester_season: 'Fall',
-                          semester_courses: [],
-                          year_id: String(numOfYears),
-                        },
-                        {
-                          semester_id: String(semesters.length + 1),
-                          semester_year: firstYear + numOfYears + 1,
-                          semester_season: 'Spring',
-                          semester_courses: [],
-                          year_id: String(numOfYears),
-                        },
-                        {
-                          semester_id: String(semesters.length + 2),
-                          semester_year: firstYear + numOfYears + 1,
-                          semester_season: 'Summer',
-                          semester_courses: [],
-                          year_id: String(numOfYears),
-                        },
-                      ])
-                    }}
-                  >
-                    Add calendar year
-                  </Button>
-                ) : null}
-              </ScrollShadow>
-            </div>
-
-            <Divider />
-          </div>
-        </div>
-
-        <DragOverlay>
-          {activeCourse ? (
-            <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
-              <div className="scale-105">
-                {activeDragEvent?.data.current ? (
-                  <CourseTiny
-                    c={activeCourse}
-                    isDragging={true}
-                    setModalCourse={setModalCourse}
-                    onModalOpen={onOpen}
-                  />
-                ) : (
-                  <CourseBig
-                    c={activeCourse}
-                    isDragging={true}
-                    setModalCourse={setModalCourse}
-                    onModalOpen={onOpen}
-                  />
-                )}
+                  {numOfYears < 7 ? (
+                    <Button
+                      startContent={<SquaresPlusIcon className="h-5 w-5" />}
+                      className="my-6 rounded-xl border-none bg-gray-200 p-5"
+                      onPress={() => {
+                        setSemesters((semesters) => [
+                          ...semesters,
+                          {
+                            semester_id: String(semesters.length),
+                            semester_year: firstYear + numOfYears,
+                            semester_season: 'Fall',
+                            semester_courses: [],
+                            year_id: String(numOfYears),
+                          },
+                          {
+                            semester_id: String(semesters.length + 1),
+                            semester_year: firstYear + numOfYears + 1,
+                            semester_season: 'Spring',
+                            semester_courses: [],
+                            year_id: String(numOfYears),
+                          },
+                          {
+                            semester_id: String(semesters.length + 2),
+                            semester_year: firstYear + numOfYears + 1,
+                            semester_season: 'Summer',
+                            semester_courses: [],
+                            year_id: String(numOfYears),
+                          },
+                        ])
+                      }}
+                    >
+                      Add calendar year
+                    </Button>
+                  ) : null}
+                </ScrollShadow>
               </div>
-            </Draggable>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
 
-      <CourseModal
-        isModalOpen={isOpen}
-        onModalOpen={onOpenChange}
-        modalCourse={modalCourse}
-      />
-    </main>
-  )
+              <Divider />
+            </motion.div>
+          </div>
+
+          <DragOverlay>
+            {activeCourse ? (
+              <Draggable
+                key={activeCourse.course_id}
+                id={activeCourse.course_id}
+              >
+                <div className="scale-105">
+                  {activeDragEvent?.data.current ? (
+                    <CourseTiny
+                      c={activeCourse}
+                      isDragging={true}
+                      setModalCourse={setModalCourse}
+                      onModalOpen={onOpen}
+                    />
+                  ) : (
+                    <CourseBig
+                      c={activeCourse}
+                      isDragging={true}
+                      setModalCourse={setModalCourse}
+                      onModalOpen={onOpen}
+                    />
+                  )}
+                </div>
+              </Draggable>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+
+        <CourseModal
+          isModalOpen={isOpen}
+          onModalOpen={onOpenChange}
+          modalCourse={modalCourse}
+        />
+      </>
+    )
+  }
 }
