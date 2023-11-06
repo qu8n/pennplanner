@@ -1,16 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 // import { Database } from '@/types/supabase';
 import { useRouter } from 'next/router'
-import {
-  Button,
-  Input,
-  Select,
-  SelectItem,
-  SelectSection,
-} from '@nextui-org/react'
+import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 
 export default function SignIn() {
   const supabaseClient = useSupabaseClient()
@@ -48,7 +43,6 @@ export default function SignIn() {
         }
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, router, supabaseClient])
 
   if (!user) {
@@ -160,23 +154,25 @@ export default function SignIn() {
         <Button
           color="primary"
           onPress={async () => {
-            const { error } = await supabaseClient.from('users').insert([
-              {
-                id: user.id,
-                username: newUser.username,
-                full_name: newUser.full_name,
-                first_year: newUser.first_year,
-              },
-            ])
-            if (error) {
-              console.error(error)
+            const { error: userCreateError } = await supabaseClient
+              .from('users')
+              .insert([
+                {
+                  id: user.id,
+                  username: newUser.username,
+                  full_name: newUser.full_name,
+                  first_year: newUser.first_year,
+                },
+              ])
+            if (userCreateError) {
+              console.error('userCreateError:', userCreateError)
               return
             } else {
               router.push(`/${newUser.username}`)
             }
           }}
         >
-          Start planning
+          Create my planner
         </Button>
       </div>
     )

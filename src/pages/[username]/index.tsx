@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
 import {
@@ -130,18 +131,21 @@ export default function Planner() {
     useState<Course[]>(courseCatalog)
 
   useEffect(() => {
-    async function getUsername() {
+    if (router.query.username === undefined) return
+
+    async function getUserData() {
       const { data } = await supabaseClient
         .from('users')
-        .select('username')
+        .select('*')
         .eq('id', user?.id)
         .single()
-      if (data) return data.username
+      if (data) return data
     }
 
     if (user) {
-      getUsername().then((username) => {
-        if (username === router.query.username) {
+      getUserData().then((data) => {
+        if (data.username === router.query.username) {
+          setFirstYear(data.first_year)
           setUserIsOwner(true)
         } else {
           toast.error('You do not have access to this page.')
@@ -149,8 +153,33 @@ export default function Planner() {
         }
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router])
+  }, [user, router])
+
+  useEffect(() => {
+    async function getSemesters() {
+      const { data, error } = await supabaseClient
+        .from('semesters')
+        .select('*')
+        .eq('user_id', user?.id)
+
+      if (error) console.error(error)
+      if (data) return data
+    }
+
+    if (user) {
+      const dbSemestersData = getSemesters()
+      // TODO something here
+    }
+  }, [user])
+
+  useEffect(() => {
+    const firstYearDiff = firstYear - semesters[0].semester_year
+    const newSemesters = semesters.map((s) => ({
+      ...s,
+      semester_year: s.semester_year + firstYearDiff,
+    }))
+    setSemesters(newSemesters)
+  }, [firstYear])
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event

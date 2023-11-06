@@ -1,4 +1,5 @@
 export interface Semester {
+  id?: number
   semester_order: number
   semester_year: number
   semester_season: string

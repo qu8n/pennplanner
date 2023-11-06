@@ -86,13 +86,7 @@ export function SemesterContainer({
             className="-ml-2 -mt-2 w-[115px]"
             onChange={(e) => {
               const value = e.target.value
-              const firstYearDiff = Number(value) - firstYear
               setFirstYear(Number(value))
-              const newSemesters = semesters.map((s) => ({
-                ...s,
-                semester_year: s.semester_year + firstYearDiff,
-              }))
-              setSemesters(newSemesters)
             }}
             renderValue={(items) => {
               return items.map((item) => {
