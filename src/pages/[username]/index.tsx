@@ -39,87 +39,67 @@ import toast from 'react-hot-toast'
 const firstYearData = new Date().getFullYear()
 const semestersData: Semester[] = [
   {
-    semester_id: '0',
-    semester_year: firstYearData, // field not in db
+    semester_order: 0,
+    semester_year: firstYearData,
     semester_season: 'Fall',
-    semester_courses: [
-      // exists as an array of strings in db
-      {
-        course_id: 'CIT 5960',
-        course_name: 'Algorithms & Computation',
-        course_unit: 1,
-        course_description:
-          'This course focuses primarily on the design and analysis of algorithms. It begins with sorting and searching algorithms and then investigates graph algorithms. In order to study graph algorithms, general algorithm design patterns like dynamic programming and greedy algorithms are introduced. A section of this course is also devoted to understanding NP-Completeness.',
-        course_prereqs:
-          'CIT 5920 | Co-requisite: CIT 5940 (Taking concurrently is allowed but taking beforehand is preferred)',
-        mcit_core_course: true,
-        mcit_open_elective: false,
-        mse_ds_core_course: false,
-        mse_ds_technical_elective: false,
-        mse_ds_open_elective: true,
-        review_count: 58,
-        avg_difficulty: 4.57,
-        avg_hours_per_week: 20.09,
-        avg_rating: 3.4,
-      },
-    ],
-    year_id: '0',
+    semester_courses: [],
+    year_order: 0,
   },
   {
-    semester_id: '1',
+    semester_order: 1,
     semester_year: firstYearData + 1,
     semester_season: 'Spring',
     semester_courses: [],
-    year_id: '0',
+    year_order: 0,
   },
   {
-    semester_id: '2',
+    semester_order: 2,
     semester_year: firstYearData + 1,
     semester_season: 'Summer',
     semester_courses: [],
-    year_id: '0',
+    year_order: 0,
   },
   {
-    semester_id: '3',
+    semester_order: 3,
     semester_year: firstYearData + 1,
     semester_season: 'Fall',
     semester_courses: [],
-    year_id: '1',
+    year_order: 1,
   },
   {
-    semester_id: '4',
+    semester_order: 4,
     semester_year: firstYearData + 2,
     semester_season: 'Spring',
     semester_courses: [],
-    year_id: '1',
+    year_order: 1,
   },
   {
-    semester_id: '5',
+    semester_order: 5,
     semester_year: firstYearData + 2,
     semester_season: 'Summer',
     semester_courses: [],
-    year_id: '1',
+    year_order: 1,
   },
   {
-    semester_id: '6',
+    semester_order: 6,
     semester_year: firstYearData + 2,
     semester_season: 'Fall',
     semester_courses: [],
-    year_id: '2',
+    year_order: 2,
   },
   {
-    semester_id: '7',
+    semester_order: 7,
     semester_year: firstYearData + 3,
     semester_season: 'Spring',
     semester_courses: [],
-    year_id: '2',
+    year_order: 2,
   },
   {
-    semester_id: '8',
+    semester_order: 8,
     semester_year: firstYearData + 3,
     semester_season: 'Summer',
     semester_courses: [],
-    year_id: '2',
+    year_order: 2,
   },
 ]
 
@@ -127,7 +107,27 @@ export default function Planner() {
   const supabaseClient = useSupabaseClient()
   const user = useUser()
   const router = useRouter()
+  const id = useId()
+  const { width, height } = useWindowSize()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const sensors = useSensors(useSensor(PointerSensor))
+
   const [userIsOwner, setUserIsOwner] = useState<boolean>(false)
+  const [firstYear, setFirstYear] = useState<number>(firstYearData)
+  const [semesters, setSemesters] = useState<Semester[]>(semestersData)
+  const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
+  const [modalCourse, setModalCourse] = useState<Course | null>(null)
+  const [courseCatalog, setCourseCatalog] = useState<Course[]>(
+    allCourses.filter((allCourse) => {
+      return !semesters.some((s) => {
+        return s.semester_courses.some(
+          (semesterCourse) => semesterCourse.course_id === allCourse.course_id,
+        )
+      })
+    }),
+  )
+  const [coursesToDisplay, setCoursesToDisplay] =
+    useState<Course[]>(courseCatalog)
 
   useEffect(() => {
     async function getUsername() {
@@ -152,28 +152,6 @@ export default function Planner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  const id = useId()
-  const { width, height } = useWindowSize()
-
-  const [firstYear, setFirstYear] = useState<number>(firstYearData)
-  const [semesters, setSemesters] = useState<Semester[]>(semestersData)
-
-  const [courseCatalog, setCourseCatalog] = useState<Course[]>(
-    allCourses.filter((allCourse) => {
-      return !semesters.some((s) => {
-        return s.semester_courses.some(
-          (semesterCourse) => semesterCourse.course_id === allCourse.course_id,
-        )
-      })
-    }),
-  )
-  const [coursesToDisplay, setCoursesToDisplay] =
-    useState<Course[]>(courseCatalog)
-  const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
-  const [modalCourse, setModalCourse] = useState<Course | null>(null)
-
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
     setActiveDragEvent(active)
@@ -183,12 +161,14 @@ export default function Planner() {
     if (!uniqueId) {
       return null
     }
-    if (semesters.some((s) => s.semester_id === uniqueId)) {
-      return semesters.find((s) => s.semester_id === uniqueId) ?? null
+    if (semesters.some((s) => String(s.semester_order) === uniqueId)) {
+      return (
+        semesters.find((s) => String(s.semester_order) === uniqueId) ?? null
+      )
     }
     const id = String(uniqueId)
     const itemWithSemesterId = semesters.flatMap((s) => {
-      const semester_id = s.semester_id
+      const semester_id = s.semester_order
       return s.semester_courses.map((c) => ({
         course_id: c.course_id,
         semester_id: semester_id,
@@ -196,7 +176,7 @@ export default function Planner() {
     })
     const semester_id = itemWithSemesterId.find((i) => i.course_id === id)
       ?.semester_id
-    return semesters.find((s) => s.semester_id === semester_id) ?? null
+    return semesters.find((s) => s.semester_order === semester_id) ?? null
   }
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -222,12 +202,12 @@ export default function Planner() {
         return overIndex >= 0 ? overIndex + modifier : overCourses.length + 1
       }
       return semesters.map((s) => {
-        if (s.semester_id === activeSemester.semester_id) {
+        if (s.semester_order === activeSemester.semester_order) {
           s.semester_courses = activeCourses.filter(
             (c) => c.course_id !== activeId,
           )
           return s
-        } else if (s.semester_id === overSemester.semester_id) {
+        } else if (s.semester_order === overSemester.semester_order) {
           s.semester_courses = [
             ...overCourses.slice(0, newIndex()),
             activeCourses[activeIndex],
@@ -263,7 +243,7 @@ export default function Planner() {
       if (activeIndex !== overIndex) {
         setSemesters((prevState) => {
           return prevState.map((s) => {
-            if (s.semester_id === activeSemester.semester_id) {
+            if (s.semester_order === activeSemester.semester_order) {
               s.semester_courses = arrayMove(
                 overSemester.semester_courses,
                 activeIndex,
@@ -285,7 +265,7 @@ export default function Planner() {
     }
     setSemesters((semesters) =>
       semesters.map((s) => {
-        if (s.semester_id === over.id) {
+        if (s.semester_order === over.id) {
           s.semester_courses.push(activeCourse)
         }
         return s
@@ -296,8 +276,6 @@ export default function Planner() {
       coursesToDisplay.filter((c) => c.course_id !== active.id),
     )
   }
-
-  const sensors = useSensors(useSensor(PointerSensor))
 
   const activeCourse = useMemo(() => {
     return allCourses.find((c) => c.course_id === activeDragEvent?.id)
@@ -315,15 +293,15 @@ export default function Planner() {
     }, 0)
   }, [semesters])
 
-  const semestersByYearId = useMemo(
+  const semestersByYearOrder = useMemo(
     () =>
       semesters.reduce(
         (acc, s) => {
-          const yearId = s.year_id
-          if (!acc[yearId]) {
-            acc[yearId] = []
+          const yearOrder = s.year_order
+          if (!acc[yearOrder]) {
+            acc[yearOrder] = []
           }
-          acc[yearId].push(s)
+          acc[yearOrder].push(s)
           return acc
         },
         {} as Record<string, Semester[]>,
@@ -332,8 +310,8 @@ export default function Planner() {
   )
 
   const numOfYears = useMemo(
-    () => Object.keys(semestersByYearId).length,
-    [semestersByYearId],
+    () => Object.keys(semestersByYearOrder).length,
+    [semestersByYearOrder],
   )
 
   if (userIsOwner) {
@@ -395,22 +373,25 @@ export default function Planner() {
 
               <div className="flex grow flex-col overflow-hidden pl-1">
                 <ScrollShadow className="flex flex-col items-center overflow-y-auto">
-                  {Object.keys(semestersByYearId)
+                  {Object.keys(semestersByYearOrder)
                     .sort()
-                    .map((yearId) => (
+                    .map((yearOrder) => (
                       <div
-                        key={yearId}
+                        key={yearOrder}
                         className="flex w-full flex-col rounded-xl py-4 pr-2"
                       >
                         <h2 className="ml-2 text-lg font-semibold text-blue-950">
-                          Year {Number(yearId) + 1}
+                          Year {Number(yearOrder) + 1}
                         </h2>
 
                         <div className="mt-2 grid grid-cols-3 gap-4">
-                          {semestersByYearId[yearId].map((s) => (
-                            <Droppable id={s.semester_id} key={s.semester_id}>
+                          {semestersByYearOrder[yearOrder].map((s) => (
+                            <Droppable
+                              id={String(s.semester_order)}
+                              key={s.semester_order}
+                            >
                               <SemesterContainer
-                                key={s.semester_id}
+                                key={s.semester_order}
                                 s={s}
                                 semesters={semesters}
                                 setSemesters={setSemesters}
@@ -435,25 +416,25 @@ export default function Planner() {
                         setSemesters((semesters) => [
                           ...semesters,
                           {
-                            semester_id: String(semesters.length),
+                            semester_order: semesters.length,
                             semester_year: firstYear + numOfYears,
                             semester_season: 'Fall',
                             semester_courses: [],
-                            year_id: String(numOfYears),
+                            year_order: numOfYears,
                           },
                           {
-                            semester_id: String(semesters.length + 1),
+                            semester_order: semesters.length + 1,
                             semester_year: firstYear + numOfYears + 1,
                             semester_season: 'Spring',
                             semester_courses: [],
-                            year_id: String(numOfYears),
+                            year_order: numOfYears,
                           },
                           {
-                            semester_id: String(semesters.length + 2),
+                            semester_order: semesters.length + 2,
                             semester_year: firstYear + numOfYears + 1,
                             semester_season: 'Summer',
                             semester_courses: [],
-                            year_id: String(numOfYears),
+                            year_order: numOfYears,
                           },
                         ])
                       }}

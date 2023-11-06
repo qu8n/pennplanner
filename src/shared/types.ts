@@ -1,9 +1,9 @@
 export interface Semester {
-  semester_id: string
+  semester_order: number
   semester_year: number
   semester_season: string
   semester_courses: Course[]
-  year_id: string
+  year_order: number
 }
 
 export interface Course {

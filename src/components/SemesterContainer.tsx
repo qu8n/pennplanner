@@ -2,11 +2,6 @@ import { Course, Semester } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Input,
   Chip,
   Divider,
   Select,
@@ -15,7 +10,6 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
 const seasonalBgColors: {
   [key: string]: string
@@ -77,7 +71,7 @@ export function SemesterContainer({
       } flex h-72 flex-col gap-y-2 rounded-md border-1 p-4 shadow`}
     >
       <div className="flex flex-row justify-between gap-2">
-        {s.semester_id === '0' ? (
+        {s.semester_order === 0 ? (
           <Select
             classNames={{
               trigger: 'bg-transparent shadow-none',
@@ -194,7 +188,7 @@ export function SemesterContainer({
       <Divider className="mb-1" />
 
       <SortableContext
-        id={s.semester_id}
+        id={String(s.semester_order)}
         items={s.semester_courses.map((c) => c.course_id)}
         strategy={rectSortingStrategy}
       >
