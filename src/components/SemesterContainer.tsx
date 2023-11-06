@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
 const seasonalBgColors: {
   [key: string]: string
@@ -48,6 +49,9 @@ export function SemesterContainer({
   setCourseCatalog?: (courseCatalog: Course[]) => void
   courseCatalog?: Course[]
 }) {
+  const supabaseClient = useSupabaseClient()
+  const user = useUser()
+
   const totalCU = s.semester_courses.reduce(
     (acc, curr) => acc + curr.course_unit,
     0,
@@ -84,9 +88,14 @@ export function SemesterContainer({
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
             className="-ml-2 -mt-2 w-[115px]"
-            onChange={(e) => {
-              const value = e.target.value
-              setFirstYear(Number(value))
+            onChange={async (e) => {
+              const value = Number(e.target.value)
+              setFirstYear(value)
+              const { error } = await supabaseClient
+                .from('users')
+                .update({ first_year: value })
+                .eq('id', user?.id)
+              if (error) console.error(error)
             }}
             renderValue={(items) => {
               return items.map((item) => {
