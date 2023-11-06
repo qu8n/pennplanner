@@ -364,7 +364,7 @@ export default function Planner() {
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md"
             >
               <Sidebar
@@ -381,7 +381,7 @@ export default function Planner() {
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.5, ease: 'easeOut' }}
+              transition={{ duration: 1, ease: 'easeOut' }}
               className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md"
             >
               <Toolbar

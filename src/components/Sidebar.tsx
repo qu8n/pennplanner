@@ -77,16 +77,6 @@ function sortCourses(sortMethod: string, coursesToSort: Course[]) {
   let sortedCourses: Course[] = []
   switch (sortMethod) {
     case '':
-    case 'name-asc':
-      sortedCourses = [...coursesToSort].sort((a, b) =>
-        a.course_name.localeCompare(b.course_name),
-      )
-      break
-    case 'name-desc':
-      sortedCourses = [...coursesToSort].sort((a, b) =>
-        b.course_name.localeCompare(a.course_name),
-      )
-      break
     case 'number-asc':
       sortedCourses = [...coursesToSort].sort((a, b) =>
         a.course_id.localeCompare(b.course_id),
@@ -95,6 +85,16 @@ function sortCourses(sortMethod: string, coursesToSort: Course[]) {
     case 'number-desc':
       sortedCourses = [...coursesToSort].sort((a, b) =>
         b.course_id.localeCompare(a.course_id),
+      )
+      break
+    case 'name-asc':
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        a.course_name.localeCompare(b.course_name),
+      )
+      break
+    case 'name-desc':
+      sortedCourses = [...coursesToSort].sort((a, b) =>
+        b.course_name.localeCompare(a.course_name),
       )
       break
   }
