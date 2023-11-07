@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Sidebar } from '@/components/Sidebar'
 import { Toolbar } from '@/components/Toolbar'
 import {
@@ -19,7 +18,7 @@ import {
   DragOverEvent,
   Active,
 } from '@dnd-kit/core'
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { allCourses } from '@/data/allCourses'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
 import { Course, Semester } from '@/shared/types'
@@ -32,252 +31,28 @@ import { CourseTiny } from '@/components/CourseTiny'
 import { CourseBig } from '@/components/CourseBig'
 import { CourseModal } from '@/components/CourseModal'
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
-import toast from 'react-hot-toast'
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 
-const firstYearData = new Date().getFullYear()
-const semestersData: Semester[] = [
-  {
-    semester_index: 0,
-    semester_year: firstYearData,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 0,
-  },
-  {
-    semester_index: 1,
-    semester_year: firstYearData + 1,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 0,
-  },
-  {
-    semester_index: 2,
-    semester_year: firstYearData + 1,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 0,
-  },
-  {
-    semester_index: 3,
-    semester_year: firstYearData + 1,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 1,
-  },
-  {
-    semester_index: 4,
-    semester_year: firstYearData + 2,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 1,
-  },
-  {
-    semester_index: 5,
-    semester_year: firstYearData + 2,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 1,
-  },
-  {
-    semester_index: 6,
-    semester_year: firstYearData + 2,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 2,
-  },
-  {
-    semester_index: 7,
-    semester_year: firstYearData + 3,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 2,
-  },
-  {
-    semester_index: 8,
-    semester_year: firstYearData + 3,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 2,
-  },
-  {
-    semester_index: 9,
-    semester_year: firstYearData + 3,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 3,
-  },
-  {
-    semester_index: 10,
-    semester_year: firstYearData + 4,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 3,
-  },
-  {
-    semester_index: 11,
-    semester_year: firstYearData + 4,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 3,
-  },
-  {
-    semester_index: 12,
-    semester_year: firstYearData + 4,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 4,
-  },
-  {
-    semester_index: 13,
-    semester_year: firstYearData + 5,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 4,
-  },
-  {
-    semester_index: 14,
-    semester_year: firstYearData + 5,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 4,
-  },
-  {
-    semester_index: 15,
-    semester_year: firstYearData + 5,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 5,
-  },
-  {
-    semester_index: 16,
-    semester_year: firstYearData + 6,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 5,
-  },
-  {
-    semester_index: 17,
-    semester_year: firstYearData + 6,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 5,
-  },
-  {
-    semester_index: 18,
-    semester_year: firstYearData + 6,
-    semester_season: 'Fall',
-    semester_courses: [],
-    year_index: 6,
-  },
-  {
-    semester_index: 19,
-    semester_year: firstYearData + 7,
-    semester_season: 'Spring',
-    semester_courses: [],
-    year_index: 6,
-  },
-  {
-    semester_index: 20,
-    semester_year: firstYearData + 7,
-    semester_season: 'Summer',
-    semester_courses: [],
-    year_index: 6,
-  },
-]
-
-export default function Planner() {
-  const supabaseClient = useSupabaseClient()
-  const user = useUser()
-  const router = useRouter()
+export default function Planner({
+  dbUser,
+  semestersData,
+  courseCatalogData,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const id = useId()
   const { width, height } = useWindowSize()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const sensors = useSensors(useSensor(PointerSensor))
 
-  const [userIsOwner, setUserIsOwner] = useState<boolean>(false)
-  const [firstYear, setFirstYear] = useState<number>(firstYearData)
+  const [firstYear, setFirstYear] = useState<number>(dbUser.first_year)
   const [semesters, setSemesters] = useState<Semester[]>(semestersData)
   const [activeDragEvent, setActiveDragEvent] = useState<Active | null>(null)
   const [modalCourse, setModalCourse] = useState<Course | null>(null)
-  const [courseCatalog, setCourseCatalog] = useState<Course[]>(allCourses)
+  const [courseCatalog, setCourseCatalog] =
+    useState<Course[]>(courseCatalogData)
   const [coursesToDisplay, setCoursesToDisplay] =
     useState<Course[]>(courseCatalog)
-
-  async function getUserFromDb() {
-    const { data, error } = await supabaseClient
-      .from('users')
-      .select('*')
-      .eq('id', user?.id)
-      .single()
-    if (error) console.error(error)
-    if (data) return data
-  }
-
-  async function getSemestersFromDb() {
-    const { data, error } = await supabaseClient
-      .from('semesters')
-      .select('*')
-      .eq('user_id', user?.id)
-    if (error) console.error(error)
-    if (data) return data
-  }
-
-  useEffect(() => {
-    if (router.query.username === undefined) return
-
-    if (user) {
-      getUserFromDb().then((dbUser) => {
-        if (dbUser.username === router.query.username) {
-          setUserIsOwner(true)
-          setFirstYear(dbUser.first_year)
-
-          const newSemesters = [...semesters]
-          getSemestersFromDb().then((dbSemesters) => {
-            dbSemesters?.forEach((dbSemester) => {
-              const semesterCourses = dbSemester.semester_course_ids.map(
-                (id: string) => allCourses.find((c) => c.course_id === id),
-              )
-              const i = dbSemester.semester_index
-              const newSemester = newSemesters[i]
-              newSemesters[i] = {
-                ...newSemester,
-                semester_courses: semesterCourses,
-              }
-            })
-            setSemesters(newSemesters)
-            setCourseCatalog(
-              allCourses.filter((allCourse) => {
-                return !newSemesters.some((s) => {
-                  return s.semester_courses.some(
-                    (semesterCourse) =>
-                      semesterCourse.course_id === allCourse.course_id,
-                  )
-                })
-              }),
-            )
-          })
-        } else {
-          toast.error('You do not have access to this page.')
-          router.push(`/`)
-        }
-      })
-    }
-  }, [router])
-
-  useEffect(() => {
-    const firstYearDiff = firstYear - semesters[0].semester_year
-    setTimeout(() => {
-      setSemesters((semesters) =>
-        semesters.map((s) => ({
-          ...s,
-          semester_year: s.semester_year + firstYearDiff,
-        })),
-      )
-    }, 100) // temp patch
-  }, [firstYear])
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
@@ -441,175 +216,388 @@ export default function Planner() {
     [semestersByYearOrder],
   )
 
-  if (userIsOwner) {
-    return (
-      <>
-        {totalCU === 10 && (
-          <Confetti
-            width={width}
-            height={height}
-            confettiSource={{
-              w: 200,
-              h: 10,
-              x: width / 2,
-              y: 55,
-            }}
-            recycle={false}
-          />
-        )}
-
-        <DndContext
-          id={id} // resolves "`aria-describedby` did not match" warning
-          onDragStart={handleDragStart}
-          sensors={sensors}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-          <div className="flex flex-1 overflow-hidden">
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md"
-            >
-              <Sidebar
-                courseCatalog={courseCatalog}
-                coursesToDisplay={coursesToDisplay}
-                setCoursesToDisplay={setCoursesToDisplay}
-                setModalCourse={setModalCourse}
-                onModalOpen={onOpen}
-              />
-            </motion.div>
-
-            <Spacer x={3} />
-
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-              className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md"
-            >
-              <Toolbar
-                totalCU={totalCU}
-                semesters={semesters}
-                setSemesters={setSemesters}
-                setCourseCatalog={setCourseCatalog}
-              />
-
-              <Divider className="mt-4" />
-
-              <div className="flex grow flex-col overflow-hidden pl-1">
-                <ScrollShadow className="flex flex-col items-center overflow-y-auto">
-                  {Object.keys(semestersByYearOrder)
-                    .sort()
-                    .map((yearOrder) => (
-                      <div
-                        key={yearOrder}
-                        className="flex w-full flex-col rounded-xl py-4 pr-2"
-                      >
-                        <h2 className="ml-2 text-lg font-semibold text-blue-950">
-                          Year {Number(yearOrder) + 1}
-                        </h2>
-
-                        <div className="mt-2 grid grid-cols-3 gap-4">
-                          {semestersByYearOrder[yearOrder].map((s) => (
-                            <Droppable
-                              id={String(s.semester_index)}
-                              key={s.semester_index}
-                            >
-                              <SemesterContainer
-                                key={s.semester_index}
-                                s={s}
-                                semesters={semesters}
-                                setSemesters={setSemesters}
-                                firstYear={firstYear}
-                                setFirstYear={setFirstYear}
-                                setModalCourse={setModalCourse}
-                                onModalOpen={onOpen}
-                                setCourseCatalog={setCourseCatalog}
-                                courseCatalog={courseCatalog}
-                              />
-                            </Droppable>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-
-                  {numOfYears < 7 ? (
-                    <Button
-                      startContent={<SquaresPlusIcon className="h-5 w-5" />}
-                      className="my-6 rounded-xl border-none bg-gray-200 p-5"
-                      onPress={() => {
-                        setSemesters((semesters) => [
-                          ...semesters,
-                          {
-                            semester_index: semesters.length,
-                            semester_year: firstYear + numOfYears,
-                            semester_season: 'Fall',
-                            semester_courses: [],
-                            year_index: numOfYears,
-                          },
-                          {
-                            semester_index: semesters.length + 1,
-                            semester_year: firstYear + numOfYears + 1,
-                            semester_season: 'Spring',
-                            semester_courses: [],
-                            year_index: numOfYears,
-                          },
-                          {
-                            semester_index: semesters.length + 2,
-                            semester_year: firstYear + numOfYears + 1,
-                            semester_season: 'Summer',
-                            semester_courses: [],
-                            year_index: numOfYears,
-                          },
-                        ])
-                      }}
-                    >
-                      Add calendar year
-                    </Button>
-                  ) : null}
-                </ScrollShadow>
-              </div>
-
-              <Divider />
-            </motion.div>
-          </div>
-
-          <DragOverlay>
-            {activeCourse ? (
-              <Draggable
-                key={activeCourse.course_id}
-                id={activeCourse.course_id}
-              >
-                <div className="scale-105">
-                  {activeDragEvent?.data.current ? (
-                    <CourseTiny
-                      c={activeCourse}
-                      isDragging={true}
-                      setModalCourse={setModalCourse}
-                      onModalOpen={onOpen}
-                    />
-                  ) : (
-                    <CourseBig
-                      c={activeCourse}
-                      isDragging={true}
-                      setModalCourse={setModalCourse}
-                      onModalOpen={onOpen}
-                    />
-                  )}
-                </div>
-              </Draggable>
-            ) : null}
-          </DragOverlay>
-        </DndContext>
-
-        <CourseModal
-          isModalOpen={isOpen}
-          onModalOpen={onOpenChange}
-          modalCourse={modalCourse}
+  return (
+    <>
+      {totalCU === 10 && (
+        <Confetti
+          width={width}
+          height={height}
+          confettiSource={{
+            w: 200,
+            h: 10,
+            x: width / 2,
+            y: 55,
+          }}
+          recycle={false}
         />
-      </>
+      )}
+
+      <DndContext
+        id={id} // resolves "`aria-describedby` did not match" warning
+        onDragStart={handleDragStart}
+        sensors={sensors}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="flex flex-1 overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md"
+          >
+            <Sidebar
+              courseCatalog={courseCatalog}
+              coursesToDisplay={coursesToDisplay}
+              setCoursesToDisplay={setCoursesToDisplay}
+              setModalCourse={setModalCourse}
+              onModalOpen={onOpen}
+            />
+          </motion.div>
+
+          <Spacer x={3} />
+
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md"
+          >
+            <Toolbar
+              totalCU={totalCU}
+              semesters={semesters}
+              setSemesters={setSemesters}
+              setCourseCatalog={setCourseCatalog}
+            />
+
+            <Divider className="mt-4" />
+
+            <div className="flex grow flex-col overflow-hidden pl-1">
+              <ScrollShadow className="flex flex-col items-center overflow-y-auto">
+                {Object.keys(semestersByYearOrder)
+                  .sort()
+                  .map((yearOrder) => (
+                    <div
+                      key={yearOrder}
+                      className="flex w-full flex-col rounded-xl py-4 pr-2"
+                    >
+                      <h2 className="ml-2 text-lg font-semibold text-blue-950">
+                        Year {Number(yearOrder) + 1}
+                      </h2>
+
+                      <div className="mt-2 grid grid-cols-3 gap-4">
+                        {semestersByYearOrder[yearOrder].map((s) => (
+                          <Droppable
+                            id={String(s.semester_index)}
+                            key={s.semester_index}
+                          >
+                            <SemesterContainer
+                              key={s.semester_index}
+                              s={s}
+                              semesters={semesters}
+                              setSemesters={setSemesters}
+                              firstYear={firstYear}
+                              setFirstYear={setFirstYear}
+                              setModalCourse={setModalCourse}
+                              onModalOpen={onOpen}
+                              setCourseCatalog={setCourseCatalog}
+                              courseCatalog={courseCatalog}
+                            />
+                          </Droppable>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+
+                {numOfYears < 7 ? (
+                  <Button
+                    startContent={<SquaresPlusIcon className="h-5 w-5" />}
+                    className="my-6 rounded-xl border-none bg-gray-200 p-5"
+                    onPress={() => {
+                      setSemesters((semesters) => [
+                        ...semesters,
+                        {
+                          semester_index: semesters.length,
+                          semester_year: firstYear + numOfYears,
+                          semester_season: 'Fall',
+                          semester_courses: [],
+                          year_index: numOfYears,
+                        },
+                        {
+                          semester_index: semesters.length + 1,
+                          semester_year: firstYear + numOfYears + 1,
+                          semester_season: 'Spring',
+                          semester_courses: [],
+                          year_index: numOfYears,
+                        },
+                        {
+                          semester_index: semesters.length + 2,
+                          semester_year: firstYear + numOfYears + 1,
+                          semester_season: 'Summer',
+                          semester_courses: [],
+                          year_index: numOfYears,
+                        },
+                      ])
+                    }}
+                  >
+                    Add calendar year
+                  </Button>
+                ) : null}
+              </ScrollShadow>
+            </div>
+
+            <Divider />
+          </motion.div>
+        </div>
+
+        <DragOverlay>
+          {activeCourse ? (
+            <Draggable key={activeCourse.course_id} id={activeCourse.course_id}>
+              <div className="scale-105">
+                {activeDragEvent?.data.current ? (
+                  <CourseTiny
+                    c={activeCourse}
+                    isDragging={true}
+                    setModalCourse={setModalCourse}
+                    onModalOpen={onOpen}
+                  />
+                ) : (
+                  <CourseBig
+                    c={activeCourse}
+                    isDragging={true}
+                    setModalCourse={setModalCourse}
+                    onModalOpen={onOpen}
+                  />
+                )}
+              </div>
+            </Draggable>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
+
+      <CourseModal
+        isModalOpen={isOpen}
+        onModalOpen={onOpenChange}
+        modalCourse={modalCourse}
+      />
+    </>
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { username } = context.query
+
+  const supabaseClient = createPagesServerClient(context, {
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  })
+
+  const {
+    data: { session },
+  } = await supabaseClient.auth.getSession()
+
+  const { data: dbUser, error: usersError } = await supabaseClient
+    .from('users')
+    .select('*')
+    .eq('id', session?.user.id)
+    .single()
+
+  if (!session || dbUser.username !== username)
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    }
+
+  const { data: dbSemesters, error: semestersError } = await supabaseClient
+    .from('semesters')
+    .select('*')
+    .eq('user_id', dbUser.id)
+
+  const error = usersError || semestersError
+  if (error) {
+    console.error(error)
+  }
+
+  const firstYearData = dbUser.first_year
+
+  const semestersData: Semester[] = [
+    {
+      semester_index: 0,
+      semester_year: firstYearData,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 0,
+    },
+    {
+      semester_index: 1,
+      semester_year: firstYearData + 1,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 0,
+    },
+    {
+      semester_index: 2,
+      semester_year: firstYearData + 1,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 0,
+    },
+    {
+      semester_index: 3,
+      semester_year: firstYearData + 1,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 1,
+    },
+    {
+      semester_index: 4,
+      semester_year: firstYearData + 2,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 1,
+    },
+    {
+      semester_index: 5,
+      semester_year: firstYearData + 2,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 1,
+    },
+    {
+      semester_index: 6,
+      semester_year: firstYearData + 2,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 2,
+    },
+    {
+      semester_index: 7,
+      semester_year: firstYearData + 3,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 2,
+    },
+    {
+      semester_index: 8,
+      semester_year: firstYearData + 3,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 2,
+    },
+    {
+      semester_index: 9,
+      semester_year: firstYearData + 3,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 3,
+    },
+    {
+      semester_index: 10,
+      semester_year: firstYearData + 4,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 3,
+    },
+    {
+      semester_index: 11,
+      semester_year: firstYearData + 4,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 3,
+    },
+    {
+      semester_index: 12,
+      semester_year: firstYearData + 4,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 4,
+    },
+    {
+      semester_index: 13,
+      semester_year: firstYearData + 5,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 4,
+    },
+    {
+      semester_index: 14,
+      semester_year: firstYearData + 5,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 4,
+    },
+    {
+      semester_index: 15,
+      semester_year: firstYearData + 5,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 5,
+    },
+    {
+      semester_index: 16,
+      semester_year: firstYearData + 6,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 5,
+    },
+    {
+      semester_index: 17,
+      semester_year: firstYearData + 6,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 5,
+    },
+    {
+      semester_index: 18,
+      semester_year: firstYearData + 6,
+      semester_season: 'Fall',
+      semester_courses: [],
+      year_index: 6,
+    },
+    {
+      semester_index: 19,
+      semester_year: firstYearData + 7,
+      semester_season: 'Spring',
+      semester_courses: [],
+      year_index: 6,
+    },
+    {
+      semester_index: 20,
+      semester_year: firstYearData + 7,
+      semester_season: 'Summer',
+      semester_courses: [],
+      year_index: 6,
+    },
+  ]
+
+  dbSemesters?.forEach((dbSemester) => {
+    const semesterCourses = dbSemester.semester_course_ids.map((id: string) =>
+      allCourses.find((c) => c.course_id === id),
     )
+
+    const i = dbSemester.semester_index
+    const newSemester = semestersData[i]
+    semestersData[i] = {
+      ...newSemester,
+      semester_courses: semesterCourses,
+    }
+  })
+
+  const courseCatalogData = allCourses.filter((allCourse) => {
+    return !semestersData.some((s) => {
+      return s.semester_courses.some(
+        (semesterCourse) => semesterCourse.course_id === allCourse.course_id,
+      )
+    })
+  })
+
+  return {
+    props: {
+      dbUser,
+      semestersData,
+      courseCatalogData,
+    },
   }
 }
