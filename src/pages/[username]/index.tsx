@@ -34,6 +34,7 @@ import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 export default function Planner({
   dbUser,
@@ -44,6 +45,7 @@ export default function Planner({
   const { width, height } = useWindowSize()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const sensors = useSensors(useSensor(PointerSensor))
+  const supabaseClient = useSupabaseClient()
 
   const [firstYear, setFirstYear] = useState<number>(dbUser.first_year)
   const [semesters, setSemesters] = useState<Semester[]>(semestersData)
@@ -123,7 +125,7 @@ export default function Planner({
     })
   }
 
-  function handleDragEnd(event: DragEndEvent) {
+  async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
     if (!over) {
       return
@@ -157,6 +159,15 @@ export default function Planner({
             }
           })
         })
+
+        const semester_course_ids = activeSemester.semester_courses.map(
+          (c) => c.course_id,
+        )
+        const { error } = await supabaseClient
+          .from('semesters')
+          .update({ semester_course_ids })
+          .eq('semester_index', activeSemester.semester_index)
+        if (error) console.error(error)
       }
     }
 

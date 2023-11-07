@@ -103,8 +103,8 @@ function sortCourses(sortMethod: string, coursesToSort: Course[]) {
 
 function searchCourses(searchValue: string, coursesToSearch: Course[]) {
   const fuse = new Fuse(coursesToSearch, {
-    threshold: 0.3,
-    keys: ['course_id', 'course_name', 'course_description'],
+    threshold: 0.2,
+    keys: ['course_id', 'course_name'],
   })
   const results = fuse.search(searchValue)
   return results.map((result) => result.item)
@@ -152,7 +152,7 @@ export function Sidebar({
         label={
           <div className="flex flex-row items-center gap-2">
             <MagnifyingGlassIcon className="pointer-events-none h-4 w-4 flex-shrink-0 text-2xl text-default-400" />
-            Search course name, number, or description
+            Search course name, id, or number
           </div>
         }
         variant="flat"
