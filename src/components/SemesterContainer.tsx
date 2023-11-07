@@ -75,7 +75,7 @@ export function SemesterContainer({
       } flex h-72 flex-col gap-y-2 rounded-md border-1 p-4 shadow`}
     >
       <div className="flex flex-row justify-between gap-2">
-        {s.semester_order === 0 ? (
+        {s.semester_index === 0 ? (
           <Select
             classNames={{
               trigger: 'bg-transparent shadow-none',
@@ -90,7 +90,13 @@ export function SemesterContainer({
             className="-ml-2 -mt-2 w-[115px]"
             onChange={async (e) => {
               const value = Number(e.target.value)
+              const yearDiff = value - firstYear
               setFirstYear(value)
+              const newSemesters = semesters.map((s) => ({
+                ...s,
+                semester_year: s.semester_year + yearDiff,
+              }))
+              setSemesters(newSemesters)
               const { error } = await supabaseClient
                 .from('users')
                 .update({ first_year: value })
@@ -191,7 +197,7 @@ export function SemesterContainer({
       <Divider className="mb-1" />
 
       <SortableContext
-        id={String(s.semester_order)}
+        id={String(s.semester_index)}
         items={s.semester_courses.map((c) => c.course_id)}
         strategy={rectSortingStrategy}
       >

@@ -1,10 +1,10 @@
 export interface Semester {
   id?: number
-  semester_order: number
+  semester_index: number
   semester_year: number
   semester_season: string
   semester_courses: Course[]
-  year_order: number
+  year_index: number
 }
 
 export interface Course {
