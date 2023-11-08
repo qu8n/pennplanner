@@ -72,15 +72,15 @@ export default function Planner({
     }
     const id = String(uniqueId)
     const itemWithSemesterId = semesters.flatMap((s) => {
-      const semester_id = s.semester_index
+      const semester_index = s.semester_index
       return s.semester_courses.map((c) => ({
         course_id: c.course_id,
-        semester_id: semester_id,
+        semester_index: semester_index,
       }))
     })
-    const semester_id = itemWithSemesterId.find((i) => i.course_id === id)
-      ?.semester_id
-    return semesters.find((s) => s.semester_index === semester_id) ?? null
+    const semester_index = itemWithSemesterId.find((i) => i.course_id === id)
+      ?.semester_index
+    return semesters.find((s) => s.semester_index === semester_index) ?? null
   }
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -178,7 +178,7 @@ export default function Planner({
     }
     setSemesters((semesters) =>
       semesters.map((s) => {
-        if (s.semester_index === over.id) {
+        if (String(s.semester_index) === over.id) {
           s.semester_courses.push(activeCourse)
         }
         return s
