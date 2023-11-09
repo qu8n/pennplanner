@@ -169,25 +169,47 @@ export default function Planner({
           .eq('semester_index', activeSemester.semester_index)
         if (error) console.error(error)
       }
-    }
+    } else {
+      // Handles dragging courses from sidebar to semester containers
+      const activeCourse = courseCatalog.find((c) => c.course_id === active.id)
+      if (!activeCourse) {
+        return
+      }
 
-    // Handles dragging courses from sidebar to semester containers
-    const activeCourse = courseCatalog.find((c) => c.course_id === active.id)
-    if (!activeCourse) {
-      return
+      setSemesters((semesters) =>
+        semesters.map((s) => {
+          if (String(s.semester_index) === over.id) {
+            s.semester_courses.push(activeCourse)
+          }
+          return s
+        }),
+      )
+
+      setCourseCatalog(courseCatalog.filter((c) => c.course_id !== active.id))
+      setCoursesToDisplay(
+        coursesToDisplay.filter((c) => c.course_id !== active.id),
+      )
+
+      const semester_course_ids = overSemester?.semester_courses.map(
+        (c) => c.course_id,
+      )
+      if (semester_course_ids?.length === 1) {
+        const { error } = await supabaseClient.from('semesters').insert([
+          {
+            user_id: dbUser.id,
+            semester_index: overSemester?.semester_index,
+            semester_course_ids,
+          },
+        ])
+        if (error) console.error(error)
+      } else {
+        const { error } = await supabaseClient
+          .from('semesters')
+          .update({ semester_course_ids })
+          .eq('semester_index', overSemester?.semester_index)
+        if (error) console.error(error)
+      }
     }
-    setSemesters((semesters) =>
-      semesters.map((s) => {
-        if (String(s.semester_index) === over.id) {
-          s.semester_courses.push(activeCourse)
-        }
-        return s
-      }),
-    )
-    setCourseCatalog(courseCatalog.filter((c) => c.course_id !== active.id))
-    setCoursesToDisplay(
-      coursesToDisplay.filter((c) => c.course_id !== active.id),
-    )
   }
 
   const activeCourse = useMemo(() => {
