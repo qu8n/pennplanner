@@ -61,7 +61,12 @@ export default function Planner({
     setActiveDragEvent(active)
   }
 
-  const getSemesterFromId = (uniqueId: string | null) => {
+  /**
+   * Get the Semester object from a given semester_index or course_id
+   * @param uniqueId - semester_index or course_id from the drag event's active/over object
+   * @returns the Semester object matching the semester_index or containing the course_id
+   */
+  function getSemesterFromId(uniqueId: string | null) {
     if (!uniqueId) {
       return null
     }
@@ -70,41 +75,47 @@ export default function Planner({
         semesters.find((s) => String(s.semester_index) === uniqueId) ?? null
       )
     }
-    const id = String(uniqueId)
-    const itemWithSemesterId = semesters.flatMap((s) => {
-      const semester_index = s.semester_index
+    const semesterCoursesFlatMap = semesters.flatMap((s) => {
       return s.semester_courses.map((c) => ({
         course_id: c.course_id,
-        semester_index: semester_index,
+        semester_index: s.semester_index,
       }))
     })
-    const semester_index = itemWithSemesterId.find((i) => i.course_id === id)
-      ?.semester_index
+    const semester_index = semesterCoursesFlatMap.find(
+      (i) => i.course_id === uniqueId,
+    )?.semester_index
     return semesters.find((s) => s.semester_index === semester_index) ?? null
   }
 
-  const handleDragOver = (event: DragOverEvent) => {
+  function handleDragOver(event: DragOverEvent) {
     const { active, over, delta } = event
+
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
+
     const activeSemester = getSemesterFromId(activeId)
     const overSemester = getSemesterFromId(overId)
+
     if (!activeSemester || !overSemester || activeSemester === overSemester) {
       return null
     }
+
     setSemesters((semesters) => {
       const activeCourses = activeSemester.semester_courses
       const overCourses = overSemester.semester_courses
+
       const activeIndex = activeCourses.findIndex(
         (i) => i.course_id === activeId,
       )
       const overIndex = overCourses.findIndex((i) => i.course_id === overId)
+
       const newIndex = () => {
         const putOnBelowLastCourse =
           overIndex === overCourses.length - 1 && delta.y > 0
         const modifier = putOnBelowLastCourse ? 1 : 0
         return overIndex >= 0 ? overIndex + modifier : overCourses.length + 1
       }
+
       return semesters.map((s) => {
         if (s.semester_index === activeSemester.semester_index) {
           s.semester_courses = activeCourses.filter(
@@ -130,14 +141,14 @@ export default function Planner({
     if (!over) {
       return
     }
+
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
 
-    // Handles sort-dragging courses within the same semester
+    // Handle sort-dragging courses within the same semester
     const activeSemester = getSemesterFromId(activeId)
     const overSemester = getSemesterFromId(overId)
-
-    if (activeSemester && overSemester && activeSemester === overSemester) {
+    if (activeSemester && overSemester) {
       const activeIndex = activeSemester.semester_courses.findIndex(
         (i) => i.course_id === activeId,
       )
@@ -170,7 +181,7 @@ export default function Planner({
         if (error) console.error(error)
       }
     } else {
-      // Handles dragging courses from sidebar to semester containers
+      // Handle dragging courses from sidebar to semester containers
       const activeCourse = courseCatalog.find((c) => c.course_id === active.id)
       if (!activeCourse) {
         return
