@@ -205,6 +205,7 @@ export function SemesterContainer({
           <Sortable key={c.course_id} course={c}>
             <CourseTiny
               c={c}
+              s={s}
               setModalCourse={setModalCourse}
               onModalOpen={onModalOpen}
               setCourseCatalog={setCourseCatalog}

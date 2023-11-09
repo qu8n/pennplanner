@@ -1,9 +1,11 @@
 import { Course, Semester } from '@/shared/types'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 export function CourseTiny({
   c,
+  s,
   isDragging,
   setModalCourse,
   onModalOpen,
@@ -13,6 +15,7 @@ export function CourseTiny({
   semesters,
 }: {
   c: Course
+  s?: Semester
   isDragging?: boolean
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
@@ -21,6 +24,8 @@ export function CourseTiny({
   setSemesters?: (semesters: Semester[]) => void
   semesters?: Semester[]
 }) {
+  const supabaseClient = useSupabaseClient()
+
   return (
     <div
       className={`${
@@ -59,18 +64,27 @@ export function CourseTiny({
           className={`${
             isDragging ? '' : 'group-hover:block'
           } absolute -left-2 -top-2 hidden h-6 w-6 rounded-full bg-white text-red-500 shadow-lg ring-1 ring-neutral-200`}
-          onClick={() => {
-            if (setCourseCatalog && setSemesters) {
-              setCourseCatalog([...courseCatalog!, c])
-              setSemesters(
-                semesters!.map((s) => ({
-                  ...s,
-                  semester_courses: s.semester_courses.filter(
-                    (sc) => sc.course_id !== c.course_id,
-                  ),
-                })),
-              )
-            }
+          onClick={async () => {
+            setCourseCatalog!([...courseCatalog!, c])
+
+            setSemesters!(
+              semesters!.map((s) => ({
+                ...s,
+                semester_courses: s.semester_courses.filter(
+                  (sc) => sc.course_id !== c.course_id,
+                ),
+              })),
+            )
+
+            const semester_course_ids = s?.semester_courses
+              .filter((sc) => sc.course_id !== c.course_id)
+              .map((sc) => sc.course_id)
+
+            const { error } = await supabaseClient
+              .from('semesters')
+              .update({ semester_course_ids })
+              .eq('semester_index', s?.semester_index)
+            if (error) console.error(error)
           }}
         >
           <span className="sr-only">Close</span>
