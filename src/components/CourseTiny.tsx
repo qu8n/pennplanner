@@ -80,11 +80,19 @@ export function CourseTiny({
               .filter((sc) => sc.course_id !== c.course_id)
               .map((sc) => sc.course_id)
 
-            const { error } = await supabaseClient
-              .from('semesters')
-              .update({ semester_course_ids })
-              .eq('semester_index', s?.semester_index)
-            if (error) console.error(error)
+            if (semester_course_ids?.length === 0) {
+              const { error } = await supabaseClient
+                .from('semesters')
+                .delete()
+                .eq('semester_index', s?.semester_index)
+              if (error) console.error(error)
+            } else {
+              const { error } = await supabaseClient
+                .from('semesters')
+                .update({ semester_course_ids })
+                .eq('semester_index', s?.semester_index)
+              if (error) console.error(error)
+            }
           }}
         >
           <span className="sr-only">Close</span>
