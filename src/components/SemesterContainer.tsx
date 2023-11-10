@@ -46,8 +46,8 @@ export function SemesterContainer({
   setFirstYear: (firstYear: number) => void
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
-  setCourseCatalog?: (courseCatalog: Course[]) => void
-  courseCatalog?: Course[]
+  setCourseCatalog: (courseCatalog: Course[]) => void
+  courseCatalog: Course[]
 }) {
   const supabaseClient = useSupabaseClient()
   const user = useUser()

@@ -145,9 +145,10 @@ export default function Planner({
     const activeId = String(active.id)
     const overId = over ? String(over.id) : null
 
-    // Handle sort-dragging courses within the same semester
     const activeSemester = getSemesterFromId(activeId)
     const overSemester = getSemesterFromId(overId)
+
+    // Handle dragging courses within the planner
     if (activeSemester && overSemester) {
       const activeIndex = activeSemester.semester_courses.findIndex(
         (i) => i.course_id === activeId,
@@ -170,7 +171,50 @@ export default function Planner({
             }
           })
         })
+      }
 
+      const { containerId: startSemesterIndex, items: startSemesterCourseIds } =
+        activeDragEvent?.data.current?.sortable
+      if (startSemesterIndex !== String(overSemester?.semester_index)) {
+        // across different semesters
+        const newStartSemesterCourseIds = startSemesterCourseIds.filter(
+          (courseId: string) => courseId !== activeId,
+        )
+        if (newStartSemesterCourseIds.length === 0) {
+          const { error } = await supabaseClient
+            .from('semesters')
+            .delete()
+            .eq('semester_index', startSemesterIndex)
+          if (error) console.error(error)
+        } else {
+          const { error } = await supabaseClient
+            .from('semesters')
+            .update({ semester_course_ids: newStartSemesterCourseIds })
+            .eq('semester_index', startSemesterIndex)
+          if (error) console.error(error)
+        }
+
+        const overSemesterCourseIds = overSemester.semester_courses.map(
+          (c) => c.course_id,
+        )
+        if (overSemesterCourseIds.length === 1) {
+          const { error } = await supabaseClient.from('semesters').insert([
+            {
+              user_id: dbUser.id,
+              semester_index: overSemester.semester_index,
+              semester_course_ids: overSemesterCourseIds,
+            },
+          ])
+          if (error) console.error(error)
+        } else {
+          const { error } = await supabaseClient
+            .from('semesters')
+            .update({ semester_course_ids: overSemesterCourseIds })
+            .eq('semester_index', overSemester.semester_index)
+          if (error) console.error(error)
+        }
+      } else {
+        // ...within the same semester
         const semester_course_ids = activeSemester.semester_courses.map(
           (c) => c.course_id,
         )
