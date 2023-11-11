@@ -31,3 +31,11 @@ export interface dbSemester {
   semester_index: number
   semester_course_ids: string[]
 }
+
+export interface dbUser {
+  id: string
+  created_at: string
+  username: string
+  full_name: string
+  first_year: number
+}

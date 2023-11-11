@@ -357,6 +357,7 @@ export default function Planner({
               semesters={semesters}
               setSemesters={setSemesters}
               setCourseCatalog={setCourseCatalog}
+              dbUser={dbUser}
             />
 
             <Divider className="mt-4" />

@@ -1,5 +1,5 @@
 import { allCourses } from '@/data/allCourses'
-import { Course, Semester } from '@/shared/types'
+import { Course, Semester, dbUser } from '@/shared/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, LinkIcon } from '@heroicons/react/24/outline'
 import {
@@ -13,6 +13,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@nextui-org/react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import toast from 'react-hot-toast'
 
 export function Toolbar({
@@ -20,12 +21,15 @@ export function Toolbar({
   semesters,
   setSemesters,
   setCourseCatalog,
+  dbUser,
 }: {
   totalCU: number
   semesters: Semester[]
   setSemesters: (semesters: Semester[]) => void
   setCourseCatalog: (courseCatalog: Course[]) => void
+  dbUser: dbUser
 }) {
+  const supabaseClient = useSupabaseClient()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
@@ -84,7 +88,12 @@ export function Toolbar({
                 </Button>
                 <Button
                   color="danger"
-                  onPress={() => {
+                  onPress={async () => {
+                    const { error } = await supabaseClient
+                      .from('semesters')
+                      .delete()
+                      .eq('user_id', dbUser.id)
+                    console.error(error)
                     setSemesters(
                       semesters.map((s) => ({
                         ...s,
