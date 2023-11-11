@@ -186,12 +186,14 @@ export default function Planner({
             .from('semesters')
             .delete()
             .eq('semester_index', startSemesterIndex)
+            .eq('user_id', dbUser.id)
           if (error) console.error(error)
         } else {
           const { error } = await supabaseClient
             .from('semesters')
             .update({ semester_course_ids: newStartSemesterCourseIds })
             .eq('semester_index', startSemesterIndex)
+            .eq('user_id', dbUser.id)
           if (error) console.error(error)
         }
 
@@ -212,6 +214,7 @@ export default function Planner({
             .from('semesters')
             .update({ semester_course_ids: overSemesterCourseIds })
             .eq('semester_index', overSemester.semester_index)
+            .eq('user_id', dbUser.id)
           if (error) console.error(error)
         }
       } else {
@@ -223,6 +226,7 @@ export default function Planner({
           .from('semesters')
           .update({ semester_course_ids })
           .eq('semester_index', activeSemester.semester_index)
+          .eq('user_id', dbUser.id)
         if (error) console.error(error)
       }
     } else {
@@ -263,6 +267,7 @@ export default function Planner({
           .from('semesters')
           .update({ semester_course_ids })
           .eq('semester_index', overSemester?.semester_index)
+          .eq('user_id', dbUser.id)
         if (error) console.error(error)
       }
     }
@@ -401,6 +406,7 @@ export default function Planner({
                               onModalOpen={onOpen}
                               setCourseCatalog={setCourseCatalog}
                               courseCatalog={courseCatalog}
+                              dbUser={dbUser}
                             />
                           </Droppable>
                         ))}
