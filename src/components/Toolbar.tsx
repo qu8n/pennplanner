@@ -36,7 +36,7 @@ export function Toolbar({
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
       <div className="flex grow flex-col gap-2 pr-4">
         <div className="flex flex-row justify-between">
-          <h2 className="flex-none text-xl font-bold text-blue-950">
+          <h2 className="flex-none text-xl font-semibold text-blue-900">
             Quan&#39;s Degree Planner
           </h2>
           <div className="mt-1 flex flex-row items-center gap-1">

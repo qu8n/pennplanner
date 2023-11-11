@@ -312,10 +312,14 @@ export default function Planner({
 
   if (width < 1375) {
     return (
-      <p className="px-32 text-center">
-        This application does not currently supports mobile view. If you&#39;re
-        on desktop, please widen the screen or zoom out.
-      </p>
+      <div className="flex flex-1 px-4 py-6 2xl:px-28">
+        <div className="flex w-full flex-col justify-center rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md">
+          <p className="text-center">
+            This application does not currently supports mobile view. If
+            you&#39;re on desktop, please widen the screen or zoom out.
+          </p>
+        </div>
+      </div>
     )
   }
 
@@ -342,12 +346,12 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 overflow-hidden py-6 lg:px-4 2xl:px-28">
+        <div className="flex flex-1 overflow-hidden px-4 py-6 2xl:px-28">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
+            className="flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md"
           >
             <Sidebar
               courseCatalog={courseCatalog}
@@ -364,7 +368,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
+            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md"
           >
             <Toolbar
               totalCU={totalCU}
@@ -385,7 +389,7 @@ export default function Planner({
                       key={yearOrder}
                       className="flex w-full flex-col rounded-xl py-4 pr-2"
                     >
-                      <h2 className="ml-2 text-lg font-semibold text-blue-950">
+                      <h2 className="ml-2 text-lg font-semibold text-blue-900">
                         Year {Number(yearOrder) + 1}
                       </h2>
 

@@ -22,7 +22,7 @@ export function CourseBig({
     >
       <div className="flex flex-col">
         <p className="text-sm font-bold text-neutral-500">{c.course_id}</p>
-        <p className="line-clamp-2 text-xs font-semibold text-blue-950">
+        <p className="line-clamp-2 text-xs font-semibold text-blue-900">
           {c.course_name}
         </p>
         <div className="mt-1 flex flex-col text-xs font-light text-neutral-500">

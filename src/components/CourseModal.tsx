@@ -30,7 +30,7 @@ export function CourseModal({
               <p className="text-xl font-bold text-neutral-500">
                 {modalCourse?.course_id}
               </p>
-              <p className="text-2xl font-bold text-blue-950">
+              <p className="text-2xl font-semibold text-blue-900">
                 {modalCourse?.course_name}
               </p>
             </ModalHeader>

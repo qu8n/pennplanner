@@ -144,7 +144,9 @@ export function Sidebar({
 
   return (
     <>
-      <h2 className="ml-1 text-xl font-bold text-blue-950">Course Catalog</h2>
+      <h2 className="ml-1 text-xl font-semibold text-blue-900">
+        Course Catalog
+      </h2>
 
       <Input
         className="mt-2 h-14"

@@ -36,7 +36,7 @@ export function CourseTiny({
     >
       <div className="flex flex-col">
         <p className="text-sm font-semibold text-neutral-500">{c.course_id}</p>
-        <p className="line-clamp-1 text-xs font-medium text-blue-950">
+        <p className="line-clamp-1 text-xs font-medium text-blue-900">
           {c.course_name}
         </p>
       </div>
