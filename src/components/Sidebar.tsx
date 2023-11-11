@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
-import { BookmarkSquareIcon } from '@heroicons/react/20/solid'
+import { AcademicCapIcon } from '@heroicons/react/20/solid'
 import { CourseBig } from './CourseBig'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -147,7 +147,7 @@ export function Sidebar({
       <h2 className="ml-1 text-xl font-bold text-blue-950">Course Catalog</h2>
 
       <Input
-        className="mt-1 h-14"
+        className="mt-2 h-14"
         type="text"
         label={
           <div className="flex flex-row items-center gap-2">
@@ -170,16 +170,12 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={
-                coursesQuery.filter === 'all-courses' ? (
-                  <AdjustmentsHorizontalIcon className="h-4 w-4" />
-                ) : null
-              }
+              startContent={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.filter === 'all-courses'
                   ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-500 bg-white text-blue-500'
-              } rounded-xl`}
+                  : 'border-1 border-blue-600 bg-blue-600 text-white'
+              } gap-1 rounded-xl px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all-courses'
@@ -224,16 +220,12 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={
-                coursesQuery.sort === '' ? (
-                  <BarsArrowDownIcon className="h-4 w-4" />
-                ) : null
-              }
+              startContent={<BarsArrowDownIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.sort === ''
                   ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-500 bg-white text-blue-500'
-              } rounded-xl`}
+                  : 'border-1 border-blue-600 bg-blue-600 text-white'
+              } gap-1 rounded-xl px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === ''
@@ -309,12 +301,10 @@ export function Sidebar({
       </div> */}
 
       {/* For logged-in users */}
-      <div className="mt-4 flex flex-row items-center gap-4">
-        <div className="flex flex-row items-center gap-1">
-          <BookmarkSquareIcon className="h-4 w-4 text-blue-700" />
-          <span className="text-sm font-semibold text-blue-700">
-            PennPlanner
-          </span>
+      <div className="-mb-2 mt-2 flex flex-row items-center gap-2">
+        <div className="mr-2 flex flex-row items-center gap-1">
+          <AcademicCapIcon className="h-5 w-5 text-blue-700" />
+          <span className="font-semibold text-blue-700">PennPlanner</span>
         </div>
 
         <Button
@@ -323,6 +313,14 @@ export function Sidebar({
           className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
         >
           About
+        </Button>
+
+        <Button
+          size="sm"
+          variant="light"
+          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
+        >
+          Feedback
         </Button>
 
         <Button

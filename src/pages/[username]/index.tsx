@@ -333,7 +333,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="my-6 flex w-[26rem] flex-col rounded-2xl bg-white p-6 shadow-md"
+            className="my-6 flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
           >
             <Sidebar
               courseCatalog={courseCatalog}
@@ -350,7 +350,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="my-6 flex flex-1 flex-col rounded-2xl bg-white p-6 shadow-md"
+            className="my-6 flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
           >
             <Toolbar
               totalCU={totalCU}

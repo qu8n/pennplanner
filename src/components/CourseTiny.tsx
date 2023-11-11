@@ -1,5 +1,5 @@
 import { Course, Semester } from '@/shared/types'
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, EyeIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
@@ -44,13 +44,12 @@ export function CourseTiny({
           size="sm"
           variant="flat"
           isIconOnly
-          className="p-0"
           onPress={() => {
             setModalCourse(c)
             onModalOpen()
           }}
         >
-          <MagnifyingGlassIcon className="h-3 w-3 text-gray-500" />
+          <EyeIcon className="h-3 w-3 text-neutral-500" />
         </Button>
       </Tooltip>
 

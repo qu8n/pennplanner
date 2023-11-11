@@ -1,5 +1,5 @@
 import { Course } from '@/shared/types'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { EyeIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
@@ -22,7 +22,7 @@ export function CourseBig({
     >
       <div className="flex flex-col">
         <p className="text-sm font-bold text-neutral-500">{c.course_id}</p>
-        <p className="line-clamp-2 text-sm font-semibold text-blue-950">
+        <p className="line-clamp-2 text-xs font-semibold text-blue-950">
           {c.course_name}
         </p>
         <div className="mt-1 flex flex-col text-xs font-light text-neutral-500">
@@ -92,7 +92,7 @@ export function CourseBig({
             onModalOpen()
           }}
         >
-          <MagnifyingGlassIcon className="h-4 w-4 text-gray-500" />
+          <EyeIcon className="h-4 w-4 text-neutral-500" />
         </Button>
       </Tooltip>
     </div>
