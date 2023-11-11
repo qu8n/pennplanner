@@ -1,6 +1,8 @@
 // Supabase SQL query: select json_agg(course_catalog) from public.course_catalog
 
-export const allCourses = [
+import { Course } from '@/shared/types'
+
+export const allCourses: Course[] = [
   {
     avg_difficulty: 3.64,
     avg_hours_per_week: 13.82,

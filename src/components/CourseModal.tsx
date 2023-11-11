@@ -22,7 +22,7 @@ export function CourseModal({
   onModalOpen: () => void
 }) {
   return (
-    <Modal isOpen={isModalOpen} onOpenChange={onModalOpen} size="xl">
+    <Modal isOpen={isModalOpen} onOpenChange={onModalOpen} size="3xl">
       <ModalContent>
         {(onClose) => (
           <>

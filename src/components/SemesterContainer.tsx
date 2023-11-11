@@ -166,7 +166,7 @@ export function SemesterContainer({
                     </div>
                   </div>
                 ) : (
-                  'Total hours per week of workload on average'
+                  'Total hours per week in workload on average per MCIT Central'
                 )
               }
             >

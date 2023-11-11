@@ -23,3 +23,11 @@ export interface Course {
   avg_hours_per_week?: number | null
   avg_rating?: number | null
 }
+
+export interface dbSemester {
+  id: number
+  user_id: string
+  created_at: string
+  semester_index: number
+  semester_course_ids: string[]
+}

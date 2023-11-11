@@ -35,6 +35,7 @@ import { motion } from 'framer-motion'
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { generateSemestersData } from '@/utils/generateSemestersData'
 
 export default function Planner({
   dbUser,
@@ -428,7 +429,7 @@ export default function Planner({
                       ])
                     }}
                   >
-                    Add calendar year
+                    Add year
                   </Button>
                 ) : null}
               </ScrollShadow>
@@ -510,168 +511,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const firstYearData = dbUser.first_year
 
-  const semestersData: Semester[] = [
-    {
-      semester_index: 0,
-      semester_year: firstYearData,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 0,
-    },
-    {
-      semester_index: 1,
-      semester_year: firstYearData + 1,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 0,
-    },
-    {
-      semester_index: 2,
-      semester_year: firstYearData + 1,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 0,
-    },
-    {
-      semester_index: 3,
-      semester_year: firstYearData + 1,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 1,
-    },
-    {
-      semester_index: 4,
-      semester_year: firstYearData + 2,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 1,
-    },
-    {
-      semester_index: 5,
-      semester_year: firstYearData + 2,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 1,
-    },
-    {
-      semester_index: 6,
-      semester_year: firstYearData + 2,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 2,
-    },
-    {
-      semester_index: 7,
-      semester_year: firstYearData + 3,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 2,
-    },
-    {
-      semester_index: 8,
-      semester_year: firstYearData + 3,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 2,
-    },
-    {
-      semester_index: 9,
-      semester_year: firstYearData + 3,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 3,
-    },
-    {
-      semester_index: 10,
-      semester_year: firstYearData + 4,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 3,
-    },
-    {
-      semester_index: 11,
-      semester_year: firstYearData + 4,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 3,
-    },
-    {
-      semester_index: 12,
-      semester_year: firstYearData + 4,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 4,
-    },
-    {
-      semester_index: 13,
-      semester_year: firstYearData + 5,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 4,
-    },
-    {
-      semester_index: 14,
-      semester_year: firstYearData + 5,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 4,
-    },
-    {
-      semester_index: 15,
-      semester_year: firstYearData + 5,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 5,
-    },
-    {
-      semester_index: 16,
-      semester_year: firstYearData + 6,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 5,
-    },
-    {
-      semester_index: 17,
-      semester_year: firstYearData + 6,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 5,
-    },
-    {
-      semester_index: 18,
-      semester_year: firstYearData + 6,
-      semester_season: 'Fall',
-      semester_courses: [],
-      year_index: 6,
-    },
-    {
-      semester_index: 19,
-      semester_year: firstYearData + 7,
-      semester_season: 'Spring',
-      semester_courses: [],
-      year_index: 6,
-    },
-    {
-      semester_index: 20,
-      semester_year: firstYearData + 7,
-      semester_season: 'Summer',
-      semester_courses: [],
-      year_index: 6,
-    },
-  ]
-
-  dbSemesters?.forEach((dbSemester) => {
-    const semesterCourses = dbSemester.semester_course_ids.map((id: string) =>
-      allCourses.find((c) => c.course_id === id),
-    )
-
-    const i = dbSemester.semester_index
-    const newSemester = semestersData[i]
-    semestersData[i] = {
-      ...newSemester,
-      semester_courses: semesterCourses,
-    }
-  })
+  const semestersData = generateSemestersData(firstYearData, dbSemesters)
 
   const courseCatalogData = allCourses.filter((allCourse) => {
     return !semestersData.some((s) => {
