@@ -36,7 +36,7 @@ export default function App({
           <Toaster position="top-right" reverseOrder={false} />
         </div>
         <main
-          className={`flex h-screen flex-col px-28 ${geistSans.className} bg-gray-200 text-gray-800`}
+          className={`flex h-screen flex-col ${geistSans.className} justify-center bg-gray-200 text-gray-800`}
         >
           <Component {...pageProps} />
         </main>

@@ -305,6 +305,15 @@ export default function Planner({
     [semestersByYearOrder],
   )
 
+  if (width < 1375) {
+    return (
+      <p className="px-32 text-center">
+        This application does not currently supports mobile view. If you&#39;re
+        on desktop, please widen the screen or zoom out.
+      </p>
+    )
+  }
+
   return (
     <>
       {totalCU === 10 && (
@@ -315,7 +324,7 @@ export default function Planner({
             w: 200,
             h: 10,
             x: width / 2,
-            y: 55,
+            y: 80,
           }}
           recycle={false}
         />
@@ -328,12 +337,12 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden py-6 lg:px-4 2xl:px-28">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="my-6 flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
+            className="flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
           >
             <Sidebar
               courseCatalog={courseCatalog}
@@ -350,7 +359,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="my-6 flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
+            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-lg"
           >
             <Toolbar
               totalCU={totalCU}

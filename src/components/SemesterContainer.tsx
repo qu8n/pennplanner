@@ -87,7 +87,7 @@ export function SemesterContainer({
             color="warning"
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
-            className="-ml-2 -mt-2 w-[115px]"
+            className="-ml-2 -mt-2 min-w-[115px] max-w-[115px]"
             onChange={async (e) => {
               const value = Number(e.target.value)
               const yearDiff = value - firstYear
