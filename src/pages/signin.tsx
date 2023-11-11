@@ -32,6 +32,7 @@ export default function SignIn() {
         .eq('id', user?.id)
         .single()
       if (data) return data.username
+      if (error) console.error(error)
     }
 
     if (user) {
@@ -47,31 +48,52 @@ export default function SignIn() {
 
   if (!user) {
     return (
-      <>
-        <h1 className="mb-5 text-center text-lg font-semibold">Get Started</h1>
-        <div className="mx-auto block w-1/3">
-          <Auth
-            supabaseClient={supabaseClient}
-            redirectTo="http://localhost:3000/signin"
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  space: {
-                    buttonPadding: '30px',
-                  },
-                  radii: {
-                    borderRadiusButton: '50px',
+      <div className="flex flex-1 px-4 py-6 2xl:px-28">
+        <div className="flex w-full rounded-2xl border-1 border-neutral-300 bg-white p-20 shadow-md">
+          <div className="flex w-1/2 flex-col justify-center p-20">
+            <h1 className="mb-5 text-center text-2xl font-medium text-blue-700">
+              Access your <b>PennPlanner</b>
+            </h1>
+            <Auth
+              supabaseClient={supabaseClient}
+              redirectTo="http://localhost:3000/signin"
+              appearance={{
+                theme: ThemeSupa,
+                variables: {
+                  default: {
+                    space: {
+                      buttonPadding: '30px',
+                    },
+                    radii: {
+                      borderRadiusButton: '20px',
+                    },
                   },
                 },
-              },
-            }}
-            providers={['google']}
-            socialLayout="vertical"
-            onlyThirdPartyProviders={true}
-          />
+              }}
+              providers={['google']}
+              socialLayout="vertical"
+              onlyThirdPartyProviders={true}
+              localization={{
+                variables: {
+                  sign_in: {
+                    social_provider_text: 'Continue with {{provider}}',
+                  },
+                },
+              }}
+            />
+            <p className="mt-2 max-w-2xl text-center text-xs text-neutral-500">
+              You can use either a (1) Penn email or (2) personal Google email.
+            </p>
+          </div>
+          <div className="flex w-1/2 flex-col items-center justify-center">
+            <img
+              src="/signin.png"
+              alt="Plans"
+              className="pointer-events-none max-w-lg"
+            />
+          </div>
         </div>
-      </>
+      </div>
     )
   }
 

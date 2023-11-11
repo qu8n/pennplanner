@@ -12,7 +12,11 @@ export default function Home() {
           transition={{ duration: 2, ease: 'easeOut' }}
           className="m-auto flex flex-col items-center text-center"
         >
-          <img src="/landing.png" alt="Plans" className="w-96" />
+          <img
+            src="/landing.png"
+            alt="Plans"
+            className="pointer-events-none w-96"
+          />
 
           <h1 className="mt-4 text-6xl font-extrabold text-blue-700">
             Plan Smarter, Not Harder.
