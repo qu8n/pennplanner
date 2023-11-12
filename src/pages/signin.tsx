@@ -56,35 +56,37 @@ export default function SignIn() {
                 <h1 className="mb-5 text-center text-2xl font-medium text-blue-700">
                   Access your <b>PennPlanner</b>
                 </h1>
-                <div className="w-96">
-                  <Auth
-                    supabaseClient={supabaseClient}
-                    redirectTo="http://localhost:3000/signin"
-                    appearance={{
-                      theme: ThemeSupa,
-                      variables: {
-                        default: {
-                          space: {
-                            buttonPadding: '20px',
-                          },
-                          radii: {
-                            borderRadiusButton: '20px',
+                {typeof window !== 'undefined' && (
+                  <div className="w-96">
+                    <Auth
+                      supabaseClient={supabaseClient}
+                      redirectTo={`${window.location.origin}/signin`}
+                      appearance={{
+                        theme: ThemeSupa,
+                        variables: {
+                          default: {
+                            space: {
+                              buttonPadding: '20px',
+                            },
+                            radii: {
+                              borderRadiusButton: '20px',
+                            },
                           },
                         },
-                      },
-                    }}
-                    providers={['google']}
-                    socialLayout="vertical"
-                    onlyThirdPartyProviders={true}
-                    localization={{
-                      variables: {
-                        sign_in: {
-                          social_provider_text: 'Continue with {{provider}}',
+                      }}
+                      providers={['google']}
+                      socialLayout="vertical"
+                      onlyThirdPartyProviders={true}
+                      localization={{
+                        variables: {
+                          sign_in: {
+                            social_provider_text: 'Continue with {{provider}}',
+                          },
                         },
-                      },
-                    }}
-                  />
-                </div>
+                      }}
+                    />
+                  </div>
+                )}
                 <p className="mt-2 max-w-2xl text-center text-xs text-neutral-500">
                   You can use either a (1) Penn email or (2) personal Google
                   email

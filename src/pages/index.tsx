@@ -21,7 +21,7 @@ export default function Home() {
             className="pointer-events-none w-96"
           />
 
-          <h1 className="mt-4 text-6xl font-extrabold text-blue-700">
+          <h1 className="mt-4 text-5xl font-extrabold text-blue-700">
             Plan Smarter, Not Harder.
           </h1>
 
@@ -30,7 +30,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 3, ease: 'easeOut' }}
           >
-            <h2 className="mt-2 max-w-2xl text-3xl text-neutral-500">
+            <h2 className="mt-2 max-w-xl text-2xl text-neutral-500">
               Drag-and-drop course planning made easy for online <b>MCIT</b> and{' '}
               <b>MSE-DS</b> students.
             </h2>
