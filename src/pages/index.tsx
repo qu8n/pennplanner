@@ -1,8 +1,11 @@
 import { AcademicCapIcon } from '@heroicons/react/24/outline'
 import { Button, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const router = useRouter()
+
   return (
     <div className="flex flex-1 px-4 py-6 2xl:px-28">
       <div className="flex w-full rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md">
@@ -41,6 +44,7 @@ export default function Home() {
             <Button
               className="custom-gradient mt-6 flex flex-row items-center gap-3 rounded-xl p-8 text-white"
               size="lg"
+              onPress={() => router.push('/signin')}
             >
               <AcademicCapIcon className="text-white-500 h-6 w-6" />
               <p>
