@@ -5,7 +5,14 @@ import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 // import { Database } from '@/types/supabase';
 import { useRouter } from 'next/router'
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
+import {
+  Button,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from '@nextui-org/react'
 
 const SITE_URL =
   process.env.NODE_ENV === 'production'
@@ -21,6 +28,7 @@ export default function SignIn() {
     username: '',
     full_name: '',
     first_year: new Date().getFullYear(),
+    program: 'MCIT',
   })
 
   useEffect(() => {
@@ -105,7 +113,7 @@ export default function SignIn() {
             </>
           ) : (
             <>
-              <div className="flex w-1/2 flex-col items-center justify-center gap-2">
+              <div className="flex w-1/2 flex-col items-center justify-center gap-2 px-40">
                 <h1 className="mb-5 text-center text-2xl font-semibold text-blue-700">
                   Almost there!
                 </h1>
@@ -117,7 +125,7 @@ export default function SignIn() {
                   type="email"
                   label="Email address"
                   value={user?.email}
-                  className="max-w-xs opacity-40"
+                  className="opacity-40"
                 />
 
                 <Input
@@ -129,7 +137,6 @@ export default function SignIn() {
                   onValueChange={(value) =>
                     setNewUser({ ...newUser, full_name: value })
                   }
-                  className="max-w-xs"
                 />
 
                 <Input
@@ -148,7 +155,6 @@ export default function SignIn() {
                   onValueChange={(value) =>
                     setNewUser({ ...newUser, username: value })
                   }
-                  className="max-w-xs"
                 />
 
                 <Select
@@ -161,7 +167,6 @@ export default function SignIn() {
                     const value = e.target.value
                     setNewUser({ ...newUser, first_year: Number(value) })
                   }}
-                  className="max-w-xs"
                 >
                   {Array.from(
                     { length: new Date().getFullYear() - 2019 + 1 },
@@ -174,6 +179,32 @@ export default function SignIn() {
                     })}
                 </Select>
 
+                <RadioGroup
+                  isRequired
+                  size="sm"
+                  label="Online program"
+                  // orientation="horizontal"
+                  value={newUser.program}
+                  onValueChange={(value) =>
+                    setNewUser({ ...newUser, program: value })
+                  }
+                  className="ml-1 mt-2 w-full"
+                  classNames={{
+                    label: 'text-xs font-medium',
+                  }}
+                >
+                  <Radio value="MCIT">
+                    <span className="font-semibold text-neutral-700">MCIT</span>{' '}
+                    - Master of Computer and Information Technology
+                  </Radio>
+                  <Radio value="MSE-DS">
+                    <span className="font-semibold text-neutral-700">
+                      MSE-DS
+                    </span>{' '}
+                    - Master of Science in Engineering in Data Science
+                  </Radio>
+                </RadioGroup>
+
                 <Button
                   size="lg"
                   onPress={async () => {
@@ -185,6 +216,7 @@ export default function SignIn() {
                           username: newUser.username,
                           full_name: newUser.full_name,
                           first_year: newUser.first_year,
+                          program: newUser.program,
                         },
                       ])
                     if (userCreateError) {
@@ -194,7 +226,7 @@ export default function SignIn() {
                       router.push(`/${newUser.username}`)
                     }
                   }}
-                  className="mt-6 w-full max-w-xs bg-blue-700 text-white hover:bg-blue-800"
+                  className="mt-6 w-full bg-blue-700 text-white hover:bg-blue-800"
                 >
                   Confirm
                 </Button>
