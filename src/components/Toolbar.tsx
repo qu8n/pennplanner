@@ -37,7 +37,8 @@ export function Toolbar({
       <div className="flex grow flex-col gap-2 pr-4">
         <div className="flex flex-row justify-between">
           <h2 className="flex-none text-xl font-semibold text-blue-900">
-            Quan&#39;s Degree Planner
+            {dbUser.full_name.split(/(\s+)/)[0] || dbUser.username}&#39;s Degree
+            Planner
           </h2>
           <div className="mt-1 flex flex-row items-center gap-1">
             <span className="text-xs">{totalCU} / 10 course units (CU)</span>

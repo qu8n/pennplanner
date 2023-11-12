@@ -100,14 +100,15 @@ export default function SignIn() {
             </>
           ) : (
             <>
-              <div className="flex w-1/2 flex-col items-center justify-center gap-2 p-20">
+              <div className="flex w-1/2 flex-col items-center justify-center gap-2">
                 <h1 className="mb-5 text-center text-2xl font-semibold text-blue-700">
                   Almost there!
                 </h1>
                 <Input
                   fullWidth
-                  variant="underlined"
                   isDisabled
+                  isRequired
+                  variant="underlined"
                   type="email"
                   label="Email address"
                   value={user?.email}
@@ -115,6 +116,7 @@ export default function SignIn() {
                 />
 
                 <Input
+                  isRequired
                   type="text"
                   label="Full name"
                   variant="underlined"
@@ -126,6 +128,7 @@ export default function SignIn() {
                 />
 
                 <Input
+                  isRequired
                   type="text"
                   label="Username"
                   variant="underlined"
@@ -144,6 +147,7 @@ export default function SignIn() {
                 />
 
                 <Select
+                  isRequired
                   label="First year"
                   variant="underlined"
                   disallowEmptySelection
