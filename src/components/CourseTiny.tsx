@@ -1,4 +1,5 @@
 import { Course, Semester, dbUser } from '@/shared/types'
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, EyeIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
@@ -32,8 +33,12 @@ export function CourseTiny({
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-1 ring-neutral-300`}
+      } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-2 ring-red-500`}
     >
+      <Tooltip closeDelay={0} content="Something is wrong here" color="danger">
+        <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-white text-red-500" />
+      </Tooltip>
+
       <div className="flex flex-col">
         <p className="text-sm font-semibold text-neutral-500">{c.course_id}</p>
         <p className="line-clamp-1 text-xs font-medium text-blue-900">
