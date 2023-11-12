@@ -3,6 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, EyeIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useMemo } from 'react'
 
 export function CourseTiny({
   c,
@@ -29,15 +30,38 @@ export function CourseTiny({
 }) {
   const supabaseClient = useSupabaseClient()
 
+  const warningMessage: string = useMemo(() => {
+    if (s && semesters && dbUser?.program === 'MCIT') {
+      if (c.mcit_open_elective) {
+        const coreCoursesInPreviousSemesters = semesters.reduce(
+          (acc, semester) =>
+            semester.semester_index < s.semester_index
+              ? acc +
+                semester.semester_courses.filter((sc) => sc.mcit_core_course)
+                  .length
+              : acc,
+          0,
+        )
+        if (coreCoursesInPreviousSemesters < 4) {
+          return 'You must complete 4 core courses before you can take an elective.'
+        }
+      }
+    }
+    return ''
+    // eslint-disable-next-line
+  }, [semesters])
+
   return (
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-2 ring-red-500`}
+      } group relative flex flex-row items-center justify-between rounded-lg bg-neutral-50 px-2 py-1 ring-1 ring-neutral-300`}
     >
-      <Tooltip closeDelay={0} content="Something is wrong here" color="danger">
-        <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-white text-red-500" />
-      </Tooltip>
+      {warningMessage && (
+        <Tooltip closeDelay={0} content={warningMessage} color="danger">
+          <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-500" />
+        </Tooltip>
+      )}
 
       <div className="flex flex-col">
         <p className="text-sm font-semibold text-neutral-500">{c.course_id}</p>

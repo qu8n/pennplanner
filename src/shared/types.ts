@@ -38,4 +38,5 @@ export interface dbUser {
   username: string
   full_name: string
   first_year: number
+  program: string
 }

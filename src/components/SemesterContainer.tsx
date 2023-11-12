@@ -171,7 +171,7 @@ export function SemesterContainer({
                 )
               }
             >
-              <Chip variant="flat" size="sm" className="text-xs">
+              <Chip variant="flat" size="sm" className="cursor-default text-xs">
                 {hasNullHoursPerWeek ? '?' : `~${totalHoursPerWeek}`} hrs/wk
               </Chip>
             </Tooltip>
@@ -185,7 +185,7 @@ export function SemesterContainer({
               <Chip
                 variant="flat"
                 size="sm"
-                className="text-xs"
+                className="cursor-default text-xs"
                 color="default"
               >
                 {totalCU} CU
