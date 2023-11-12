@@ -310,19 +310,6 @@ export default function Planner({
     [semestersByYearOrder],
   )
 
-  if (width < 1375) {
-    return (
-      <div className="flex flex-1 px-4 py-6 2xl:px-28">
-        <div className="flex w-full flex-col justify-center rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md">
-          <p className="text-center">
-            This application does not currently supports mobile view. If
-            you&#39;re on desktop, please widen the screen or zoom out.
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       {totalCU === 10 && (
