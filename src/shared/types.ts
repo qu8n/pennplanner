@@ -12,7 +12,10 @@ export interface Course {
   course_name: string
   course_unit: number
   course_description: string
-  course_prereqs: string
+  course_prereqs_text: string
+  course_prereq_ids: (string | string[])[]
+  course_coreq_ids: (string | string[])[]
+  course_rec_ids: (string | string[])[]
   mcit_core_course: boolean
   mcit_open_elective: boolean
   mse_ds_core_course: boolean

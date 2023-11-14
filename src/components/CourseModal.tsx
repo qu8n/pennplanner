@@ -161,7 +161,7 @@ export function CourseModal({
 
               <p>
                 <span className="font-semibold">Pre-Requisites: </span>
-                {modalCourse?.course_prereqs}
+                {modalCourse?.course_prereqs_text}
               </p>
             </ModalBody>
 
