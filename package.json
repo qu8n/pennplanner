@@ -28,6 +28,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-loader-spinner": "^5.4.5",
     "react-use": "^17.4.0"
   },
   "devDependencies": {

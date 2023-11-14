@@ -13,6 +13,7 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react'
+import { RotatingSquare } from 'react-loader-spinner'
 
 const SITE_URL =
   process.env.NODE_ENV === 'production'
@@ -58,6 +59,24 @@ export default function SignIn() {
       })
     }
   }, [user, router, supabaseClient])
+
+  if (router.query.code) {
+    return (
+      <div className="m-auto">
+        <RotatingSquare
+          height="100"
+          width="100"
+          color="#1d4ed8"
+          ariaLabel="rotating-square-loading"
+          strokeWidth="10"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+        <p className="text-center text-xs text-neutral-500">Loading...</p>
+      </div>
+    )
+  }
 
   return (
     <>
