@@ -36,7 +36,7 @@ export function Toolbar({
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
       <div className="flex grow flex-col gap-2 pr-4">
         <div className="flex flex-row justify-between">
-          <h2 className="flex-none text-xl font-semibold text-blue-900">
+          <h2 className="flex-none text-xl font-bold text-blue-800">
             {dbUser.full_name.split(/(\s+)/)[0]}&#39;s {dbUser.program} Degree
             Planner
           </h2>
@@ -62,7 +62,7 @@ export function Toolbar({
       >
         <Button
           startContent={<ArrowPathIcon className="h-4 w-4" />}
-          className="w-38 flex-none rounded-xl border-none bg-gray-200"
+          className="w-38 flex-none rounded-xl border-1 border-neutral-300 bg-neutral-200"
           onPress={onOpen}
         >
           Reset plan

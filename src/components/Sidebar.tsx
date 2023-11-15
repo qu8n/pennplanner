@@ -144,12 +144,10 @@ export function Sidebar({
 
   return (
     <>
-      <h2 className="ml-1 text-xl font-semibold text-blue-900">
-        Course Catalog
-      </h2>
+      <h2 className="ml-1 text-xl font-bold text-blue-800">Course Catalog</h2>
 
       <Input
-        className="mt-2 h-14"
+        className="h-14"
         type="text"
         label={
           <div className="flex flex-row items-center gap-2">
@@ -157,7 +155,7 @@ export function Sidebar({
             Search course name, id, or number
           </div>
         }
-        variant="flat"
+        variant="underlined"
         labelPlacement="inside"
         isClearable
         value={coursesQuery.search}
@@ -175,9 +173,9 @@ export function Sidebar({
               startContent={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.filter === 'all-courses'
-                  ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-600 bg-blue-600 text-white'
-              } gap-1 rounded-xl px-1`}
+                  ? 'border-neutral-300 bg-neutral-200'
+                  : 'border-blue-600 bg-blue-600 text-white'
+              } gap-1 rounded-xl border-1 px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all-courses'
@@ -225,9 +223,9 @@ export function Sidebar({
               startContent={<BarsArrowDownIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.sort === ''
-                  ? 'border-none bg-gray-200'
-                  : 'border-1 border-blue-600 bg-blue-600 text-white'
-              } gap-1 rounded-xl px-1`}
+                  ? 'border-neutral-300 bg-neutral-200'
+                  : 'border-blue-600 bg-blue-600 text-white'
+              } gap-1 rounded-xl border-1 px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === ''
@@ -278,31 +276,7 @@ export function Sidebar({
       </div>
 
       <Divider />
-
-      {/* For non-logged in users */}
-      {/* <div className="mt-4 flex flex-row items-center gap-2">
-        <Button className="custom-gradient flex flex-row items-center gap-1 rounded-xl px-3 py-2 text-white">
-          <BookmarkSquareIcon className="text-white-500 h-5 w-5" />
-          <span className="text-sm font-extralight">Create your </span>
-          <span className="text-sm font-medium">PennPlanner</span>
-        </Button>
-
-        <div className="flex">
-          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
-            Login
-          </button>
-
-          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
-            About
-          </button>
-
-          <button className="rounded-xl px-1 py-1 text-xs text-neutral-500 hover:bg-neutral-100">
-            Feedback
-          </button>
-        </div>
-      </div> */}
-
-      {/* For logged-in users */}
+      {/* 
       <div className="-mb-2 mt-2 flex flex-row items-center gap-2">
         <div className="mr-2 flex flex-row items-center gap-1">
           <AcademicCapIcon className="h-5 w-5 text-blue-700" />
@@ -335,7 +309,7 @@ export function Sidebar({
         >
           Logout
         </Button>
-      </div>
+      </div> */}
     </>
   )
 }

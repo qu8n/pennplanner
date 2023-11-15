@@ -337,12 +337,12 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 overflow-hidden px-4 py-6 2xl:px-28">
+        <div className="flex flex-1 overflow-hidden py-4 pl-10 pr-4">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex w-[26rem] flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md"
+            className="flex w-1/4 flex-col pt-6"
           >
             <Sidebar
               courseCatalog={courseCatalog}
