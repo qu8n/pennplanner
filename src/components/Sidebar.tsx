@@ -18,7 +18,6 @@ import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
-import { AcademicCapIcon } from '@heroicons/react/20/solid'
 import { CourseBig } from './CourseBig'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
@@ -144,7 +143,11 @@ export function Sidebar({
 
   return (
     <>
-      <h2 className="ml-1 text-xl font-bold text-blue-800">Course Catalog</h2>
+      <Divider />
+
+      <h2 className="ml-1 mt-6 text-xl font-bold text-blue-800">
+        Course Catalog
+      </h2>
 
       <Input
         className="h-14"
@@ -164,7 +167,7 @@ export function Sidebar({
         }
       />
 
-      <div className="mt-3 flex gap-3">
+      <div className="z-0 mt-3 flex gap-3">
         <Dropdown>
           <DropdownTrigger>
             <Button
@@ -259,10 +262,8 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <Divider className="mt-3" />
-
-      <div className="flex grow flex-col overflow-hidden">
-        <ScrollShadow className="overflow-y-auto px-1 pb-2 pt-3">
+      <div className="mt-3 flex grow flex-col overflow-hidden rounded-2xl border-1 border-neutral-300 shadow-inner">
+        <ScrollShadow className="overflow-y-auto px-2 pb-2 pt-2">
           {coursesToDisplay.map((c) => (
             <Draggable key={c.course_id} id={c.course_id}>
               <CourseBig
@@ -274,42 +275,6 @@ export function Sidebar({
           ))}
         </ScrollShadow>
       </div>
-
-      <Divider />
-      {/* 
-      <div className="-mb-2 mt-2 flex flex-row items-center gap-2">
-        <div className="mr-2 flex flex-row items-center gap-1">
-          <AcademicCapIcon className="h-5 w-5 text-blue-700" />
-          <span className="font-semibold text-blue-700">PennPlanner</span>
-        </div>
-
-        <Button
-          size="sm"
-          variant="light"
-          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
-        >
-          About
-        </Button>
-
-        <Button
-          size="sm"
-          variant="light"
-          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
-        >
-          Feedback
-        </Button>
-
-        <Button
-          variant="light"
-          size="sm"
-          className="rounded-xl px-2 py-1 text-xs text-neutral-500 hover:bg-neutral-100"
-          onPress={() =>
-            supabaseClient.auth.signOut().then(() => router.push('/'))
-          }
-        >
-          Logout
-        </Button>
-      </div> */}
     </>
   )
 }

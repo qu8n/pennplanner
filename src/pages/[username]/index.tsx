@@ -25,7 +25,6 @@ import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
-import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { CourseTiny } from '@/components/CourseTiny'
 import { CourseBig } from '@/components/CourseBig'
@@ -36,6 +35,12 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { generateSemestersData } from '@/utils/generateSemestersData'
+import { Navbar } from '@/components/Navbar'
+import dynamic from 'next/dynamic'
+
+const Confetti = dynamic(() => import('react-confetti'), {
+  ssr: false,
+})
 
 export default function Planner({
   dbUser,
@@ -320,13 +325,8 @@ export default function Planner({
         <Confetti
           width={width}
           height={height}
-          confettiSource={{
-            w: 200,
-            h: 10,
-            x: width / 2,
-            y: 80,
-          }}
           recycle={false}
+          numberOfPieces={1000}
         />
       )}
 
@@ -337,12 +337,14 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 overflow-hidden py-4 pl-10 pr-4">
+        <Navbar />
+
+        <div className="flex flex-1 overflow-hidden pb-4 pl-10 pr-4">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex w-1/4 flex-col pt-6"
+            className="flex w-1/4 flex-col"
           >
             <Sidebar
               courseCatalog={courseCatalog}
@@ -359,7 +361,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md"
+            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow"
           >
             <Toolbar
               totalCU={totalCU}
@@ -369,16 +371,14 @@ export default function Planner({
               dbUser={dbUser}
             />
 
-            <Divider className="mt-4" />
-
-            <div className="flex grow flex-col overflow-hidden pl-1">
+            <div className="mt-4 flex grow flex-col overflow-hidden rounded-xl border-1 border-neutral-200 pl-1 shadow-inner">
               <ScrollShadow className="flex flex-col items-center overflow-y-auto">
                 {Object.keys(semestersByYearOrder)
                   .sort()
                   .map((yearOrder) => (
                     <div
                       key={yearOrder}
-                      className="flex w-full flex-col rounded-xl py-4 pr-2"
+                      className="flex w-full flex-col px-2 py-4"
                     >
                       <h2 className="ml-2 text-lg font-semibold text-blue-900">
                         Year {Number(yearOrder) + 1}
@@ -445,8 +445,6 @@ export default function Planner({
                 ) : null}
               </ScrollShadow>
             </div>
-
-            <Divider />
           </motion.div>
         </div>
 
