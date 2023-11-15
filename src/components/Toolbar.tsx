@@ -55,7 +55,6 @@ export function Toolbar({
         <Progress isStriped aria-label="progress" value={totalCU * 10} />
       </div>
 
-      {/* For logged-in users only */}
       <Tooltip
         closeDelay={0}
         placement="top"
@@ -116,7 +115,7 @@ export function Toolbar({
         </ModalContent>
       </Modal>
 
-      <Tooltip
+      {/* <Tooltip
         closeDelay={0}
         placement="top"
         content="Copy this plan's URL to your clipboard"
@@ -131,7 +130,7 @@ export function Toolbar({
         >
           Copy plan URL
         </Button>
-      </Tooltip>
+      </Tooltip> */}
     </div>
   )
 }
