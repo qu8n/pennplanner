@@ -61,7 +61,7 @@ export default function SignIn() {
     }
   }, [user, router, supabaseClient])
 
-  if (router.query.code) {
+  if (router.query.code && !showSignUpForm) {
     return (
       <div className="m-auto">
         <RotatingSquare
@@ -109,6 +109,9 @@ export default function SignIn() {
                         radii: {
                           borderRadiusButton: '20px',
                         },
+                        colors: {
+                          defaultButtonBackground: '#e5e5e5',
+                        },
                       },
                     },
                   }}
@@ -129,7 +132,7 @@ export default function SignIn() {
               </p>
             </div>
 
-            <div className="flex w-1/2 flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
               <img
                 src="/signin.png"
                 alt="Sign in"
@@ -139,10 +142,11 @@ export default function SignIn() {
           </>
         ) : (
           <>
-            <div className="flex w-1/2 flex-col items-center justify-center gap-2 px-40">
-              <h1 className="mb-5 text-center text-2xl font-semibold text-blue-700">
-                Almost there!
+            <div className="flex flex-col items-start justify-center gap-2 px-56">
+              <h1 className="mb-5 text-3xl font-semibold text-blue-700">
+                Almost there
               </h1>
+
               <Input
                 fullWidth
                 isDisabled
@@ -152,6 +156,9 @@ export default function SignIn() {
                 label="Email address"
                 value={user?.email}
                 className="opacity-40"
+                classNames={{
+                  label: 'text-neutral-500',
+                }}
               />
 
               <Input
@@ -163,6 +170,9 @@ export default function SignIn() {
                 onValueChange={(value) =>
                   setNewUser({ ...newUser, full_name: value })
                 }
+                classNames={{
+                  label: 'text-neutral-500',
+                }}
               />
 
               <Input
@@ -171,16 +181,17 @@ export default function SignIn() {
                 label="Username"
                 variant="underlined"
                 startContent={
-                  <div className="pointer-events-none">
-                    <span className="text-small text-default-400">
-                      pennplanner.com/
-                    </span>
-                  </div>
+                  <span className="-mr-1 mb-1 text-sm text-default-400">
+                    pennplanner.com/
+                  </span>
                 }
                 value={newUser.username}
                 onValueChange={(value) =>
                   setNewUser({ ...newUser, username: value })
                 }
+                classNames={{
+                  label: 'text-neutral-500',
+                }}
               />
 
               <Select
@@ -192,6 +203,9 @@ export default function SignIn() {
                 onChange={(e) => {
                   const value = e.target.value
                   setNewUser({ ...newUser, first_year: Number(value) })
+                }}
+                classNames={{
+                  label: 'text-neutral-500',
                 }}
               >
                 {Array.from(
@@ -216,7 +230,7 @@ export default function SignIn() {
                 }
                 className="ml-1 mt-2 w-full"
                 classNames={{
-                  label: 'text-xs font-medium',
+                  label: 'text-xs font-medium text-neutral-500',
                 }}
               >
                 <Radio value="MCIT">
@@ -226,6 +240,12 @@ export default function SignIn() {
                 <Radio value="MSE-DS">
                   <span className="font-semibold text-neutral-700">MSE-DS</span>{' '}
                   - Master of Science in Engineering in Data Science
+                </Radio>
+                <Radio value="MSE-DS" isDisabled>
+                  <span className="font-semibold text-neutral-700">
+                    Dual Degree
+                  </span>{' '}
+                  (coming soon)
                 </Radio>
               </RadioGroup>
 
@@ -255,11 +275,11 @@ export default function SignIn() {
                 Confirm
               </Button>
             </div>
-            <div className="flex w-1/2 flex-col items-center justify-center">
+            <div className="flex flex-col justify-center">
               <img
                 src="/confirm.png"
                 alt="Confirm information"
-                className="pointer-events-none max-w-lg"
+                className="pointer-events-none max-w-md"
               />
             </div>
           </>

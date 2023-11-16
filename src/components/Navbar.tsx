@@ -14,11 +14,9 @@ import { AcademicCapIcon } from '@heroicons/react/24/solid'
 import { StarIcon } from '@heroicons/react/20/solid'
 
 const mobileMenuItems = [
-  'My Plans',
-  'How It Works',
-  'About',
-  'Login',
-  'Sign Up',
+  'Star GitHub Repo',
+  'Report Issues',
+  'Suggest Features',
 ]
 
 export function Navbar({
@@ -103,18 +101,7 @@ export function Navbar({
         <NavbarMenu>
           {mobileMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 3
-                    ? 'primary'
-                    : index === mobileMenuItems.length - 1
-                    ? 'danger'
-                    : 'foreground'
-                }
-                className="w-full"
-                href="#"
-                size="lg"
-              >
+              <Link color="foreground" className="w-full" href="#" size="lg">
                 {item}
               </Link>
             </NavbarMenuItem>
