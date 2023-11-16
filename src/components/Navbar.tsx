@@ -12,8 +12,6 @@ import {
 } from '@nextui-org/react'
 import { AcademicCapIcon } from '@heroicons/react/24/solid'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
 
 const mobileMenuItems = [
   'My Plans',
@@ -23,17 +21,27 @@ const mobileMenuItems = [
   'Sign Up',
 ]
 
-export function Navbar() {
+export function Navbar({
+  maxWidthSize,
+  twHeight,
+  twTextSize,
+  twBorderBottomSize,
+  customNavbarItem,
+}: {
+  maxWidthSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | undefined
+  twHeight: string
+  twTextSize: string
+  twBorderBottomSize?: string
+  customNavbarItem?: JSX.Element
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const supabaseClient = useSupabaseClient()
-  const router = useRouter()
 
   return (
     <>
       <NextUINavbar
-        maxWidth="full"
+        maxWidth={maxWidthSize}
         onMenuOpenChange={setIsMenuOpen}
-        className="h-10 bg-neutral-100 px-6"
+        className={`${twHeight} ${twBorderBottomSize} bg-neutral-100 px-6`}
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -41,10 +49,12 @@ export function Navbar() {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <AcademicCapIcon className="h-5 w-5 text-blue-700" />
-            <p className="ml-1 font-semibold tracking-wide text-blue-800">
-              PennPlanner
-            </p>
+            <Link href="/">
+              <AcademicCapIcon className="h-5 w-5 text-blue-700" />
+              <p className="ml-1 font-semibold tracking-wide text-blue-800">
+                PennPlanner
+              </p>
+            </Link>
             <Button
               className="ml-4 gap-1"
               as={Link}
@@ -55,7 +65,9 @@ export function Navbar() {
               color="warning"
             >
               <StarIcon className="h-4 w-4 text-yellow-500" />
-              <span className="text-xs text-neutral-500">Star GitHub repo</span>
+              <span className={`${twTextSize} text-neutral-500`}>
+                Star GitHub Repo
+              </span>
             </Button>
           </NavbarBrand>
         </NavbarContent>
@@ -65,38 +77,27 @@ export function Navbar() {
             <Button
               variant="light"
               size="sm"
-              className="text-neutral-500"
+              className={`${twTextSize} text-neutral-500`}
               as={Link}
               href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
               isExternal
             >
-              Report issues
+              Report Issues
             </Button>
           </NavbarItem>
           <NavbarItem>
             <Button
               variant="light"
               size="sm"
-              className="text-neutral-500"
+              className={`${twTextSize} text-neutral-500`}
               as={Link}
               href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=feature_request.md&title="
               isExternal
             >
-              Suggest features
+              Suggest Features
             </Button>
           </NavbarItem>
-          <NavbarItem>
-            <Button
-              variant="light"
-              size="sm"
-              className="text-neutral-500"
-              onPress={() =>
-                supabaseClient.auth.signOut().then(() => router.push('/'))
-              }
-            >
-              Logout
-            </Button>
-          </NavbarItem>
+          {customNavbarItem}
         </NavbarContent>
 
         <NavbarMenu>

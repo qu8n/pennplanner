@@ -1,3 +1,4 @@
+import { Navbar } from '@/components/Navbar'
 import { AcademicCapIcon } from '@heroicons/react/24/outline'
 import { Button, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
@@ -7,13 +8,20 @@ export default function Home() {
   const router = useRouter()
 
   return (
-    <div className="flex flex-1 px-4 py-6 2xl:px-28">
-      <div className="flex w-full rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow-md">
+    <>
+      <Navbar
+        maxWidthSize="xl"
+        twHeight="h-20"
+        twTextSize="text-sm"
+        twBorderBottomSize="border-b-1"
+      />
+
+      <div className="flex flex-1 px-4 py-6 2xl:px-28">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2, ease: 'easeOut' }}
-          className="m-auto flex flex-col items-center text-center"
+          className="m-auto flex w-full flex-col items-center text-center"
         >
           <img
             src="/landing.png"
@@ -59,6 +67,6 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </div>
-    </div>
+    </>
   )
 }
