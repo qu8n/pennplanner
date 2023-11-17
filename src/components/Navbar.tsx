@@ -59,7 +59,7 @@ export function Navbar({
               href="https://github.com/qu8n/pennplanner"
               isExternal
               size="sm"
-              variant="light"
+              variant="flat"
               color="warning"
             >
               <StarIcon className="h-4 w-4 text-yellow-500" />

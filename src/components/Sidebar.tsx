@@ -273,6 +273,14 @@ export function Sidebar({
               />
             </Draggable>
           ))}
+
+          {coursesToDisplay.length === 0 && (
+            <div className="flex flex-col items-center">
+              <p className="mt-2 text-sm">
+                No courses found. Try a different search or filter.
+              </p>
+            </div>
+          )}
         </ScrollShadow>
       </div>
     </>

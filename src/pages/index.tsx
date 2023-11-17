@@ -26,7 +26,7 @@ export default function Home() {
           <img
             src="/landing.png"
             alt="Plans"
-            className="pointer-events-none w-96"
+            className="pointer-events-none w-72"
           />
 
           <h1 className="mt-4 text-4xl font-extrabold text-blue-700">
