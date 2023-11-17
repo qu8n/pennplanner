@@ -1,5 +1,3 @@
-// Supabase SQL query: select json_agg(course_catalog) from public.course_catalog
-
 import { Course } from '@/shared/types'
 
 export const allCourses: Course[] = [
