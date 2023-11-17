@@ -32,16 +32,7 @@ export function CourseTiny({
 
   const warningMessage: string = useMemo(() => {
     if (s && semesters && dbUser?.program === 'MCIT') {
-      const coreCoursesInPrevSemestersCount = semesters.reduce(
-        (acc, semester) =>
-          semester.semester_index < s.semester_index
-            ? acc +
-              semester.semester_courses.filter((sc) => sc.mcit_core_course)
-                .length
-            : acc,
-        0,
-      )
-
+      // Check that the course's course_prereq_ids are in the previous semesters
       const courseIdsInPrevSemesters = semesters.reduce(
         (acc, semester) =>
           semester.semester_index < s.semester_index
@@ -49,8 +40,6 @@ export function CourseTiny({
             : acc,
         [] as string[],
       )
-
-      // Check that the course's course_prereq_ids are in the previous semesters
       if (c.course_prereq_ids.length > 0) {
         const missingPrereqs: string[] = []
         c.course_prereq_ids.forEach((prereq) => {
@@ -68,12 +57,48 @@ export function CourseTiny({
         if (missingPrereqs.length > 0) {
           return `Missing prerequisite${
             missingPrereqs.length > 1 ? 's' : ''
-          }: ${missingPrereqs.join(', ')}`
+          } in previous semesters: ${missingPrereqs.join(', ')}`
+        }
+      }
+
+      // Check that the course's course_coreq_ids are in the previous and current semesters
+      const courseIdsInCurrSemester = s.semester_courses.map(
+        (sc) => sc.course_id,
+      )
+      const courseIdsInPrevAndCurrSemesters = courseIdsInPrevSemesters.concat(
+        courseIdsInCurrSemester,
+      )
+      if (c.course_coreq_ids.length > 0) {
+        const missingCoreqs: string[] = []
+        c.course_coreq_ids.forEach((coreq) => {
+          if (Array.isArray(coreq)) {
+            const tookCoreq = coreq.some((coreqId) =>
+              courseIdsInPrevAndCurrSemesters.includes(coreqId),
+            )
+            if (!tookCoreq) missingCoreqs.push(`either ${coreq.join(' or ')}`)
+          } else {
+            if (!courseIdsInPrevAndCurrSemesters.includes(coreq))
+              missingCoreqs.push(coreq)
+          }
+        })
+        if (missingCoreqs.length > 0) {
+          return `Missing corequisite${
+            missingCoreqs.length > 1 ? 's' : ''
+          } in current or previous semesters: ${missingCoreqs.join(', ')}`
         }
       }
 
       /* "When students have passed and completed 4 of the 6 core courses, 
       they may register for electives" */
+      const coreCoursesInPrevSemestersCount = semesters.reduce(
+        (acc, semester) =>
+          semester.semester_index < s.semester_index
+            ? acc +
+              semester.semester_courses.filter((sc) => sc.mcit_core_course)
+                .length
+            : acc,
+        0,
+      )
       if (c.mcit_open_elective) {
         if (coreCoursesInPrevSemestersCount < 4) {
           return 'Students must complete 4 core courses before they can take an elective'
