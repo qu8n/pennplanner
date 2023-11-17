@@ -32,21 +32,27 @@ export function CourseTiny({
 
   const warningMessage: string = useMemo(() => {
     if (s && semesters && dbUser?.program === 'MCIT') {
+      const coreCoursesInPrevSemesters = semesters.reduce(
+        (acc, semester) =>
+          semester.semester_index < s.semester_index
+            ? acc +
+              semester.semester_courses.filter((sc) => sc.mcit_core_course)
+                .length
+            : acc,
+        0,
+      )
+
+      /* "When students have passed and completed 4 of the 6 core courses, 
+      they may register for electives" */
       if (c.mcit_open_elective) {
-        const coreCoursesInPrevSemesters = semesters.reduce(
-          (acc, semester) =>
-            semester.semester_index < s.semester_index
-              ? acc +
-                semester.semester_courses.filter((sc) => sc.mcit_core_course)
-                  .length
-              : acc,
-          0,
-        )
         if (coreCoursesInPrevSemesters < 4) {
           return 'Students must complete 4 core courses before they can take an elective'
         }
       }
 
+      /* "new students must take either CIT 5910 or CIT 5920 in their first 
+      semester. If a student chooses to take two courses in their first 
+      semester, they must select CIT 5910 and CIT 5920" */
       const firstSemesterCourses = semesters.find(
         (semester) => semester.semester_courses.length > 0,
       )?.semester_courses
@@ -70,6 +76,16 @@ export function CourseTiny({
         ) {
           return 'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920'
         }
+      }
+
+      /* "students must complete six core course units and four 
+      elective course units" */
+      const allSemesterCourses = semesters.reduce(
+        (acc, semester) => acc.concat(semester.semester_courses),
+        [] as Course[],
+      )
+      if (allSemesterCourses.length >= 9 && coreCoursesInPrevSemesters < 6) {
+        return 'Students must complete all 6 core courses to graduate'
       }
     }
     return ''
