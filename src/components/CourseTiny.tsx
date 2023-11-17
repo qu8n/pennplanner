@@ -33,7 +33,7 @@ export function CourseTiny({
   const warningMessage: string = useMemo(() => {
     if (s && semesters && dbUser?.program === 'MCIT') {
       if (c.mcit_open_elective) {
-        const coreCoursesInPreviousSemesters = semesters.reduce(
+        const coreCoursesInPrevSemesters = semesters.reduce(
           (acc, semester) =>
             semester.semester_index < s.semester_index
               ? acc +
@@ -42,8 +42,33 @@ export function CourseTiny({
               : acc,
           0,
         )
-        if (coreCoursesInPreviousSemesters < 4) {
-          return 'You must complete 4 core courses before you can take an elective.'
+        if (coreCoursesInPrevSemesters < 4) {
+          return 'Students must complete 4 core courses before they can take an elective'
+        }
+      }
+
+      const firstSemesterCourses = semesters.find(
+        (semester) => semester.semester_courses.length > 0,
+      )?.semester_courses
+      if (firstSemesterCourses?.length === 1) {
+        const courseId = firstSemesterCourses[0].course_id
+        if (courseId !== 'CIT 5910' && courseId !== 'CIT 5920') {
+          return 'Students must take either CIT 5910 or CIT 5920, or both, in their first semester'
+        }
+      } else {
+        const has591 = firstSemesterCourses?.find(
+          (course) => course.course_id === 'CIT 5910',
+        )
+        const has592 = firstSemesterCourses?.find(
+          (course) => course.course_id === 'CIT 5920',
+        )
+        const courseId = c.course_id
+        if (
+          (!has591 || !has592) &&
+          courseId !== 'CIT 5910' &&
+          courseId !== 'CIT 5920'
+        ) {
+          return 'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920'
         }
       }
     }
@@ -58,7 +83,12 @@ export function CourseTiny({
       } group relative flex flex-row items-center justify-between rounded-lg bg-white px-2 py-1 ring-1 ring-neutral-300`}
     >
       {warningMessage && (
-        <Tooltip closeDelay={0} content={warningMessage} color="danger">
+        <Tooltip
+          closeDelay={0}
+          content={warningMessage}
+          color="danger"
+          className="max-w-md"
+        >
           <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-500" />
         </Tooltip>
       )}
