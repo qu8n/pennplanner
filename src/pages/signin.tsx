@@ -107,10 +107,13 @@ export default function SignIn() {
                           buttonPadding: '20px',
                         },
                         radii: {
-                          borderRadiusButton: '20px',
+                          borderRadiusButton: '7px',
                         },
                         colors: {
                           defaultButtonBackground: '#e5e5e5',
+                        },
+                        borderWidths: {
+                          buttonBorderWidth: '2px',
                         },
                       },
                     },

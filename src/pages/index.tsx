@@ -50,7 +50,7 @@ export default function Home() {
             transition={{ duration: 4, ease: 'easeOut' }}
           >
             <Button
-              className="custom-gradient mt-6 flex flex-row items-center gap-3 rounded-xl p-8 text-white"
+              className="custom-gradient mt-6 flex flex-row items-center gap-3 rounded-md p-8 text-white"
               size="lg"
               onPress={() => router.push('/signin')}
             >

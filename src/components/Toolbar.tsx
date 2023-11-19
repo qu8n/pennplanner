@@ -62,7 +62,7 @@ export function Toolbar({
       >
         <Button
           startContent={<ArrowPathIcon className="h-4 w-4" />}
-          className="w-38 flex-none rounded-xl border-1 border-neutral-300 bg-neutral-200"
+          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200"
           onPress={onOpen}
         >
           Reset plan
@@ -122,7 +122,7 @@ export function Toolbar({
       >
         <Button
           startContent={<LinkIcon className="h-4 w-4" />}
-          className="w-38 flex-none rounded-xl border-none bg-gray-200"
+          className="w-38 flex-none rounded-md border-none bg-gray-200"
           onPress={() => {
             window.navigator.clipboard.writeText(window.location.href)
             toast.success('Plan URL copied to clipboard')

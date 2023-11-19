@@ -22,7 +22,15 @@ export function CourseModal({
   onModalOpen: () => void
 }) {
   return (
-    <Modal isOpen={isModalOpen} onOpenChange={onModalOpen} size="3xl">
+    <Modal
+      isOpen={isModalOpen}
+      onOpenChange={onModalOpen}
+      size="3xl"
+      classNames={{
+        base: 'rounded-md',
+        closeButton: 'scale-150 mt-2 mr-2 text-bold text-neutral-500 p-1',
+      }}
+    >
       <ModalContent>
         {(onClose) => (
           <>

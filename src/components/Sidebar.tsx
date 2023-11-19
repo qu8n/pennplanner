@@ -178,7 +178,7 @@ export function Sidebar({
                 coursesQuery.filter === 'all-courses'
                   ? 'border-neutral-300 bg-neutral-200'
                   : 'border-blue-600 bg-blue-600 text-white'
-              } gap-1 rounded-xl border-1 px-1`}
+              } gap-1 rounded-md border-1 px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all-courses'
@@ -228,7 +228,7 @@ export function Sidebar({
                 coursesQuery.sort === ''
                   ? 'border-neutral-300 bg-neutral-200'
                   : 'border-blue-600 bg-blue-600 text-white'
-              } gap-1 rounded-xl border-1 px-1`}
+              } gap-1 rounded-md border-1 px-1`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === ''
@@ -262,7 +262,7 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex grow flex-col overflow-hidden rounded-2xl border-1 border-neutral-300 shadow-inner">
+      <div className="mt-3 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-300 shadow-inner">
         <ScrollShadow className="overflow-y-auto px-2 pb-2 pt-2">
           {coursesToDisplay.map((c) => (
             <Draggable key={c.course_id} id={c.course_id}>

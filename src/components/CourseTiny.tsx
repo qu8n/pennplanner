@@ -156,7 +156,7 @@ export function CourseTiny({
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-lg bg-white px-2 py-1 ring-1 ring-neutral-300`}
+      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300`}
     >
       {warningMessage && (
         <Tooltip

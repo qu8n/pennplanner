@@ -382,7 +382,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="flex flex-1 flex-col rounded-2xl border-1 border-neutral-300 bg-white p-6 shadow"
+            className="flex flex-1 flex-col rounded-md border-1 border-neutral-300 bg-white p-6 shadow"
           >
             <Toolbar
               totalCU={totalCU}
@@ -392,7 +392,7 @@ export default function Planner({
               dbUser={dbUser}
             />
 
-            <div className="mt-4 flex grow flex-col overflow-hidden rounded-xl border-1 border-neutral-200 pl-1 shadow-inner">
+            <div className="mt-4 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-200 pl-1 shadow-inner">
               <ScrollShadow className="flex flex-col items-center overflow-y-auto">
                 {Object.keys(semestersByYearOrder)
                   .sort()
@@ -433,7 +433,7 @@ export default function Planner({
                 {numOfYears < 7 ? (
                   <Button
                     startContent={<SquaresPlusIcon className="h-5 w-5" />}
-                    className="my-6 rounded-xl border-none bg-gray-200 p-5"
+                    className="my-6 rounded-md border-none bg-gray-200 p-5"
                     onPress={() => {
                       setSemesters((semesters) => [
                         ...semesters,
