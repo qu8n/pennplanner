@@ -7,6 +7,7 @@ import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { geistSans } from '@/fonts/geistSans'
+import Head from 'next/head'
 
 export default function App({
   Component,
@@ -31,6 +32,11 @@ export default function App({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
+      <Head>
+        <title>PennPlanner</title>
+        <meta property="og:title" content="PennPlanner" key="title" />
+      </Head>
+
       <NextUIProvider>
         <div>
           <Toaster position="top-right" reverseOrder={false} />

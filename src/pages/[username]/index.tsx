@@ -39,6 +39,7 @@ import { generateSemestersData } from '@/utils/generateSemestersData'
 import { Navbar } from '@/components/Navbar'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
@@ -324,6 +325,11 @@ export default function Planner({
 
   return (
     <>
+      <Head>
+        <title>{dbUser.full_name.split(' ')[0]}&apos;s PennPlanner</title>
+        <meta property="og:title" content="User's planner" key="title" />
+      </Head>
+
       {totalCU === 10 && (
         <Confetti
           width={width}

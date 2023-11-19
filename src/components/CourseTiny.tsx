@@ -31,8 +31,8 @@ export function CourseTiny({
   const supabaseClient = useSupabaseClient()
 
   const warningMessage: string = useMemo(() => {
-    if (s && semesters && dbUser?.program === 'MCIT') {
-      // Check that the course's course_prereq_ids are in the previous semesters
+    if (s && semesters && dbUser) {
+      // Validate that prereqs have been taken in previous semesters
       const courseIdsInPrevSemesters = semesters.reduce(
         (acc, semester) =>
           semester.semester_index < s.semester_index
@@ -61,7 +61,7 @@ export function CourseTiny({
         }
       }
 
-      // Check that the course's course_coreq_ids are in the previous and current semesters
+      // Validate coreqs being taken in previous or current semesters
       const courseIdsInCurrSemester = s.semester_courses.map(
         (sc) => sc.course_id,
       )
@@ -88,64 +88,66 @@ export function CourseTiny({
         }
       }
 
-      /* "When students have passed and completed 4 of the 6 core courses, 
+      if (dbUser.program === 'MCIT') {
+        /* "When students have passed and completed 4 of the 6 core courses, 
       they may register for electives" */
-      const coreCoursesInPrevSemestersCount = semesters.reduce(
-        (acc, semester) =>
-          semester.semester_index < s.semester_index
-            ? acc +
-              semester.semester_courses.filter((sc) => sc.mcit_core_course)
-                .length
-            : acc,
-        0,
-      )
-      if (c.mcit_open_elective) {
-        if (coreCoursesInPrevSemestersCount < 4) {
-          return 'Students must complete 4 core courses before they can take an elective'
+        const coreCoursesInPrevSemestersCount = semesters.reduce(
+          (acc, semester) =>
+            semester.semester_index < s.semester_index
+              ? acc +
+                semester.semester_courses.filter((sc) => sc.mcit_core_course)
+                  .length
+              : acc,
+          0,
+        )
+        if (c.mcit_open_elective) {
+          if (coreCoursesInPrevSemestersCount < 4) {
+            return 'Students must complete 4 core courses before they can take an elective'
+          }
         }
-      }
 
-      /* "new students must take either CIT 5910 or CIT 5920 in their first 
+        /* "new students must take either CIT 5910 or CIT 5920 in their first 
       semester. If a student chooses to take two courses in their first 
       semester, they must select CIT 5910 and CIT 5920" */
-      const firstSemesterWithCourses = semesters.find(
-        (semester) => semester.semester_courses.length > 0,
-      )
-      const firstSemesterCourses = firstSemesterWithCourses?.semester_courses
-      if (s.semester_index === firstSemesterWithCourses?.semester_index) {
-        if (firstSemesterCourses?.length === 1) {
-          const courseId = firstSemesterCourses[0].course_id
-          if (courseId !== 'CIT 5910' && courseId !== 'CIT 5920') {
-            return 'Students must take either CIT 5910 or CIT 5920, or both, in their first semester'
-          }
-        } else {
-          const has591 = firstSemesterCourses?.find(
-            (course) => course.course_id === 'CIT 5910',
-          )
-          const has592 = firstSemesterCourses?.find(
-            (course) => course.course_id === 'CIT 5920',
-          )
-          if (!has591 || !has592) {
-            return 'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920'
+        const firstSemesterWithCourses = semesters.find(
+          (semester) => semester.semester_courses.length > 0,
+        )
+        const firstSemesterCourses = firstSemesterWithCourses?.semester_courses
+        if (s.semester_index === firstSemesterWithCourses?.semester_index) {
+          if (firstSemesterCourses?.length === 1) {
+            const courseId = firstSemesterCourses[0].course_id
+            if (courseId !== 'CIT 5910' && courseId !== 'CIT 5920') {
+              return 'Students must take either CIT 5910 or CIT 5920, or both, in their first semester'
+            }
+          } else {
+            const has591 = firstSemesterCourses?.find(
+              (course) => course.course_id === 'CIT 5910',
+            )
+            const has592 = firstSemesterCourses?.find(
+              (course) => course.course_id === 'CIT 5920',
+            )
+            if (!has591 || !has592) {
+              return 'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920'
+            }
           }
         }
-      }
 
-      /* "students must complete six core course units and four 
+        /* "students must complete six core course units and four 
       elective course units" */
-      const semestersCourses = semesters.reduce(
-        (acc, semester) => acc.concat(semester.semester_courses),
-        [] as Course[],
-      )
-      const electivesCount = semestersCourses.filter(
-        (course) => course.mcit_open_elective,
-      ).length
-      if (
-        semestersCourses.length >= 9 &&
-        electivesCount > 4 &&
-        c.mcit_open_elective
-      ) {
-        return `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`
+        const semestersCourses = semesters.reduce(
+          (acc, semester) => acc.concat(semester.semester_courses),
+          [] as Course[],
+        )
+        const electivesCount = semestersCourses.filter(
+          (course) => course.mcit_open_elective,
+        ).length
+        if (
+          semestersCourses.length >= 9 &&
+          electivesCount > 4 &&
+          c.mcit_open_elective
+        ) {
+          return `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`
+        }
       }
     }
     return ''

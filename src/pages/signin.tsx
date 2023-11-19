@@ -15,6 +15,7 @@ import {
 } from '@nextui-org/react'
 import { RotatingSquare } from 'react-loader-spinner'
 import { Navbar } from '@/components/Navbar'
+import Head from 'next/head'
 
 const SITE_URL =
   process.env.NODE_ENV === 'production'
@@ -81,6 +82,11 @@ export default function SignIn() {
 
   return (
     <>
+      <Head>
+        <title>PennPlanner Login</title>
+        <meta property="og:title" content="PennPlanner login" key="title" />
+      </Head>
+
       <Navbar
         maxWidthSize="xl"
         twHeight="h-20"
