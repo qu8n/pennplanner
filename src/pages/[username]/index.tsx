@@ -356,9 +356,10 @@ export default function Planner({
                 variant="light"
                 size="sm"
                 className="text-neutral-500"
-                onPress={() =>
+                onPress={() => {
+                  document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
                   supabaseClient.auth.signOut().then(() => router.push('/'))
-                }
+                }}
               >
                 Logout
               </Button>

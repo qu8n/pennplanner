@@ -61,8 +61,8 @@ export function Toolbar({
         content="Remove all courses from your planner"
       >
         <Button
-          startContent={<ArrowPathIcon className="h-4 w-4" />}
-          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200"
+          startContent={<ArrowPathIcon className="h-4 w-4 text-neutral-500" />}
+          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
           onPress={onOpen}
         >
           Reset plan

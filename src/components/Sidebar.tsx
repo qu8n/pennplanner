@@ -13,14 +13,19 @@ import {
   DropdownSection,
   ScrollShadow,
   Divider,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 import { CourseBig } from './CourseBig'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 
 const filterMethods = {
   'mcit-core-courses': 'MCIT core courses',
@@ -122,9 +127,7 @@ export function Sidebar({
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
 }) {
-  const supabaseClient = useSupabaseClient()
-  const router = useRouter()
-
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
     filter: 'all-courses',
@@ -138,16 +141,99 @@ export function Sidebar({
     coursesToQuery = filterCourses(coursesQuery.filter, coursesToQuery)
     coursesToQuery = sortCourses(coursesQuery.sort, coursesToQuery)
     setCoursesToDisplay(coursesToQuery)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [coursesQuery, courseCatalog])
+
+  useEffect(() => {
+    if (!document.cookie.includes('showedInitialDisclaimer=true')) {
+      onOpen()
+      const aMonthFromNow = new Date()
+      aMonthFromNow.setTime(aMonthFromNow.getTime() + 30 * 24 * 60 * 60 * 1000)
+      document.cookie = `showedInitialDisclaimer=true; expires=${aMonthFromNow.toUTCString()}`
+    }
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <>
       <Divider />
 
-      <h2 className="ml-1 mt-6 text-xl font-bold text-blue-800">
-        Course Catalog
-      </h2>
+      <div className="ml-1 mt-6 flex flex-row items-start justify-between">
+        <h2 className="text-xl font-bold text-blue-800">Course Catalog</h2>
+        <Button
+          variant="light"
+          color="danger"
+          size="sm"
+          onPress={onOpen}
+          className="flex items-center gap-1 text-red-600"
+        >
+          <p className="text-xs">Disclaimer</p>
+          <ExclamationTriangleIcon className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        classNames={{
+          base: 'rounded-md',
+          closeButton: 'scale-150 mt-2 mr-2 text-bold text-neutral-500 p-1',
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="text-2xl font-semibold text-blue-900">
+                Disclaimer
+              </ModalHeader>
+
+              <Divider />
+
+              <ModalBody className="mt-2">
+                <div>
+                  This application is still in early development and may
+                  contains errors or inaccuracies. Please refer to the Penn
+                  Engineering Online&apos;s{' '}
+                  <a
+                    className="text-blue-700"
+                    href="https://online.seas.upenn.edu/student-knowledge-base/"
+                  >
+                    Student Knowledge Base
+                  </a>{' '}
+                  for official information.
+                </div>
+                <div>
+                  See an error? Let me know by creating an issue on GitHub{' '}
+                  <a
+                    href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+                    className="text-blue-700"
+                  >
+                    here
+                  </a>
+                  . Contributions are also welcome! I&apos;m happy to help you
+                  get started over{' '}
+                  <a
+                    href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
+                    className="text-blue-700"
+                  >
+                    Slack.
+                  </a>
+                </div>
+                <p>-Quan</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="primary"
+                  onPress={onClose}
+                  className="rounded-md"
+                >
+                  Understood
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       <Input
         className="h-14"
@@ -176,8 +262,8 @@ export function Sidebar({
               startContent={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.filter === 'all-courses'
-                  ? 'border-neutral-300 bg-neutral-200'
-                  : 'border-blue-600 bg-blue-600 text-white'
+                  ? 'border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]'
+                  : 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
               } gap-1 rounded-md border-1 px-1`}
             >
               <span className="line-clamp-1">
@@ -226,8 +312,8 @@ export function Sidebar({
               startContent={<BarsArrowDownIcon className="h-4 w-4" />}
               className={`${
                 coursesQuery.sort === ''
-                  ? 'border-neutral-300 bg-neutral-200'
-                  : 'border-blue-600 bg-blue-600 text-white'
+                  ? 'border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]'
+                  : 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
               } gap-1 rounded-md border-1 px-1`}
             >
               <span className="line-clamp-1">
