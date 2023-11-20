@@ -81,6 +81,7 @@ export function CourseBig({
           </div>
         </div>
       </div>
+
       <Tooltip closeDelay={0} content="View course details">
         <Button
           size="sm"

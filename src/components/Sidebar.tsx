@@ -26,6 +26,7 @@ import { Draggable } from './DnDWrappers/Draggable'
 import { Course } from '@/shared/types'
 import { CourseBig } from './CourseBig'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
+import { ModalWrapper } from './ModalWrapper'
 
 const filterMethods = {
   'mcit-core-courses': 'MCIT core courses',
@@ -172,60 +173,45 @@ export function Sidebar({
         </Button>
       </div>
 
-      <Modal
+      <ModalWrapper
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        classNames={{
-          base: 'rounded-md',
-          closeButton: 'scale-150 mt-2 mr-2 text-bold text-neutral-500 p-1',
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="text-2xl font-semibold text-blue-900">
-                Disclaimer
-              </ModalHeader>
-
-              <Divider />
-
-              <ModalBody className="mt-2">
-                <div>
-                  This application is still in early development and may
-                  contains errors or inaccuracies. Please refer to the Penn
-                  Engineering Online&apos;s{' '}
-                  <a
-                    className="text-blue-700"
-                    href="https://online.seas.upenn.edu/student-knowledge-base/"
-                  >
-                    Student Knowledge Base
-                  </a>{' '}
-                  for official information.
-                </div>
-                <div>
-                  See an error? Let me know by creating an issue on GitHub{' '}
-                  <a
-                    href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
-                    className="text-blue-700"
-                  >
-                    here
-                  </a>
-                  . Contributions are also welcome! I&apos;m happy to help you
-                  get started over{' '}
-                  <a
-                    href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
-                    className="text-blue-700"
-                  >
-                    Slack.
-                  </a>
-                </div>
-                <p>-Quan</p>
-              </ModalBody>
-              <ModalFooter></ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+        header="Disclaimer"
+        body={
+          <>
+            <div>
+              This application is still in early development and may contains
+              errors or inaccuracies. Please refer to the Penn Engineering
+              Online&apos;s{' '}
+              <a
+                className="text-blue-700"
+                href="https://online.seas.upenn.edu/student-knowledge-base/"
+              >
+                Student Knowledge Base
+              </a>{' '}
+              for official information.
+            </div>
+            <div>
+              See an error? Let me know by creating an issue on GitHub{' '}
+              <a
+                href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+                className="text-blue-700"
+              >
+                here
+              </a>
+              . Contributions are also welcome! I&apos;m happy to help you get
+              started over{' '}
+              <a
+                href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
+                className="text-blue-700"
+              >
+                Slack.
+              </a>
+            </div>
+            <p>-Quan</p>
+          </>
+        }
+      />
 
       <Input
         className="h-14"
