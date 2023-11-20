@@ -250,7 +250,7 @@ export default function SignIn() {
                   <span className="font-semibold text-neutral-700">MSE-DS</span>{' '}
                   - Master of Science in Engineering in Data Science
                 </Radio>
-                <Radio value="MSE-DS" isDisabled>
+                <Radio value="Dual Degree" isDisabled>
                   <span className="font-semibold text-neutral-700">
                     Dual Degree
                   </span>{' '}
@@ -270,6 +270,10 @@ export default function SignIn() {
                         full_name: newUser.full_name,
                         first_year: newUser.first_year,
                         program: newUser.program,
+                        waived_courses:
+                          newUser.program === 'MSE-DS'
+                            ? ['CIT 5910', 'CIT 5920', 'CIT 5930', 'CIT 5940']
+                            : [],
                       },
                     ])
                   if (userCreateError) {

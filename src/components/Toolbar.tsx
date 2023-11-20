@@ -65,11 +65,26 @@ export function Toolbar({
       }}
     >
       <div className="columns-3">
-        {allCourseIds.map((courseId) => (
-          <Checkbox id={courseId} key={courseId} value={courseId}>
-            {courseId}
-          </Checkbox>
-        ))}
+        {allCourseIds.map((courseId) => {
+          let isDisabled = false
+          if (
+            dbUser.program === 'MSE-DS' &&
+            ['CIT 5910', 'CIT 5920', 'CIT 5930', 'CIT 5940'].includes(courseId)
+          ) {
+            isDisabled = true
+          }
+
+          return (
+            <Checkbox
+              id={courseId}
+              key={courseId}
+              value={courseId}
+              isDisabled={isDisabled}
+            >
+              {courseId}
+            </Checkbox>
+          )
+        })}
       </div>
     </CheckboxGroup>
   )
