@@ -42,4 +42,5 @@ export interface dbUser {
   full_name: string
   first_year: number
   program: string
+  waived_courses: string[]
 }

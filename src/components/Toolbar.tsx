@@ -1,10 +1,22 @@
-import { allCourses } from '@/data/allCourses'
+import { allCourseIds, allCourses } from '@/data/allCourses'
 import { Course, Semester, dbUser } from '@/shared/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
-import { ArrowPathIcon, LinkIcon } from '@heroicons/react/24/outline'
-import { Button, Progress, Tooltip, useDisclosure } from '@nextui-org/react'
+import {
+  ArrowPathIcon,
+  LinkIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline'
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Progress,
+  ScrollShadow,
+  Tooltip,
+  useDisclosure,
+} from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { ModalWrapper } from './ModalWrapper'
 
@@ -23,6 +35,7 @@ export function Toolbar({
 }) {
   const supabaseClient = useSupabaseClient()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+
   const [modalContent, setModalContent] = useState<{
     header: string | JSX.Element | null
     body: JSX.Element | null
@@ -32,6 +45,31 @@ export function Toolbar({
     body: null,
     footer: null,
   })
+  const [selected, setSelected] = useState([''])
+
+  const waivedCoursesBody = (
+    <CheckboxGroup
+      label="Select courses you have waived"
+      value={selected}
+      onValueChange={setSelected}
+    >
+      <div className="columns-3">
+        {allCourseIds.map((courseId) => (
+          <Checkbox id={courseId} key={courseId} value={courseId}>
+            {courseId}
+          </Checkbox>
+        ))}
+      </div>
+    </CheckboxGroup>
+  )
+
+  useEffect(() => {
+    setModalContent((prev) => ({
+      ...prev,
+      body: waivedCoursesBody,
+    }))
+    // eslint-disable-next-line
+  }, [selected])
 
   return (
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
@@ -55,6 +93,28 @@ export function Toolbar({
         </div>
         <Progress isStriped aria-label="progress" value={totalCU * 10} />
       </div>
+
+      <Tooltip
+        closeDelay={0}
+        placement="top"
+        content="Select courses you have waived"
+      >
+        <Button
+          startContent={
+            <PencilSquareIcon className="h-4 w-4 text-neutral-500" />
+          }
+          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+          onPress={() => {
+            onOpen()
+            setModalContent({
+              header: 'Waived courses',
+              body: waivedCoursesBody,
+            })
+          }}
+        >
+          Waived courses
+        </Button>
+      </Tooltip>
 
       <Tooltip
         closeDelay={0}

@@ -513,3 +513,5 @@ export const allCourses: Course[] = [
     review_count: null,
   },
 ]
+
+export const allCourseIds = allCourses.map((course) => course.course_id).sort()

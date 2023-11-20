@@ -218,7 +218,7 @@ export function Sidebar({
         type="text"
         label={
           <div className="flex flex-row items-center gap-2">
-            <MagnifyingGlassIcon className="pointer-events-none h-4 w-4 flex-shrink-0 text-2xl text-default-400" />
+            <MagnifyingGlassIcon className="pointer-events-none h-4 w-4 flex-shrink-0 text-2xl text-neutral-400" />
             Search course name, id, or number
           </div>
         }
@@ -237,12 +237,12 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
+              startContent={
+                <AdjustmentsHorizontalIcon className="h-4 w-4 text-neutral-500" />
+              }
               className={`${
-                coursesQuery.filter === 'all-courses'
-                  ? 'border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]'
-                  : 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
-              } gap-1 rounded-md border-1 px-1`}
+                coursesQuery.filter !== 'all-courses' && 'ring-2 ring-blue-700'
+              } gap-1 rounded-md border-1 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all-courses'
@@ -287,12 +287,12 @@ export function Sidebar({
             <Button
               fullWidth
               variant="bordered"
-              startContent={<BarsArrowDownIcon className="h-4 w-4" />}
+              startContent={
+                <BarsArrowDownIcon className="h-4 w-4 text-neutral-500" />
+              }
               className={`${
-                coursesQuery.sort === ''
-                  ? 'border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]'
-                  : 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
-              } gap-1 rounded-md border-1 px-1`}
+                coursesQuery.sort !== '' && 'ring-2 ring-blue-700'
+              } gap-1 rounded-md border-1 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === ''
