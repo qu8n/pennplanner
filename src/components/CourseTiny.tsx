@@ -42,16 +42,18 @@ export function CourseTiny({
       )
       if (c.course_prereq_ids.length > 0) {
         const missingPrereqs: string[] = []
+        const coursesToScan = courseIdsInPrevSemesters.concat(
+          dbUser.waived_courses,
+        )
         c.course_prereq_ids.forEach((prereq) => {
           if (Array.isArray(prereq)) {
             const tookPrereq = prereq.some((prereqId) =>
-              courseIdsInPrevSemesters.includes(prereqId),
+              coursesToScan.includes(prereqId),
             )
             if (!tookPrereq)
               missingPrereqs.push(`either ${prereq.join(' or ')}`)
           } else {
-            if (!courseIdsInPrevSemesters.includes(prereq))
-              missingPrereqs.push(prereq)
+            if (!coursesToScan.includes(prereq)) missingPrereqs.push(prereq)
           }
         })
         if (missingPrereqs.length > 0) {
@@ -62,23 +64,23 @@ export function CourseTiny({
       }
 
       // Validate coreqs being taken in previous or current semesters
-      const courseIdsInCurrSemester = s.semester_courses.map(
-        (sc) => sc.course_id,
-      )
-      const courseIdsInPrevAndCurrSemesters = courseIdsInPrevSemesters.concat(
-        courseIdsInCurrSemester,
-      )
       if (c.course_coreq_ids.length > 0) {
+        const courseIdsInCurrSemester = s.semester_courses.map(
+          (sc) => sc.course_id,
+        )
+        const coursesToScan = courseIdsInPrevSemesters.concat(
+          courseIdsInCurrSemester,
+          dbUser.waived_courses,
+        )
         const missingCoreqs: string[] = []
         c.course_coreq_ids.forEach((coreq) => {
           if (Array.isArray(coreq)) {
             const tookCoreq = coreq.some((coreqId) =>
-              courseIdsInPrevAndCurrSemesters.includes(coreqId),
+              coursesToScan.includes(coreqId),
             )
             if (!tookCoreq) missingCoreqs.push(`either ${coreq.join(' or ')}`)
           } else {
-            if (!courseIdsInPrevAndCurrSemesters.includes(coreq))
-              missingCoreqs.push(coreq)
+            if (!coursesToScan.includes(coreq)) missingCoreqs.push(coreq)
           }
         })
         if (missingCoreqs.length > 0) {
