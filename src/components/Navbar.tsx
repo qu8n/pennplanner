@@ -77,6 +77,18 @@ export function Navbar({
               size="sm"
               className={`${twTextSize} text-neutral-500`}
               as={Link}
+              href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
+              isExternal
+            >
+              Ask Questions
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button
+              variant="light"
+              size="sm"
+              className={`${twTextSize} text-neutral-500`}
+              as={Link}
               href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
               isExternal
             >

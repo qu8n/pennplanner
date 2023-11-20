@@ -1,17 +1,12 @@
 import { allCourseIds, allCourses } from '@/data/allCourses'
 import { Course, Semester, dbUser } from '@/shared/types'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
-import {
-  ArrowPathIcon,
-  LinkIcon,
-  PencilSquareIcon,
-} from '@heroicons/react/24/outline'
+import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import {
   Button,
   Checkbox,
   CheckboxGroup,
   Progress,
-  ScrollShadow,
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
@@ -45,13 +40,29 @@ export function Toolbar({
     body: null,
     footer: null,
   })
-  const [selected, setSelected] = useState([''])
+  const [selected, setSelected] = useState(dbUser.waived_courses)
 
   const waivedCoursesBody = (
     <CheckboxGroup
       label="Select courses you have waived"
       value={selected}
-      onValueChange={setSelected}
+      onValueChange={async (value) => {
+        setSelected(value)
+
+        const { error } = await supabaseClient
+          .from('users')
+          .update({ waived_courses: value })
+          .eq('id', dbUser.id)
+
+        if (error) {
+          console.error(error)
+          toast.error('Waived courses failed to update')
+        } else {
+          toast.success(
+            'Waived courses updated successfully. Refresh to see the planner changes',
+          )
+        }
+      }}
     >
       <div className="columns-3">
         {allCourseIds.map((courseId) => (
@@ -184,23 +195,6 @@ export function Toolbar({
         body={modalContent.body}
         footer={modalContent.footer}
       />
-
-      {/* <Tooltip
-        closeDelay={0}
-        placement="top"
-        content="Copy this plan's URL to your clipboard"
-      >
-        <Button
-          startContent={<LinkIcon className="h-4 w-4" />}
-          className="w-38 flex-none rounded-md border-none bg-gray-200"
-          onPress={() => {
-            window.navigator.clipboard.writeText(window.location.href)
-            toast.success('Plan URL copied to clipboard')
-          }}
-        >
-          Copy plan URL
-        </Button>
-      </Tooltip> */}
     </div>
   )
 }
