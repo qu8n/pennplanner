@@ -12,6 +12,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Divider,
 } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import toast from 'react-hot-toast'
@@ -69,25 +70,41 @@ export function Toolbar({
         </Button>
       </Tooltip>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        classNames={{
+          base: 'rounded-md',
+          closeButton: 'scale-150 mt-2 mr-2 text-bold text-neutral-500 p-1',
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="text-2xl font-semibold text-blue-900">
                 <h3>Are you sure?</h3>
               </ModalHeader>
-              <ModalBody>
+
+              <Divider />
+
+              <ModalBody className="mt-4">
                 <p>
                   You will remove all courses from your planner. This action
                   cannot be undone.
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="default" variant="light" onPress={onClose}>
+                <Button
+                  color="default"
+                  variant="light"
+                  onPress={onClose}
+                  className="rounded-md"
+                >
                   Cancel
                 </Button>
                 <Button
                   color="danger"
+                  className="rounded-md hover:bg-red-600"
                   onPress={async () => {
                     const { error } = await supabaseClient
                       .from('semesters')
@@ -107,7 +124,7 @@ export function Toolbar({
                     onClose()
                   }}
                 >
-                  Reset anyway
+                  Reset
                 </Button>
               </ModalFooter>
             </>

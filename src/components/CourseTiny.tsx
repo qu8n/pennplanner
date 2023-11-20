@@ -90,7 +90,7 @@ export function CourseTiny({
 
       if (dbUser.program === 'MCIT') {
         /* "When students have passed and completed 4 of the 6 core courses, 
-      they may register for electives" */
+        they may register for electives" */
         const coreCoursesInPrevSemestersCount = semesters.reduce(
           (acc, semester) =>
             semester.semester_index < s.semester_index
@@ -107,8 +107,8 @@ export function CourseTiny({
         }
 
         /* "new students must take either CIT 5910 or CIT 5920 in their first 
-      semester. If a student chooses to take two courses in their first 
-      semester, they must select CIT 5910 and CIT 5920" */
+        semester. If a student chooses to take two courses in their first 
+        semester, they must select CIT 5910 and CIT 5920" */
         const firstSemesterWithCourses = semesters.find(
           (semester) => semester.semester_courses.length > 0,
         )
@@ -133,7 +133,7 @@ export function CourseTiny({
         }
 
         /* "students must complete six core course units and four 
-      elective course units" */
+        elective course units" */
         const semestersCourses = semesters.reduce(
           (acc, semester) => acc.concat(semester.semester_courses),
           [] as Course[],
@@ -141,11 +141,7 @@ export function CourseTiny({
         const electivesCount = semestersCourses.filter(
           (course) => course.mcit_open_elective,
         ).length
-        if (
-          semestersCourses.length >= 9 &&
-          electivesCount > 4 &&
-          c.mcit_open_elective
-        ) {
+        if (electivesCount > 4 && c.mcit_open_elective) {
           return `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`
         }
       }

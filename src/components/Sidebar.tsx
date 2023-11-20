@@ -221,15 +221,7 @@ export function Sidebar({
                 </div>
                 <p>-Quan</p>
               </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  onPress={onClose}
-                  className="rounded-md"
-                >
-                  Understood
-                </Button>
-              </ModalFooter>
+              <ModalFooter></ModalFooter>
             </>
           )}
         </ModalContent>
