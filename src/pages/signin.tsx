@@ -143,7 +143,7 @@ export default function SignIn() {
 
             <div className="flex flex-col items-center justify-center">
               <img
-                src="/signin.png"
+                src="/diploma.png"
                 alt="Sign in"
                 className="pointer-events-none max-w-md"
               />
@@ -290,7 +290,7 @@ export default function SignIn() {
             </div>
             <div className="flex flex-col justify-center">
               <img
-                src="/confirm.png"
+                src="/puzzle.png"
                 alt="Confirm information"
                 className="pointer-events-none max-w-md"
               />
