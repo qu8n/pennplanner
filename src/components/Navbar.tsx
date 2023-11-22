@@ -23,13 +23,11 @@ export function Navbar({
   maxWidthSize,
   twHeight,
   twTextSize,
-  twBorderBottomSize,
   customNavbarItem,
 }: {
   maxWidthSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | undefined
   twHeight: string
   twTextSize: string
-  twBorderBottomSize?: string
   customNavbarItem?: JSX.Element
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,7 +37,7 @@ export function Navbar({
       <NextUINavbar
         maxWidth={maxWidthSize}
         onMenuOpenChange={setIsMenuOpen}
-        className={`${twHeight} ${twBorderBottomSize} bg-neutral-100 px-6`}
+        className={`${twHeight} bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem]`}
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -48,19 +46,19 @@ export function Navbar({
           />
           <NavbarBrand>
             <Link href="/">
-              <AcademicCapIcon className="h-5 w-5 text-blue-700" />
+              <AcademicCapIcon className="ml-4 h-5 w-5 text-blue-700" />
               <p className="ml-1 font-semibold tracking-wide text-blue-800">
                 PennPlanner
               </p>
             </Link>
             <Button
-              className="ml-4 gap-1"
+              className="hover:bg-orange-200/[1]] ml-4 gap-1 bg-orange-200/[.8]"
               as={Link}
               href="https://github.com/qu8n/pennplanner"
               isExternal
               size="sm"
               variant="flat"
-              color="warning"
+              // color="warning"
             >
               <StarIcon className="h-4 w-4 text-yellow-500" />
               <span className={`${twTextSize} text-neutral-500`}>

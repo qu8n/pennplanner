@@ -3,18 +3,14 @@ import { AcademicCapIcon } from '@heroicons/react/24/outline'
 import { Button, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 export default function Home() {
   const router = useRouter()
 
   return (
     <>
-      <Navbar
-        maxWidthSize="xl"
-        twHeight="h-20"
-        twTextSize="text-sm"
-        twBorderBottomSize="border-b-1"
-      />
+      <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
 
       <motion.div
         initial={{ opacity: 0, y: 100 }}
@@ -22,8 +18,8 @@ export default function Home() {
         transition={{ duration: 2, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <h1 className="mt-4 text-4xl font-extrabold text-blue-700">
-          Plan Smarter, Not Harder.
+        <h1 className="mt-4 text-3xl font-bold text-blue-700">
+          Easily plan out your entire online MCIT journey.
         </h1>
 
         <motion.div
@@ -32,8 +28,8 @@ export default function Home() {
           transition={{ duration: 3, ease: 'easeOut' }}
         >
           <h2 className="mt-2 max-w-md text-lg text-neutral-500">
-            Drag-and-drop course planning made easy for online <b>MCIT</b> and{' '}
-            <b>MSE-DS</b> students.
+            Compare courses, plan out your semesters, and track your progress
+            towards graduation all in one place.
           </h2>
         </motion.div>
 
@@ -62,7 +58,7 @@ export default function Home() {
             autoPlay
             muted
             loop
-            className="m-auto mt-10 max-w-3xl rounded-lg border-1 border-gray-200"
+            className="m-auto mt-10 max-w-3xl rounded-lg border-5 border-gray-100 shadow-md ring-1 ring-neutral-300"
           >
             <source src="/demo.mp4" type="video/mp4" />
           </video>

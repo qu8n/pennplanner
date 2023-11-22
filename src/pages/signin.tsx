@@ -87,12 +87,7 @@ export default function SignIn() {
         <meta property="og:title" content="PennPlanner login" key="title" />
       </Head>
 
-      <Navbar
-        maxWidthSize="xl"
-        twHeight="h-20"
-        twTextSize="text-sm"
-        twBorderBottomSize="border-b-1"
-      />
+      <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
 
       <div className="flex flex-1 px-32">
         {!showSignUpForm ? (
@@ -119,7 +114,7 @@ export default function SignIn() {
                           defaultButtonBackground: '#e5e5e5',
                         },
                         borderWidths: {
-                          buttonBorderWidth: '2px',
+                          buttonBorderWidth: '1px',
                         },
                       },
                     },

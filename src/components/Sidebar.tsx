@@ -13,11 +13,6 @@ import {
   DropdownSection,
   ScrollShadow,
   Divider,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -157,7 +152,7 @@ export function Sidebar({
 
   return (
     <>
-      <Divider />
+      {/* <Divider /> */}
 
       <div className="ml-1 mt-6 flex flex-row items-start justify-between">
         <h2 className="text-xl font-bold text-blue-800">Course Catalog</h2>

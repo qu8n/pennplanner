@@ -42,7 +42,7 @@ export default function App({
           <Toaster position="top-right" reverseOrder={false} />
         </div>
         <main
-          className={`flex h-screen flex-col ${geistSans.className} bg-gray-100`}
+          className={`flex flex-col ${geistSans.className} absolute inset-0 -z-10 h-full w-full bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem]`}
         >
           <Component {...pageProps} />
         </main>
