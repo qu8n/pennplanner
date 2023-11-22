@@ -177,12 +177,13 @@ export function Sidebar({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         header="Disclaimer"
+        baseCustomClasses="max-w-lg"
         body={
           <>
             <div>
-              This application is still in early development and may contains
-              errors or inaccuracies. Please refer to the Penn Engineering
-              Online&apos;s{' '}
+              This application does not support mobile view. It is still in
+              early development and may contains errors or inaccuracies. Please
+              refer to the Penn Engineering Online&apos;s{' '}
               <a
                 className="text-blue-700"
                 href="https://online.seas.upenn.edu/student-knowledge-base/"

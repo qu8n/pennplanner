@@ -1,6 +1,6 @@
 import { allCourseIds, allCourses } from '@/data/allCourses'
 import { Course, Semester, dbUser } from '@/shared/types'
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -44,7 +44,7 @@ export function Toolbar({
 
   const waivedCoursesBody = (
     <CheckboxGroup
-      label="Select courses you have waived"
+      label="Select courses you have waived:"
       value={selected}
       onValueChange={async (value) => {
         setSelected(value)
@@ -86,6 +86,16 @@ export function Toolbar({
           )
         })}
       </div>
+      <div className="mt-4 flex flex-row items-center gap-1 text-neutral-500">
+        <LightBulbIcon className="h-4 w-4" />
+        <span className="text-sm font-semibold">Quick tips</span>
+      </div>
+      <p className="text-xs text-neutral-500">
+        Waiving a course means that you have passed a proficiency exam or
+        satisfy some requirement that allows you to skip the course. Waived
+        courses will not be counted towards your degree progress, but they will
+        satisfy prerequisites or corequisites of other courses.
+      </p>
     </CheckboxGroup>
   )
 
