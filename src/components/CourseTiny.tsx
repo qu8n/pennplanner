@@ -3,7 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, EyeIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 export function CourseTiny({
   c,
@@ -30,8 +30,10 @@ export function CourseTiny({
 }) {
   const supabaseClient = useSupabaseClient()
 
-  const warningMessage: string = useMemo(() => {
+  const warnings = useMemo(() => {
     if (s && semesters && dbUser) {
+      const warnings = []
+
       // Validate that prereqs have been taken in previous semesters
       const courseIdsInPrevSemesters = semesters.reduce(
         (acc, semester) =>
@@ -57,9 +59,11 @@ export function CourseTiny({
           }
         })
         if (missingPrereqs.length > 0) {
-          return `Missing prerequisite${
-            missingPrereqs.length > 1 ? 's' : ''
-          } in previous semesters: ${missingPrereqs.join(', ')}`
+          warnings.push(
+            `Missing prerequisite${
+              missingPrereqs.length > 1 ? 's' : ''
+            } in previous semesters: ${missingPrereqs.join(', ')}`,
+          )
         }
       }
 
@@ -84,9 +88,11 @@ export function CourseTiny({
           }
         })
         if (missingCoreqs.length > 0) {
-          return `Missing corequisite${
-            missingCoreqs.length > 1 ? 's' : ''
-          } in current or previous semesters: ${missingCoreqs.join(', ')}`
+          warnings.push(
+            `Missing corequisite${
+              missingCoreqs.length > 1 ? 's' : ''
+            } in current or previous semesters: ${missingCoreqs.join(', ')}`,
+          )
         }
       }
 
@@ -104,7 +110,9 @@ export function CourseTiny({
         )
         if (c.mcit_open_elective) {
           if (coreCoursesInPrevSemestersCount < 4) {
-            return 'Students must complete 4 core courses before they can take an elective'
+            warnings.push(
+              'Students must complete 4 core courses before they can take an elective',
+            )
           }
         }
 
@@ -119,7 +127,9 @@ export function CourseTiny({
           if (firstSemesterCourses?.length === 1) {
             const courseId = firstSemesterCourses[0].course_id
             if (courseId !== 'CIT 5910' && courseId !== 'CIT 5920') {
-              return 'Students must take either CIT 5910 or CIT 5920, or both, in their first semester'
+              warnings.push(
+                'Students must take either CIT 5910 or CIT 5920, or both, in their first semester',
+              )
             }
           } else {
             const has591 = firstSemesterCourses?.find(
@@ -129,12 +139,14 @@ export function CourseTiny({
               (course) => course.course_id === 'CIT 5920',
             )
             if (!has591 || !has592) {
-              return 'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920'
+              warnings.push(
+                'Students must take either CIT 5910 or CIT 5920 in their first semester. If taking > 1 course in their first semester, they must include both CIT 5910 and CIT 5920',
+              )
             }
           }
         }
 
-        /* "students must complete six core course units and four 
+        /* "students must complete six core course units and four
         elective course units" */
         const semestersCourses = semesters.reduce(
           (acc, semester) => acc.concat(semester.semester_courses),
@@ -144,11 +156,16 @@ export function CourseTiny({
           (course) => course.mcit_open_elective,
         ).length
         if (electivesCount > 4 && c.mcit_open_elective) {
-          return `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`
+          warnings.push(
+            `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`,
+          )
         }
       }
+
+      return warnings
     }
-    return ''
+
+    return ['']
     // eslint-disable-next-line
   }, [semesters])
 
@@ -158,12 +175,22 @@ export function CourseTiny({
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
       } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300`}
     >
-      {warningMessage && (
+      {warnings.length > 0 && (
         <Tooltip
           closeDelay={0}
-          content={warningMessage}
-          color="danger"
-          className="max-w-md"
+          content={
+            <>
+              <ul className="list-disc pl-3">
+                {warnings.map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
+            </>
+          }
+          className="max-w-sm"
+          classNames={{
+            base: 'bg-rose-100 text-rose-900',
+          }}
         >
           <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-500" />
         </Tooltip>
