@@ -1,21 +1,33 @@
-# PennPlanner
-
-A drag-and-drop course planner for students in the online Master of Computer and Information Technology (MCIT) and Master of Science in Engineering in Data Science (MSE-DS) at the University of Pennsylvania.
-
 <div align="center">
-<kbd>
-  <img src="https://github.com/qu8n/PennPlanner/blob/main/public/screenshot.png" />
-</kbd>
+  <a href="https://github.com/qu8n/PennPlanner">
+    <img src="public/logo.png" alt="PennPlanner logo" height="50" width="50">
+  </a>
+  <h1 align="center">PennPlanner</h1>
+
+  <p align="center">
+    A drag-and-drop course planner for students in the online Master of Computer and Information Technology (MCIT) and Master of Science in Engineering in Data Science (MSE-DS) at the University of Pennsylvania.
+    <br />
+    <a href="https://pennplanner.vercel.app/">Website</a>
+    ·
+    <a href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Report Issues</a>
+    ·
+    <a href="https://github.com/qu8n/pennplanner/discussions/new?category=q-a">Ask Questions</a>
+    ·
+    <a href="https://github.com/qu8n/pennplanner/discussions/new?category=ideas">Suggest Features</a>
+  </p>
 </div>
 
-### Features
+<br />
+<img src="public/screenshot.png" alt="PennPlanner preview">
+
+## Features
 
 - Drag and drop courses to plan your entire degree journey
 - View full details of each course, including ratings from and link to [MCIT Central](https://mcitcentral.com/)
 - View, filter, sort, and search the entire Penn Engineering Online course catalog
 - Receive warnings for missing prerequisites or corequisites in your planner
 
-### Built with
+## Built with
 
 - Typescript
 - React
