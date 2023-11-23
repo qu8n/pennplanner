@@ -439,8 +439,10 @@ export default function Planner({
 
                 {numOfYears < 7 ? (
                   <Button
-                    startContent={<SquaresPlusIcon className="h-5 w-5" />}
-                    className="my-6 rounded-md border-none bg-gray-200 p-5"
+                    startContent={
+                      <SquaresPlusIcon className="h-5 w-5 text-neutral-500" />
+                    }
+                    className="my-6 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 p-5 hover:bg-neutral-300/[.8]"
                     onPress={() => {
                       setSemesters((semesters) => [
                         ...semesters,

@@ -139,7 +139,7 @@ export function Toolbar({
           startContent={
             <PencilSquareIcon className="h-4 w-4 text-neutral-500" />
           }
-          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+          className="w-38 flex-none rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
           onPress={() => {
             onOpen()
             setModalContent({
@@ -159,7 +159,7 @@ export function Toolbar({
       >
         <Button
           startContent={<ArrowPathIcon className="h-4 w-4 text-neutral-500" />}
-          className="w-38 flex-none rounded-md border-1 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+          className="w-38 flex-none rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
           onPress={() => {
             onOpen()
             setModalContent({

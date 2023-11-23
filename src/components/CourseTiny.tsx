@@ -179,7 +179,7 @@ export function CourseTiny({
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
       } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300 hover:scale-[1.01]`}
     >
-      {warnings.length > 0 && (
+      {warnings.length > 0 && !isDragging && (
         <Tooltip
           closeDelay={0}
           content={
@@ -216,7 +216,7 @@ export function CourseTiny({
             setModalCourse(c)
             onModalOpen()
           }}
-          className="ml-1 rounded-md"
+          className="ml-1 rounded-md hover:bg-neutral-300/[.8]"
         >
           <InformationCircleIcon className="h-5 w-5 text-neutral-500" />
         </Button>

@@ -1,6 +1,5 @@
 import { Course } from '@/shared/types'
-import { EyeIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
-import { Button, Divider, Tooltip } from '@nextui-org/react'
+import { Button, Divider } from '@nextui-org/react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
 export function CourseBig({

@@ -12,7 +12,6 @@ import {
   DropdownItem,
   DropdownSection,
   ScrollShadow,
-  Divider,
   useDisclosure,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -238,7 +237,7 @@ export function Sidebar({
               }
               className={`${
                 coursesQuery.filter !== 'all-courses' && 'ring-2 ring-blue-700'
-              } gap-1 rounded-md border-1 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
+              } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all-courses'
@@ -288,7 +287,7 @@ export function Sidebar({
               }
               className={`${
                 coursesQuery.sort !== '' && 'ring-2 ring-blue-700'
-              } gap-1 rounded-md border-1 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
+              } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === ''
