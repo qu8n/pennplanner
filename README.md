@@ -18,7 +18,7 @@
 </div>
 
 <br />
-<img src="public/screenshot.png" alt="PennPlanner preview">
+<img src="public/screenshot.jpg" alt="PennPlanner preview">
 
 ## Features
 

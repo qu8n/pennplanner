@@ -50,8 +50,8 @@ export default function Home() {
         transition={{ duration: 2, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <Chip variant="dot" color="danger" className="text-neutral-500">
-          Not currently supported on mobile
+        <Chip variant="dot" color="danger" className="text-xs text-neutral-500">
+          Mobile and smaller screens not currently supported
         </Chip>
 
         <div className="mt-4 flex flex-col text-left text-3xl text-blue-700">
