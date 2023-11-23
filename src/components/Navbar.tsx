@@ -58,7 +58,6 @@ export function Navbar({
               isExternal
               size="sm"
               variant="flat"
-              // color="warning"
             >
               <StarIcon className="h-4 w-4 text-yellow-500" />
               <span className={`${twTextSize} text-neutral-500`}>

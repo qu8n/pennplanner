@@ -355,7 +355,7 @@ export default function Planner({
               <Button
                 variant="light"
                 size="sm"
-                className="text-neutral-500"
+                className="text-neutral-500 hover:text-neutral-400"
                 onPress={() => {
                   document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
                   supabaseClient.auth.signOut().then(() => router.push('/'))

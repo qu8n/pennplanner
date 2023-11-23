@@ -151,8 +151,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* <Divider /> */}
-
       <div className="ml-1 mt-6 flex flex-row items-start justify-between">
         <h2 className="text-xl font-bold text-blue-800">Course Catalog</h2>
         <Button
@@ -175,9 +173,9 @@ export function Sidebar({
         body={
           <>
             <div>
-              This application does not support mobile view. It is still in
-              early development and may contains errors or inaccuracies. Please
-              refer to the Penn Engineering Online&apos;s{' '}
+              PennPlanner is still in early development and may contains errors
+              or inaccuracies. Please refer to the Penn Engineering
+              Online&apos;s{' '}
               <a
                 className="text-blue-700"
                 href="https://online.seas.upenn.edu/student-knowledge-base/"
@@ -186,6 +184,28 @@ export function Sidebar({
               </a>{' '}
               for official information.
             </div>
+
+            <div>
+              This application references reviews from{' '}
+              <a className="text-blue-700" href="https://mcitcentral.com/">
+                MCIT Central
+              </a>
+              , which is no longer maintained and may contain outdated
+              information. Please refer to the Penn Engineering Online&apos;s
+              Slack channel{' '}
+              <a
+                href="https://penn-eng-onl-students.slack.com/archives/C02ADHGAL93"
+                className="text-blue-700"
+              >
+                #course-planning-advice
+              </a>{' '}
+              or the{' '}
+              <a className="text-blue-700" href="https://discord.gg/3HDZ2FNJaG">
+                Discord server
+              </a>{' '}
+              to gather the latest student experiences.
+            </div>
+
             <div>
               See an error? Let me know by creating an issue on GitHub{' '}
               <a
