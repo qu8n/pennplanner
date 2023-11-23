@@ -44,28 +44,6 @@
 - NPM
 - Supabase account
 
-### Supabase's PostgreSQL database schema
-
-`users` table:
-| Name | Data Type | Format |
-| -------------- | ------------------------ | ------------ |
-| id | uuid | uuid |
-| created_at | timestamp with time zone | timestamptz |
-| username | text | text |
-| full_name | text | text |
-| first_year | smallint | int2 |
-| program | text | text |
-| waived_courses | ARRAY | \_text |
-
-`semesters` table:
-| Name | Data Type | Format |
-| ------------------ | ------------------------ | ------------ |
-| id | bigint | int8 |
-| created_at | timestamp with time zone | timestamptz |
-| semester_index | smallint | int2 |
-| semester_course_ids| ARRAY | \_text |
-| user_id | uuid | uuid |
-
 ### Running locally
 
 1. Clone the repo
@@ -94,6 +72,32 @@ NEXT_PUBLIC_PROD_SITE_URL=
 ```sh
 npm run dev
 ```
+
+### Supabase's PostgreSQL database schema
+
+`users` table:
+| Name | Data Type | Format |
+| -------------- | ------------------------ | ------------ |
+| id | uuid | uuid |
+| created_at | timestamp with time zone | timestamptz |
+| username | text | text |
+| full_name | text | text |
+| first_year | smallint | int2 |
+| program | text | text |
+| waived_courses | ARRAY | \_text |
+
+`semesters` table:
+| Name | Data Type | Format |
+| ------------------ | ------------------------ | ------------ |
+| id | bigint | int8 |
+| created_at | timestamp with time zone | timestamptz |
+| semester_index | smallint | int2 |
+| semester_course_ids| ARRAY | \_text |
+| user_id | uuid | uuid |
+
+Schema visualizer:
+
+<img src="public/schema_visualizer.png" alt="Schema visualizer">
 
 ## Contributing
 
