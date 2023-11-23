@@ -1,6 +1,6 @@
 import { Course } from '@/shared/types'
 
-export const allCourses: Course[] = [
+export const coursesData: Course[] = [
   {
     avg_difficulty: 3.64,
     avg_hours_per_week: 13.82,
@@ -514,4 +514,4 @@ export const allCourses: Course[] = [
   },
 ]
 
-export const allCourseIds = allCourses.map((course) => course.course_id).sort()
+export const allCourseIds = coursesData.map((course) => course.course_id).sort()

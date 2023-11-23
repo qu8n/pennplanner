@@ -1,4 +1,4 @@
-import { allCourses } from '@/data/allCourses'
+import { coursesData } from '@/data/coursesData'
 import { Course, Semester, dbSemester } from '@/shared/types'
 
 const MIN_SEMESTERS = 8 // three years of semesters: 0-8
@@ -163,7 +163,7 @@ export function generateSemestersData(
 
   dbSemesters.forEach((dbSemester) => {
     const semesterCourses = dbSemester.semester_course_ids.map((id: string) =>
-      allCourses.find((c) => c.course_id === id),
+      coursesData.find((c) => c.course_id === id),
     )
     semestersData[dbSemester.semester_index].semester_courses =
       semesterCourses as Course[]

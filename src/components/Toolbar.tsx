@@ -1,4 +1,4 @@
-import { allCourseIds, allCourses } from '@/data/allCourses'
+import { allCourseIds, coursesData } from '@/data/coursesData'
 import { Course, Semester, dbUser } from '@/shared/types'
 import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
@@ -195,7 +195,7 @@ export function Toolbar({
                           semester_courses: [],
                         })),
                       )
-                      setCourseCatalog(allCourses)
+                      setCourseCatalog(coursesData)
                       toast('Plan has been reset', {
                         icon: '🔄',
                       })

@@ -20,7 +20,7 @@ import {
   Active,
 } from '@dnd-kit/core'
 import { useId, useMemo, useState } from 'react'
-import { allCourses } from '@/data/allCourses'
+import { coursesData } from '@/data/coursesData'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
 import { Course, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
@@ -287,7 +287,7 @@ export default function Planner({
   }
 
   const activeCourse = useMemo(() => {
-    return allCourses.find((c) => c.course_id === activeDragEvent?.id)
+    return coursesData.find((c) => c.course_id === activeDragEvent?.id)
   }, [activeDragEvent])
 
   const totalCU = useMemo(() => {
@@ -552,7 +552,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const semestersData = generateSemestersData(firstYearData, dbSemesters)
 
-  const courseCatalogData = allCourses.filter((allCourse) => {
+  const courseCatalogData = coursesData.filter((allCourse) => {
     return !semestersData.some((s) => {
       return s.semester_courses.some(
         (semesterCourse) => semesterCourse.course_id === allCourse.course_id,
