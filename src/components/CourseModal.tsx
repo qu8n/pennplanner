@@ -142,7 +142,11 @@ export function CourseModal({
                 >
                   View course reviews on MCIT Central
                 </Link>
-              ) : null}
+              ) : (
+                <p className="mt-2 text-xs text-neutral-500">
+                  No course reviews found on MCIT Central
+                </p>
+              )}
             </div>
 
             <p>{modalCourse?.course_description}</p>

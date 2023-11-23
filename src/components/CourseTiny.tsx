@@ -1,6 +1,10 @@
 import { Course, Semester, dbUser } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
-import { XMarkIcon, EyeIcon } from '@heroicons/react/24/outline'
+import {
+  XMarkIcon,
+  EyeIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useMemo } from 'react'
@@ -173,7 +177,7 @@ export function CourseTiny({
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300`}
+      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300 hover:scale-[1.01]`}
     >
       {warnings.length > 0 && (
         <Tooltip
@@ -203,7 +207,7 @@ export function CourseTiny({
         </p>
       </div>
 
-      <Tooltip closeDelay={0} content="View course details">
+      <Tooltip closeDelay={0} content="View course info">
         <Button
           size="sm"
           variant="flat"
@@ -212,8 +216,9 @@ export function CourseTiny({
             setModalCourse(c)
             onModalOpen()
           }}
+          className="ml-1 rounded-md"
         >
-          <EyeIcon className="h-3 w-3 text-neutral-500" />
+          <InformationCircleIcon className="h-5 w-5 text-neutral-500" />
         </Button>
       </Tooltip>
 

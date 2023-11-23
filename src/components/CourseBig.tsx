@@ -1,6 +1,6 @@
 import { Course } from '@/shared/types'
-import { EyeIcon } from '@heroicons/react/24/outline'
-import { Button, Tooltip } from '@nextui-org/react'
+import { EyeIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
+import { Button, Divider, Tooltip } from '@nextui-org/react'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 
 export function CourseBig({
@@ -18,84 +18,44 @@ export function CourseBig({
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } mb-3 flex flex-row items-center justify-between gap-1 rounded-md bg-white px-3 py-2 ring-1 ring-neutral-300`}
+      } mb-3 flex flex-col items-start rounded-md bg-white px-3 py-2 ring-1 ring-neutral-300 hover:scale-[1.01]`}
     >
-      <div className="flex flex-col">
-        <p className="text-sm font-bold text-neutral-500">{c.course_id}</p>
-        <p className="line-clamp-2 text-sm font-medium text-blue-900">
-          {c.course_name}
-        </p>
-        <div className="mt-1 flex flex-col text-xs font-light text-neutral-500">
-          <div className="flex flex-row gap-2">
-            <span className="mr-[16px]">Rating:</span>
-            <Rating
-              readOnly={true}
-              style={{ maxWidth: 60 }}
-              value={c.avg_rating ?? 0}
-              itemStyles={{
-                itemShapes: ThinRoundedStar,
-                activeFillColor: '#3b82f6',
-                inactiveFillColor: '#cbd5e1',
-              }}
-            />
-            {c.avg_rating ?? ''}
-            {c.review_count ? ` (${c.review_count} reviews)` : 'n/a'}
-          </div>
+      <p className="font-semibold text-neutral-500">{c.course_id}</p>
+      <p className="line-clamp-2 text-sm font-medium text-blue-900">
+        {c.course_name}
+      </p>
 
-          <div className="flex flex-row gap-2">
-            <span className="mr-[3px]">Difficulty:</span>
-            <Rating
-              readOnly={true}
-              style={{ maxWidth: 60 }}
-              value={c.avg_difficulty ?? 0}
-              itemStyles={{
-                itemShapes: ThinRoundedStar,
-                activeFillColor: '#3b82f6',
-                inactiveFillColor: '#cbd5e1',
-              }}
-            />
-            {c.avg_difficulty ?? 'n/a'}
-          </div>
+      <Divider className="my-2 bg-neutral-200" />
 
-          <div className="flex flex-row items-center gap-2">
-            <span className="-mr-[1px]">Workload: </span>
-            <Rating
-              readOnly={true}
-              style={{ maxWidth: 60 }}
-              value={
-                c.avg_hours_per_week
-                  ? c.avg_hours_per_week > 20
-                    ? 5
-                    : c.avg_hours_per_week / 4
-                  : 0
-              }
-              itemStyles={{
-                itemShapes: ThinRoundedStar,
-                activeFillColor: '#3b82f6',
-                inactiveFillColor: '#cbd5e1',
-              }}
-            />
-            {c.avg_hours_per_week
-              ? `${c.avg_hours_per_week} hours/week`
-              : 'n/a'}
-          </div>
+      <div className="flex w-full flex-row justify-between">
+        <div className="flex flex-row items-center gap-1 text-xs text-neutral-500">
+          <Rating
+            readOnly={true}
+            style={{ maxWidth: 80 }}
+            value={c.avg_rating ?? 0}
+            itemStyles={{
+              itemShapes: ThinRoundedStar,
+              activeFillColor: '#3b82f6',
+              inactiveFillColor: '#cbd5e1',
+            }}
+            className="-mt-1"
+          />
+          <span>{c.avg_rating ?? ''}</span>
+          <span>{c.review_count ? ` (${c.review_count} reviews)` : 'n/a'}</span>
         </div>
-      </div>
 
-      <Tooltip closeDelay={0} content="View course details">
         <Button
           size="sm"
           variant="flat"
-          isIconOnly
-          className="-mr-1"
+          className="h-7 rounded-md text-xs text-neutral-500 hover:bg-neutral-300/[.8]"
           onPress={() => {
             setModalCourse(c)
             onModalOpen()
           }}
         >
-          <EyeIcon className="h-4 w-4 text-neutral-500" />
+          View course info
         </Button>
-      </Tooltip>
+      </div>
     </div>
   )
 }
