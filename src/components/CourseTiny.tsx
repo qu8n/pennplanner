@@ -181,8 +181,8 @@ export function CourseTiny({
   return (
     <div
       className={`${
-        isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300 hover:scale-[1.03]`}
+        isDragging ? 'rotate-1 cursor-grabbing shadow-md' : 'cursor-grab shadow'
+      } group relative flex flex-row items-center justify-between rounded-md border-1 border-neutral-300 bg-white px-2 py-1 hover:ring-2 hover:ring-blue-500`}
     >
       {warnings.length > 0 && !isDragging && (
         <Tooltip
@@ -232,12 +232,13 @@ export function CourseTiny({
         placement="top-start"
         content="Remove course from the planner and return it back to the course catalog"
       >
-        <button
-          type="button"
+        <Button
+          size="sm"
+          isIconOnly
           className={`${
             isDragging ? '' : 'group-hover:block'
-          } absolute -left-2 -top-2 hidden h-6 w-6 rounded-full bg-white text-red-500 shadow-lg ring-1 ring-neutral-200`}
-          onClick={async () => {
+          } absolute -left-5 -top-4 hidden rounded-full border-2 border-blue-500 bg-white text-red-500 shadow-lg hover:bg-neutral-200`}
+          onPress={async () => {
             setCourseCatalog!([...courseCatalog!, c])
 
             setSemesters!(
@@ -275,7 +276,7 @@ export function CourseTiny({
             className="pointer-events-none mx-auto h-4 w-4"
             aria-hidden="true"
           />
-        </button>
+        </Button>
       </Tooltip>
     </div>
   )
