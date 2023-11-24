@@ -326,7 +326,7 @@ export default function Planner({
   return (
     <>
       <Head>
-        <title>{dbUser.full_name.split(' ')[0]}&apos;s PennPlanner</title>
+        <title>{`${dbUser.full_name.split(' ')[0]}'s PennPlanner`}</title>
         <meta property="og:title" content="User's planner" key="title" />
       </Head>
 
