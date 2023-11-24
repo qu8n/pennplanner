@@ -8,8 +8,7 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { geistSans } from '@/fonts/geistSans'
 import Head from 'next/head'
-import { Logo } from '@/components/Logo'
-import { GitHubBtn } from '@/components/GitHubBtn'
+import { MobileWarning } from '@/contents/mobileWarning'
 
 export default function App({
   Component,
@@ -44,36 +43,16 @@ export default function App({
         />
       </Head>
 
-      <NextUIProvider>
-        <div>
-          <Toaster position="top-right" reverseOrder={false} />
-        </div>
+      <NextUIProvider className={`${geistSans.className}`}>
+        <Toaster position="top-right" reverseOrder={false} />
 
         <main
-          className={`hidden flex-col xl:flex ${geistSans.className} absolute inset-0 -z-10 h-full w-full bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem]`}
+          className={`absolute inset-0 -z-10 hidden h-full w-full flex-col bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem] xl:flex`}
         >
           <Component {...pageProps} />
         </main>
 
-        <div className="flex h-screen bg-neutral-100 text-neutral-500 xl:hidden">
-          <div className="m-auto flex max-w-md flex-col items-center gap-4 p-10 text-center">
-            <Logo />
-            <p>
-              😅 Mobile / smaller screens are not currently supported. If you
-              are on a desktop, please resize your browser window to be larger.
-            </p>
-            <p>
-              Want this feature? Express your interest{' '}
-              <a
-                href="https://github.com/qu8n/PennPlanner/discussions/1"
-                className="text-blue-700"
-              >
-                here.
-              </a>
-            </p>
-            <GitHubBtn twTextSize="text-sm" />
-          </div>
-        </div>
+        <MobileWarning />
       </NextUIProvider>
     </SessionContextProvider>
   )
