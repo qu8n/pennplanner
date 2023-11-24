@@ -10,8 +10,8 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
 } from '@nextui-org/react'
-import { AcademicCapIcon } from '@heroicons/react/24/solid'
-import { StarIcon } from '@heroicons/react/20/solid'
+import { Logo } from './Logo'
+import { GitHubBtn } from './GitHubBtn'
 
 const mobileMenuItems = [
   'Star GitHub Repo',
@@ -44,26 +44,9 @@ export function Navbar({
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             className="sm:hidden"
           />
-          <NavbarBrand>
-            <Link href="/">
-              <AcademicCapIcon className="ml-4 h-5 w-5 text-blue-700" />
-              <p className="ml-1 font-semibold tracking-wide text-blue-800">
-                PennPlanner
-              </p>
-            </Link>
-            <Button
-              className="hover:bg-orange-200/[1]] ml-4 gap-1 bg-orange-200/[.8]"
-              as={Link}
-              href="https://github.com/qu8n/pennplanner"
-              isExternal
-              size="sm"
-              variant="flat"
-            >
-              <StarIcon className="h-4 w-4 text-yellow-500" />
-              <span className={`${twTextSize} text-neutral-500`}>
-                Star GitHub Repo
-              </span>
-            </Button>
+          <NavbarBrand className="ml-4 gap-4">
+            <Logo />
+            <GitHubBtn twTextSize={twTextSize} />
           </NavbarBrand>
         </NavbarContent>
 
@@ -98,7 +81,7 @@ export function Navbar({
               size="sm"
               className={`${twTextSize} text-neutral-500`}
               as={Link}
-              href="https://github.com/qu8n/pennplanner/discussions/new?category=ideas"
+              href="https://github.com/qu8n/PennPlanner/discussions/new?category=feature-ideas"
               isExternal
             >
               Suggest Features

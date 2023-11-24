@@ -40,7 +40,9 @@ export function CourseBig({
             className="-mt-1"
           />
           <span>{c.avg_rating ?? ''}</span>
-          <span>{c.review_count ? ` (${c.review_count} reviews)` : 'n/a'}</span>
+          <span className="line-clamp-1">
+            {c.review_count ? ` (${c.review_count} reviews)` : 'n/a'}
+          </span>
         </div>
 
         <Button

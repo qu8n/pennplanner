@@ -134,7 +134,7 @@ export function SemesterContainer({
             </SelectSection>
           </Select>
         ) : (
-          <p className="-mt-1 mb-1 font-medium text-blue-900">
+          <p className="-mt-1 mb-1 line-clamp-1 font-medium text-blue-900">
             {s.semester_season} {s.semester_year}
           </p>
         )}

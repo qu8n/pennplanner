@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/Navbar'
 import { AcademicCapIcon } from '@heroicons/react/24/outline'
-import { Button, Chip, Link } from '@nextui-org/react'
+import { Button, Link } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -50,25 +50,17 @@ export default function Home() {
         transition={{ duration: 2, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <Chip variant="dot" color="danger" className="text-xs text-neutral-500">
-          Mobile and smaller screens not currently supported
-        </Chip>
-
-        <div className="mt-4 flex flex-col text-left text-3xl text-blue-700">
-          <span className="mr-2 font-medium">
-            Visualize your entire journey
-          </span>
+        <div className="mt-4 flex flex-col text-left text-3xl font-medium text-blue-700">
+          <span className="mr-2">Visualize your entire journey</span>
           <div>
             <span
-              className={`mr-2 font-medium ${
-                programNameIndex === 0 ? 'ml-2' : '-ml-3'
-              }`}
+              className={`mr-2 ${programNameIndex === 0 ? 'ml-2' : '-ml-3'}`}
             >
               in the online
             </span>
             <AnimatePresence>
               <motion.span
-                className="fixed font-semibold"
+                className="fixed font-bold"
                 variants={framerVariants}
                 key={programNameIndex}
                 initial="enter"
@@ -90,7 +82,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 3, ease: 'easeOut' }}
         >
-          <h2 className="mt-2 max-w-md text-lg text-neutral-500">
+          <h2 className="text-md mt-2 max-w-md font-light text-neutral-500">
             Compare courses, plan out your semesters, and track your progress
             towards graduation -- all in one place
           </h2>
@@ -121,7 +113,7 @@ export default function Home() {
             autoPlay
             muted
             loop
-            className="m-auto mt-10 rounded-lg border-5 border-gray-100 p-2 shadow-md ring-1 ring-neutral-300 lg:max-w-3xl"
+            className="m-auto mt-10 rounded-lg border-1 border-neutral-300 bg-neutral-100 p-2 ring-8 ring-neutral-100 lg:max-w-3xl"
           >
             <source src="/demo.mp4" type="video/mp4" />
           </video>
