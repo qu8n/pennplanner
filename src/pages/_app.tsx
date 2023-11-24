@@ -35,6 +35,11 @@ export default function App({
       <Head>
         <title>PennPlanner</title>
         <meta property="og:title" content="PennPlanner" key="title" />
+        <meta
+          name="description"
+          content="Course planner for online MCIT and MSE-DS students at the University of Pennsylvania"
+          key="desc"
+        />
       </Head>
 
       <NextUIProvider>
