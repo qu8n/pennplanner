@@ -1,13 +1,9 @@
 import { Course, Semester, dbUser } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
-import {
-  XMarkIcon,
-  EyeIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/24/outline'
+import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 export function CourseTiny({
   c,
@@ -37,6 +33,15 @@ export function CourseTiny({
   const warnings = useMemo(() => {
     if (s && semesters && dbUser) {
       const warnings = []
+
+      // Check if course is not offered in current semester
+      if (
+        c.semesters_not_offered.includes(
+          `${s.semester_season} ${s.semester_year}`,
+        )
+      ) {
+        warnings.push('Not offered in this semester')
+      }
 
       // Validate that prereqs have been taken in previous semesters
       const courseIdsInPrevSemesters = semesters.reduce(
@@ -177,7 +182,7 @@ export function CourseTiny({
     <div
       className={`${
         isDragging ? 'cursor-grabbing shadow-md' : 'shadow hover:cursor-grab'
-      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300 hover:scale-[1.01]`}
+      } group relative flex flex-row items-center justify-between rounded-md bg-white px-2 py-1 ring-1 ring-neutral-300 hover:scale-[1.03]`}
     >
       {warnings.length > 0 && !isDragging && (
         <Tooltip

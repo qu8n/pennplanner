@@ -22,6 +22,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 11,
+    semesters_not_offered: ['Fall 2023', 'Spring 2024', 'Summer 2024'],
   },
   {
     avg_difficulty: 3.24,
@@ -42,6 +43,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: 25,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: null,
@@ -63,6 +65,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: null,
+    semesters_not_offered: ['Spring 2024', 'Summer 2024'],
   },
   {
     avg_difficulty: 3,
@@ -84,6 +87,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 21,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 3.5,
@@ -105,6 +109,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: 14,
+    semesters_not_offered: ['Spring 2024'],
   },
   {
     avg_difficulty: 4,
@@ -127,6 +132,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: 9,
+    semesters_not_offered: ['Fall 2023', 'Summer 2024'],
   },
   {
     avg_difficulty: 3.5,
@@ -148,6 +154,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 30,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 4.25,
@@ -169,6 +176,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: 12,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 3.4,
@@ -190,6 +198,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: 10,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 4.75,
@@ -213,6 +222,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: 8,
+    semesters_not_offered: ['Spring 2024', 'Summer 2024'],
   },
   {
     avg_difficulty: 3.63,
@@ -234,6 +244,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: 8,
+    semesters_not_offered: ['Spring 2024', 'Summer 2024'],
   },
   {
     avg_difficulty: 2.58,
@@ -254,6 +265,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 86,
+    semesters_not_offered: ['Summer 2024'],
   },
   {
     avg_difficulty: 3.88,
@@ -275,6 +287,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 88,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 3.67,
@@ -296,6 +309,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 69,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 2.52,
@@ -317,6 +331,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 71,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 2.9,
@@ -337,6 +352,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: 42,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 4.57,
@@ -358,6 +374,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: 58,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: null,
@@ -384,6 +401,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: true,
     mse_ds_technical_elective: false,
     review_count: null,
+    semesters_not_offered: ['Spring 2024'],
   },
   {
     avg_difficulty: null,
@@ -404,6 +422,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: null,
+    semesters_not_offered: ['Fall 2023', 'Summer 2024'],
   },
   {
     avg_difficulty: null,
@@ -424,6 +443,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: null,
+    semesters_not_offered: ['Fall 2023', 'Summer 2024'],
   },
   {
     avg_difficulty: null,
@@ -444,6 +464,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: null,
+    semesters_not_offered: ['Fall 2023', 'Summer 2024'],
   },
   {
     avg_difficulty: 2.75,
@@ -465,6 +486,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 8,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: 2.64,
@@ -486,6 +508,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: false,
     review_count: 11,
+    semesters_not_offered: [],
   },
   {
     avg_difficulty: null,
@@ -511,6 +534,7 @@ export const coursesData: Course[] = [
     mse_ds_open_elective: false,
     mse_ds_technical_elective: true,
     review_count: null,
+    semesters_not_offered: ['Spring 2024'],
   },
 ]
 
