@@ -1,4 +1,4 @@
-import { Course, Semester, DbUser } from '@/shared/types'
+import { Course, Semester, DbUser, Database } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
@@ -51,7 +51,7 @@ export function SemesterContainer({
   courseCatalog: Course[]
   dbUser: DbUser
 }) {
-  const supabaseClient = useSupabaseClient()
+  const supabaseClient = useSupabaseClient<Database>()
 
   const totalCU = s.semester_courses.reduce(
     (acc, curr) => acc + curr.course_unit,

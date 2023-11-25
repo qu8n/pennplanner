@@ -22,7 +22,7 @@ import {
 import { useId, useMemo, useState } from 'react'
 import { coursesData } from '@/data/coursesData'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
-import { Course, Semester } from '@/shared/types'
+import { Course, Database, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
@@ -54,7 +54,7 @@ export default function Planner({
   const { width, height } = useWindowSize()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const sensors = useSensors(useSensor(PointerSensor))
-  const supabaseClient = useSupabaseClient()
+  const supabaseClient = useSupabaseClient<Database>()
   const router = useRouter()
 
   const [firstYear, setFirstYear] = useState<number>(dbUser.first_year)
@@ -240,7 +240,7 @@ export default function Planner({
       }
     } else {
       // Handle dragging courses from sidebar to semester containers
-      if (overId && !isNaN(parseFloat(overId))) {
+      if (overId && !isNaN(parseFloat(overId)) && overSemester) {
         const activeCourse = courseCatalog.find(
           (c) => c.course_id === active.id,
         )
@@ -262,14 +262,14 @@ export default function Planner({
           coursesToDisplay.filter((c) => c.course_id !== active.id),
         )
 
-        const semester_course_ids = overSemester?.semester_courses.map(
+        const semester_course_ids = overSemester.semester_courses.map(
           (c) => c.course_id,
         )
         if (semester_course_ids?.length === 1) {
           const { error } = await supabaseClient.from('semesters').insert([
             {
               user_id: dbUser.id,
-              semester_index: overSemester?.semester_index,
+              semester_index: overSemester.semester_index,
               semester_course_ids,
             },
           ])
@@ -278,7 +278,7 @@ export default function Planner({
           const { error } = await supabaseClient
             .from('semesters')
             .update({ semester_course_ids })
-            .eq('semester_index', overSemester?.semester_index)
+            .eq('semester_index', overSemester.semester_index)
             .eq('user_id', dbUser.id)
           if (error) console.error(error)
         }

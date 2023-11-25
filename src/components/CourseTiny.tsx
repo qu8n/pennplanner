@@ -1,4 +1,4 @@
-import { Course, Semester, DbUser } from '@/shared/types'
+import { Course, Semester, DbUser, Database } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
@@ -28,7 +28,7 @@ export function CourseTiny({
   semesters?: Semester[]
   dbUser?: DbUser
 }) {
-  const supabaseClient = useSupabaseClient()
+  const supabaseClient = useSupabaseClient<Database>()
 
   const warnings = useMemo(() => {
     if (s && semesters && dbUser) {
@@ -258,15 +258,15 @@ export function CourseTiny({
               const { error } = await supabaseClient
                 .from('semesters')
                 .delete()
-                .eq('semester_index', s?.semester_index)
-                .eq('user_id', dbUser?.id)
+                .eq('semester_index', s!.semester_index)
+                .eq('user_id', dbUser!.id)
               if (error) console.error(error)
             } else {
               const { error } = await supabaseClient
                 .from('semesters')
                 .update({ semester_course_ids })
-                .eq('semester_index', s?.semester_index)
-                .eq('user_id', dbUser?.id)
+                .eq('semester_index', s!.semester_index)
+                .eq('user_id', dbUser!.id)
               if (error) console.error(error)
             }
           }}

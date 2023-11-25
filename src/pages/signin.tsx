@@ -3,7 +3,6 @@ import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
-// import { Database } from '@/types/supabase';
 import { useRouter } from 'next/router'
 import {
   Button,
@@ -16,11 +15,12 @@ import {
 import { RotatingSquare } from 'react-loader-spinner'
 import { Navbar } from '@/components/Navbar'
 import Head from 'next/head'
+import { Database } from '@/shared/types'
 
 export default function SignIn() {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
-  const supabaseClient = useSupabaseClient()
+  const supabaseClient = useSupabaseClient<Database>()
   const user = useUser()
   const router = useRouter()
   const [showSignUpForm, setShowSignUpForm] = useState(false)
@@ -42,7 +42,7 @@ export default function SignIn() {
       const { data, error } = await supabaseClient
         .from('users')
         .select('username')
-        .eq('id', user?.id)
+        .eq('id', user!.id)
         .single()
       if (data) return data.username
       if (error) console.error(error)

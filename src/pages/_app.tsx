@@ -9,8 +9,7 @@ import { useState } from 'react'
 import { geistSans } from '@/fonts/geistSans'
 import Head from 'next/head'
 import { MobileWarning } from '@/contents/MobileWarning'
-import { Logo } from '@/components/Logo'
-import { GitHubBtn } from '@/components/GitHubBtn'
+import { Database } from '@/shared/types'
 
 export default function App({
   Component,
@@ -21,7 +20,7 @@ export default function App({
   // Create a new supabase browser client on every first render
   // This is safe because our database enforces RLS (row level security)
   const [supabaseClient] = useState(() =>
-    createPagesBrowserClient({
+    createPagesBrowserClient<Database>({
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     }),
