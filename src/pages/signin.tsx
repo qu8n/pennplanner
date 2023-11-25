@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import {
   Button,
   Input,
+  Link,
   Radio,
   RadioGroup,
   Select,
@@ -93,6 +94,7 @@ export default function SignIn() {
               <h1 className="mb-5 text-center text-2xl font-medium text-blue-700">
                 Access your <b>PennPlanner</b>
               </h1>
+
               <div className="w-96">
                 <Auth
                   supabaseClient={supabaseClient}
@@ -128,9 +130,22 @@ export default function SignIn() {
                   }}
                 />
               </div>
-              <p className="max-w-2xl text-center text-xs text-neutral-500">
-                You can use either your (1) Penn email or (2) personal Google
-                email
+
+              <p className="max-w-sm text-center text-xs text-neutral-400">
+                After clicking the link above, you will be prompted to sign into{' '}
+                <b>wgusduhubrpononyltwn.supabase.co</b> with your Google
+                account. Supabase is a{' '}
+                <Link
+                  isExternal={true}
+                  underline="hover"
+                  href="https://supabase.com/security"
+                  className="text-xs opacity-60"
+                >
+                  secure
+                </Link>{' '}
+                backend service that powers PennPlanner. After you sign in,
+                PennPlanner will collect your (1) full name and (2) email
+                address as provided by Google.
               </p>
             </div>
 
