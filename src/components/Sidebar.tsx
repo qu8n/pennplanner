@@ -13,6 +13,7 @@ import {
   DropdownSection,
   ScrollShadow,
   useDisclosure,
+  Link,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
@@ -176,52 +177,82 @@ export function Sidebar({
               PennPlanner is still in early development and may contains errors
               or inaccuracies. Please refer to the Penn Engineering
               Online&apos;s{' '}
-              <a
+              <Link
                 className="text-blue-700"
+                isExternal={true}
+                underline="hover"
                 href="https://online.seas.upenn.edu/student-knowledge-base/"
               >
                 Student Knowledge Base
-              </a>{' '}
+              </Link>{' '}
               for official information.
             </div>
 
             <div>
               This application references reviews from{' '}
-              <a className="text-blue-700" href="https://mcitcentral.com/">
-                MCIT Central
-              </a>
-              , which is no longer maintained and may contain outdated
-              information. Please refer to the Penn Engineering Online&apos;s
-              Slack channel{' '}
-              <a
-                href="https://penn-eng-onl-students.slack.com/archives/C02ADHGAL93"
+              <Link
                 className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://mcitcentral.com/"
+              >
+                MCIT Central
+              </Link>
+              , which is no longer maintained and may contain outdated
+              information.
+            </div>
+
+            <div>
+              Please refer to the Penn Engineering Online&apos;s Slack channel{' '}
+              <Link
+                className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://penn-eng-onl-students.slack.com/archives/C02ADHGAL93"
               >
                 #course-planning-advice
-              </a>{' '}
-              or the{' '}
-              <a className="text-blue-700" href="https://discord.gg/3HDZ2FNJaG">
-                Discord server
-              </a>{' '}
+              </Link>
+              , the{' '}
+              <Link
+                className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://discord.gg/3HDZ2FNJaG"
+              >
+                MCIT Discord server
+              </Link>
+              , and the{' '}
+              <Link
+                className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://discord.gg/S4KQKCXdvv"
+              >
+                MSE-DS Discord server
+              </Link>{' '}
               to gather the latest student experiences.
             </div>
 
             <div>
               See an error? Let me know by creating an issue on GitHub{' '}
-              <a
-                href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+              <Link
                 className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
               >
                 here
-              </a>
+              </Link>
               . Contributions are also welcome! I&apos;m happy to help you get
               started over{' '}
-              <a
-                href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
+              <Link
                 className="text-blue-700"
+                isExternal={true}
+                underline="hover"
+                href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
               >
                 Slack.
-              </a>
+              </Link>
             </div>
             <p>-Quan</p>
           </>

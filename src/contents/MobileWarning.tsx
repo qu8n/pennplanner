@@ -1,5 +1,6 @@
 import { GitHubBtn } from '@/components/GitHubBtn'
 import { Logo } from '@/components/Logo'
+import { Link } from '@nextui-org/react'
 
 export function MobileWarning() {
   return (
@@ -11,12 +12,14 @@ export function MobileWarning() {
       </p>
       <p>
         Want this feature? Express your interest{' '}
-        <a
-          href="https://github.com/qu8n/PennPlanner/discussions/1"
+        <Link
           className="text-blue-700"
+          isExternal={true}
+          underline="hover"
+          href="https://github.com/qu8n/PennPlanner/discussions/1"
         >
           here.
-        </a>
+        </Link>
       </p>
       <GitHubBtn twTextSize="text-sm" />
     </div>
