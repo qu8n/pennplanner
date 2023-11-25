@@ -8,7 +8,9 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { geistSans } from '@/fonts/geistSans'
 import Head from 'next/head'
-import { MobileWarning } from '@/contents/mobileWarning'
+import { MobileWarning } from '@/contents/MobileWarning'
+import { Logo } from '@/components/Logo'
+import { GitHubBtn } from '@/components/GitHubBtn'
 
 export default function App({
   Component,
@@ -52,7 +54,9 @@ export default function App({
           <Component {...pageProps} />
         </main>
 
-        <MobileWarning />
+        <div className="flex h-screen bg-neutral-100 text-neutral-500 xl:hidden">
+          <MobileWarning />
+        </div>
       </NextUIProvider>
     </SessionContextProvider>
   )

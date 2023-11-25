@@ -1,5 +1,5 @@
-export interface Semester {
-  id?: number
+export type Semester = {
+  id?: number // different from DbSemester.id
   semester_index: number
   semester_year: number
   semester_season: string
@@ -7,7 +7,7 @@ export interface Semester {
   year_index: number
 }
 
-export interface Course {
+export type Course = {
   course_id: string
   course_name: string
   course_unit: number
@@ -28,20 +28,96 @@ export interface Course {
   semesters_not_offered: string[]
 }
 
-export interface dbSemester {
-  id: number
-  user_id: string
-  created_at: string
-  semester_index: number
-  semester_course_ids: string[]
-}
+export type DbSemester = Database['public']['Tables']['semesters']['Row']
 
-export interface dbUser {
-  id: string
-  created_at: string
-  username: string
-  full_name: string
-  first_year: number
-  program: string
-  waived_courses: string[]
+export type DbUser = Database['public']['Tables']['users']['Row']
+
+// From https://supabase.com/dashboard/project/wgusduhubrpononyltwn/api?page=tables-intro
+export interface Database {
+  public: {
+    Tables: {
+      semesters: {
+        Row: {
+          created_at: string
+          id: number
+          semester_course_ids: string[]
+          semester_index: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          semester_course_ids?: string[]
+          semester_index: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          semester_course_ids?: string[]
+          semester_index?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'semesters_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          first_year: number
+          full_name: string
+          id: string
+          program: string
+          username: string
+          waived_courses: string[]
+        }
+        Insert: {
+          created_at?: string
+          first_year: number
+          full_name: string
+          id: string
+          program: string
+          username: string
+          waived_courses?: string[]
+        }
+        Update: {
+          created_at?: string
+          first_year?: number
+          full_name?: string
+          id?: string
+          program?: string
+          username?: string
+          waived_courses?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'users_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
 }

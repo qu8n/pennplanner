@@ -63,9 +63,9 @@ npm install
 ```sh
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_DEV_SITE_URL=
-NEXT_PUBLIC_PROD_SITE_URL=
 ```
+
+Note that for UI-only development, you might be able to opt out of using a database completely by commenting out all Supabase-related code.
 
 4. Run the development server
 

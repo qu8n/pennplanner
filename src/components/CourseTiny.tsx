@@ -1,4 +1,4 @@
-import { Course, Semester, dbUser } from '@/shared/types'
+import { Course, Semester, DbUser } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
@@ -26,7 +26,7 @@ export function CourseTiny({
   courseCatalog?: Course[]
   setSemesters?: (semesters: Semester[]) => void
   semesters?: Semester[]
-  dbUser?: dbUser
+  dbUser?: DbUser
 }) {
   const supabaseClient = useSupabaseClient()
 

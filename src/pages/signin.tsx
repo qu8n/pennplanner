@@ -17,12 +17,9 @@ import { RotatingSquare } from 'react-loader-spinner'
 import { Navbar } from '@/components/Navbar'
 import Head from 'next/head'
 
-const SITE_URL =
-  process.env.NODE_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_PROD_SITE_URL
-    : process.env.NEXT_PUBLIC_DEV_SITE_URL
-
 export default function SignIn() {
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+
   const supabaseClient = useSupabaseClient()
   const user = useUser()
   const router = useRouter()
@@ -99,7 +96,7 @@ export default function SignIn() {
               <div className="w-96">
                 <Auth
                   supabaseClient={supabaseClient}
-                  redirectTo={`${SITE_URL}/signin`}
+                  redirectTo={currentUrl}
                   appearance={{
                     theme: ThemeSupa,
                     variables: {
@@ -131,8 +128,9 @@ export default function SignIn() {
                   }}
                 />
               </div>
-              <p className="mt-2 max-w-2xl text-center text-xs text-neutral-500">
-                You can use either a (1) Penn email or (2) personal Google email
+              <p className="max-w-2xl text-center text-xs text-neutral-500">
+                You can use either your (1) Penn email or (2) personal Google
+                email
               </p>
             </div>
 

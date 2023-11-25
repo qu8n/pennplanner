@@ -1,11 +1,11 @@
 import { coursesData } from '@/data/coursesData'
-import { Course, Semester, dbSemester } from '@/shared/types'
+import { Course, Semester, DbSemester } from '@/shared/types'
 
 const MIN_SEMESTERS = 8 // three years of semesters: 0-8
 
 export function generateSemestersData(
   firstYearData: number,
-  dbSemesters: dbSemester[] | null,
+  dbSemesters: DbSemester[] | null,
 ): Semester[] {
   const semestersData: Semester[] = [
     {

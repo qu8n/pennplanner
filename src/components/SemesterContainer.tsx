@@ -1,4 +1,4 @@
-import { Course, Semester, dbUser } from '@/shared/types'
+import { Course, Semester, DbUser } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
@@ -49,7 +49,7 @@ export function SemesterContainer({
   onModalOpen: () => void
   setCourseCatalog: (courseCatalog: Course[]) => void
   courseCatalog: Course[]
-  dbUser: dbUser
+  dbUser: DbUser
 }) {
   const supabaseClient = useSupabaseClient()
 

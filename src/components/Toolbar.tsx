@@ -1,5 +1,5 @@
 import { allCourseIds, coursesData } from '@/data/coursesData'
-import { Course, Semester, dbUser } from '@/shared/types'
+import { Course, Semester, DbUser } from '@/shared/types'
 import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import {
@@ -26,7 +26,7 @@ export function Toolbar({
   semesters: Semester[]
   setSemesters: (semesters: Semester[]) => void
   setCourseCatalog: (courseCatalog: Course[]) => void
-  dbUser: dbUser
+  dbUser: DbUser
 }) {
   const supabaseClient = useSupabaseClient()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
