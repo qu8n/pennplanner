@@ -11,6 +11,7 @@ import {
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
 
 const seasonalBgColors: {
   [key: string]: string
@@ -82,13 +83,13 @@ export function SemesterContainer({
               trigger: 'bg-transparent shadow-none',
             }}
             aria-label="Select first semester"
-            variant="flat"
             disallowEmptySelection
             size="sm"
-            color="warning"
             labelPlacement="outside"
             selectedKeys={[String(firstYear)]}
-            className="-ml-2 -mt-2 min-w-[115px] max-w-[115px]"
+            selectorIcon={<ChevronUpDownIcon />}
+            disableSelectorIconRotation
+            className="-ml-2 -mt-2 w-[115px] rounded-md bg-orange-200/[.4]"
             onChange={async (e) => {
               const value = Number(e.target.value)
               const yearDiff = value - firstYear
