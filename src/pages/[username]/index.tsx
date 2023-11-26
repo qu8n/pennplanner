@@ -40,6 +40,7 @@ import { Navbar } from '@/components/Navbar'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import toast from 'react-hot-toast'
 
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
@@ -157,6 +158,11 @@ export default function Planner({
 
     const activeSemester = getSemesterFromId(activeId)
     const overSemester = getSemesterFromId(overId)
+
+    if (overSemester && overSemester.semester_courses.length === 4) {
+      toast.error('Semester is full')
+      return
+    }
 
     // Handle dragging courses within the planner
     if (activeSemester && overSemester) {
