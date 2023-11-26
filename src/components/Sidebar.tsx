@@ -10,7 +10,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  DropdownSection,
   ScrollShadow,
   useDisclosure,
   Link,
@@ -23,14 +22,6 @@ import { CourseBig } from './CourseBig'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
 
-const filterMethods = {
-  'mcit-core-courses': 'MCIT core courses',
-  'mcit-open-electives': 'MCIT open electives',
-  'mse-ds-core-courses': 'MSE-DS core courses',
-  'mse-ds-technical-electives': 'MSE-DS technical electives',
-  'mse-ds-open-electives': 'MSE-DS open electives',
-}
-
 const sortMethods = {
   'name-asc': 'Course name (asc)',
   'name-desc': 'Course name (desc)',
@@ -41,30 +32,30 @@ const sortMethods = {
 function filterCourses(selectedFilter: string, coursesToFilter: Course[]) {
   let filteredCourses: Course[] = []
   switch (selectedFilter) {
-    case 'all-courses':
+    case 'all':
       filteredCourses = [...coursesToFilter]
       break
-    case 'mcit-core-courses':
+    case 'mcit_core_course':
       filteredCourses = [...coursesToFilter].filter((course) => {
         return course.mcit_core_course
       })
       break
-    case 'mcit-open-electives':
+    case 'mcit_open_elective':
       filteredCourses = [...coursesToFilter].filter((course) => {
         return course.mcit_open_elective
       })
       break
-    case 'mse-ds-core-courses':
+    case 'mse_ds_core_course':
       filteredCourses = [...coursesToFilter].filter((course) => {
         return course.mse_ds_core_course
       })
       break
-    case 'mse-ds-technical-electives':
+    case 'mse_ds_technical_elective':
       filteredCourses = [...coursesToFilter].filter((course) => {
         return course.mse_ds_technical_elective
       })
       break
-    case 'mse-ds-open-electives':
+    case 'mse_ds_open_elective':
       filteredCourses = [...coursesToFilter].filter((course) => {
         return course.mse_ds_open_elective
       })
@@ -119,13 +110,13 @@ const courseGroups: {
 } = {
   MCIT: [
     {
-      title: 'Core Courses',
+      title: 'Core courses',
       filter: 'mcit_core_course',
       description:
         'We recommend that you take the core courses in sequential order, but it is not required. You must take CIT 591 in your first semester and complete four core courses before registering for electives.',
     },
     {
-      title: 'Open Electives',
+      title: 'Open electives',
       filter: 'mcit_open_elective',
       description:
         'You’ll complete four graduate-level electives. MCIT Online students may use MSE-DS Online electives to satisfy their elective requirements.',
@@ -133,19 +124,19 @@ const courseGroups: {
   ],
   'MSE-DS': [
     {
-      title: 'Core Courses',
+      title: 'Core courses',
       filter: 'mse_ds_core_course',
       description:
         '4 Course Units. Either ESE 5420 or CIS 5150, but not both, must be taken as one of the 4 core course units.',
     },
     {
-      title: 'Technical Electives',
+      title: 'Technical electives',
       filter: 'mse_ds_technical_elective',
       description:
         'Choose 4 Course Units. If you take five core courses, one can be used to fulfill a technical elective requirement.',
     },
     {
-      title: 'Open Electives',
+      title: 'Open electives',
       filter: 'mse_ds_open_elective',
       description:
         'Choose 2 Course Units. Students may use any additional Core Courses or Technical Electives to fulfill an open elective requirement.',
@@ -171,7 +162,7 @@ export function Sidebar({
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
-    filter: 'all-courses',
+    filter: 'all',
     sort: '',
   })
 
@@ -332,18 +323,19 @@ export function Sidebar({
                 <AdjustmentsHorizontalIcon className="h-4 w-4 text-neutral-500" />
               }
               className={`${
-                coursesQuery.filter !== 'all-courses' && 'ring-2 ring-blue-700'
+                coursesQuery.filter !== 'all' && 'ring-2 ring-blue-700'
               } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
-                {coursesQuery.filter === 'all-courses'
+                {coursesQuery.filter === 'all'
                   ? 'Filter course type'
-                  : filterMethods[
-                      coursesQuery.filter as keyof typeof filterMethods
-                    ]}
+                  : courseGroups[dbUser.program].find(
+                      (group) => group.filter === coursesQuery.filter,
+                    )?.title}
               </span>
             </Button>
           </DropdownTrigger>
+
           <DropdownMenu
             aria-label="filter"
             selectionMode="single"
@@ -352,24 +344,15 @@ export function Sidebar({
               setCoursesQuery({ ...coursesQuery, filter: key as string })
             }
           >
-            <DropdownItem key="all-courses">All courses</DropdownItem>
-            <DropdownSection title="MCIT">
-              <DropdownItem key="mcit-core-courses">Core courses</DropdownItem>
-              <DropdownItem key="mcit-open-electives">
-                Open electives
-              </DropdownItem>
-            </DropdownSection>
-            <DropdownSection title="MSE-DS">
-              <DropdownItem key="mse-ds-core-courses">
-                Core courses
-              </DropdownItem>
-              <DropdownItem key="mse-ds-technical-electives">
-                Technical electives
-              </DropdownItem>
-              <DropdownItem key="mse-ds-open-electives">
-                Open electives
-              </DropdownItem>
-            </DropdownSection>
+            {/* Temp fix for an unresolved bug: https://github.com/nextui-org/nextui/issues/1691 */}
+            {[
+              <DropdownItem key="all">All courses</DropdownItem>,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              courseGroups[dbUser.program].map((group) => (
+                <DropdownItem key={group.filter}>{group.title}</DropdownItem>
+              )),
+            ]}
           </DropdownMenu>
         </Dropdown>
 
@@ -428,7 +411,7 @@ export function Sidebar({
               >
                 {group.title}
               </h3>
-              <p className="mx-1 mb-4 mt-2 text-xs text-neutral-500">
+              <p className="mx-1 mb-4 mt-2 bg-neutral-100 bg-opacity-70 text-xs text-neutral-500">
                 {group.description}
               </p>
               {coursesToDisplay.map((c) => {
