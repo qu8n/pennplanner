@@ -381,6 +381,7 @@ export default function Planner({
             className="flex w-1/4 flex-col"
           >
             <Sidebar
+              dbUser={dbUser}
               courseCatalog={courseCatalog}
               coursesToDisplay={coursesToDisplay}
               setCoursesToDisplay={setCoursesToDisplay}

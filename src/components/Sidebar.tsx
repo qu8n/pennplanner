@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
-import { Course } from '@/shared/types'
+import { Course, DbUser } from '@/shared/types'
 import { CourseBig } from './CourseBig'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
@@ -110,13 +110,58 @@ function searchCourses(searchValue: string, coursesToSearch: Course[]) {
   return results.map((result) => result.item)
 }
 
+const courseGroups: {
+  [program: string]: {
+    title: string
+    filter: keyof Course // column name from courses data file
+    description: string // from Course Catalog page
+  }[]
+} = {
+  MCIT: [
+    {
+      title: 'Core Courses',
+      filter: 'mcit_core_course',
+      description:
+        'We recommend that you take the core courses in sequential order, but it is not required. You must take CIT 591 in your first semester and complete four core courses before registering for electives.',
+    },
+    {
+      title: 'Open Electives',
+      filter: 'mcit_open_elective',
+      description:
+        'You’ll complete four graduate-level electives. MCIT Online students may use MSE-DS Online electives to satisfy their elective requirements.',
+    },
+  ],
+  'MSE-DS': [
+    {
+      title: 'Core Courses',
+      filter: 'mse_ds_core_course',
+      description:
+        '4 Course Units. Either ESE 5420 or CIS 5150, but not both, must be taken as one of the 4 core course units.',
+    },
+    {
+      title: 'Technical Electives',
+      filter: 'mse_ds_technical_elective',
+      description:
+        'Choose 4 Course Units. If you take five core courses, one can be used to fulfill a technical elective requirement.',
+    },
+    {
+      title: 'Open Electives',
+      filter: 'mse_ds_open_elective',
+      description:
+        'Choose 2 Course Units. Students may use any additional Core Courses or Technical Electives to fulfill an open elective requirement.',
+    },
+  ],
+}
+
 export function Sidebar({
-  courseCatalog,
-  coursesToDisplay,
+  dbUser,
+  courseCatalog, // courses not assigned to a semester
+  coursesToDisplay, // filtered/unfiltered view of courseCatalog
   setCoursesToDisplay,
   setModalCourse,
   onModalOpen,
 }: {
+  dbUser: DbUser
   courseCatalog: Course[]
   coursesToDisplay: Course[]
   setCoursesToDisplay: (courses: Course[]) => void
@@ -374,14 +419,32 @@ export function Sidebar({
 
       <div className="mt-3 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-300 shadow-inner">
         <ScrollShadow className="overflow-y-auto px-2 pb-2 pt-2">
-          {coursesToDisplay.map((c) => (
-            <Draggable key={c.course_id} id={c.course_id}>
-              <CourseBig
-                c={c}
-                setModalCourse={setModalCourse}
-                onModalOpen={onModalOpen}
-              />
-            </Draggable>
+          {courseGroups[dbUser.program].map((group, index) => (
+            <>
+              <h3
+                className={`${
+                  index !== 0 && 'mt-10'
+                } text-md mx-1 border-b-2 border-neutral-500 bg-neutral-100 bg-opacity-70 font-semibold text-neutral-500`}
+              >
+                {group.title}
+              </h3>
+              <p className="mx-1 mb-4 mt-2 text-xs text-neutral-500">
+                {group.description}
+              </p>
+              {coursesToDisplay.map((c) => {
+                if (c[group.filter] === true) {
+                  return (
+                    <Draggable key={c.course_id} id={c.course_id}>
+                      <CourseBig
+                        c={c}
+                        setModalCourse={setModalCourse}
+                        onModalOpen={onModalOpen}
+                      />
+                    </Draggable>
+                  )
+                }
+              })}
+            </>
           ))}
 
           {coursesToDisplay.length === 0 && (
