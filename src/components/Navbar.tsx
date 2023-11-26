@@ -6,18 +6,24 @@ import {
   NavbarItem,
   Link,
   Button,
-  NavbarMenu,
   NavbarMenuToggle,
-  NavbarMenuItem,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react'
 import { Logo } from './Logo'
 import { GitHubBtn } from './GitHubBtn'
-
-const mobileMenuItems = [
-  'Star GitHub Repo',
-  'Report Issues',
-  'Suggest Features',
-]
+import {
+  CalendarIcon,
+  ChevronDownIcon,
+  LinkIcon,
+} from '@heroicons/react/24/solid'
+import {
+  BookOpenIcon,
+  HomeIcon,
+  NewspaperIcon,
+} from '@heroicons/react/24/outline'
 
 export function Navbar({
   maxWidthSize,
@@ -63,6 +69,7 @@ export function Navbar({
               Report Issues
             </Button>
           </NavbarItem>
+
           <NavbarItem>
             <Button
               variant="light"
@@ -75,6 +82,7 @@ export function Navbar({
               Ask Questions
             </Button>
           </NavbarItem>
+
           <NavbarItem>
             <Button
               variant="light"
@@ -87,18 +95,84 @@ export function Navbar({
               Suggest Features
             </Button>
           </NavbarItem>
+
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  disableRipple
+                  className={`${twTextSize} text-neutral-500`}
+                  endContent={<ChevronDownIcon className="h-4 w-4" />}
+                  size="sm"
+                  variant="light"
+                  startContent={<LinkIcon className="h-4 w-4" />}
+                >
+                  Penn Resources
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+
+            <DropdownMenu aria-label="Penn resources">
+              <DropdownItem
+                key="knowledge-base"
+                startContent={<HomeIcon className="h-4 w-4" />}
+              >
+                <Link
+                  color="foreground"
+                  isExternal={true}
+                  href="https://online.seas.upenn.edu/student-knowledge-base/"
+                  className="text-sm"
+                >
+                  Student Knowledge Base
+                </Link>
+              </DropdownItem>
+
+              <DropdownItem
+                key="course-schedule"
+                startContent={<CalendarIcon className="h-4 w-4" />}
+              >
+                <Link
+                  color="foreground"
+                  isExternal={true}
+                  href="https://online.seas.upenn.edu/student-knowledge-base/course-schedule//"
+                  className="text-sm"
+                >
+                  Course Schedule
+                </Link>
+              </DropdownItem>
+
+              <DropdownItem
+                key="course-syllabi"
+                startContent={<NewspaperIcon className="h-4 w-4" />}
+              >
+                <Link
+                  color="foreground"
+                  isExternal={true}
+                  href="https://online.seas.upenn.edu/student-knowledge-base/course-syllabi/"
+                  className="text-sm"
+                >
+                  Course Syllabi
+                </Link>
+              </DropdownItem>
+
+              <DropdownItem
+                key="student-handbook"
+                startContent={<BookOpenIcon className="h-4 w-4" />}
+              >
+                <Link
+                  color="foreground"
+                  isExternal={true}
+                  href="https://online.seas.upenn.edu/degrees/student-services/student-handbook/"
+                  className="text-sm"
+                >
+                  Student Handbook
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+
           {customNavbarItem}
         </NavbarContent>
-
-        <NavbarMenu>
-          {mobileMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link color="foreground" className="w-full" href="#" size="lg">
-                {item}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
       </NextUINavbar>
     </>
   )
