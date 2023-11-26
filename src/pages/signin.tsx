@@ -17,6 +17,7 @@ import { RotatingSquare } from 'react-loader-spinner'
 import { Navbar } from '@/components/Navbar'
 import Head from 'next/head'
 import { Database } from '@/shared/types'
+import toast from 'react-hot-toast'
 
 export default function SignIn() {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
@@ -190,6 +191,10 @@ export default function SignIn() {
                 classNames={{
                   label: 'text-neutral-500',
                 }}
+                isInvalid={newUser.full_name === ''}
+                errorMessage={
+                  newUser.full_name === '' ? 'Required field' : undefined
+                }
               />
 
               <Input
@@ -202,13 +207,24 @@ export default function SignIn() {
                     pennplanner.com/
                   </span>
                 }
+                description="Only letters (a-z) and numbers (0-9) are allowed"
                 value={newUser.username}
                 onValueChange={(value) =>
-                  setNewUser({ ...newUser, username: value })
+                  setNewUser({ ...newUser, username: value.toLowerCase() })
                 }
                 classNames={{
                   label: 'text-neutral-500',
                 }}
+                isInvalid={
+                  newUser.username === '' ||
+                  new RegExp('^[A-Za-z0-9]+$').test(newUser.username) === false
+                }
+                errorMessage={
+                  newUser.username === '' ||
+                  new RegExp('^[A-Za-z0-9]+$').test(newUser.username) === false
+                    ? 'Only letters (a-z) and numbers (0-9) are allowed'
+                    : undefined
+                }
               />
 
               <Select
@@ -258,17 +274,24 @@ export default function SignIn() {
                   <span className="font-semibold text-neutral-700">MSE-DS</span>{' '}
                   - Master of Science in Engineering in Data Science
                 </Radio>
-                <Radio value="Dual Degree" isDisabled>
-                  <span className="font-semibold text-neutral-700">
-                    Dual Degree
-                  </span>{' '}
-                  (coming soon)
-                </Radio>
               </RadioGroup>
 
               <Button
                 size="lg"
                 onPress={async () => {
+                  const allFilledOut = Object.values(newUser).every(
+                    (value) => value !== '',
+                  )
+
+                  if (!allFilledOut) {
+                    toast.error('Please fill out all fields', {
+                      style: {
+                        background: '#fecaca',
+                      },
+                    })
+                    return
+                  }
+
                   const { error: userCreateError } = await supabaseClient
                     .from('users')
                     .insert([
@@ -286,6 +309,15 @@ export default function SignIn() {
                     ])
                   if (userCreateError) {
                     console.error('userCreateError:', userCreateError)
+
+                    if (userCreateError.code === '23505') {
+                      toast.error('Username is already taken', {
+                        style: {
+                          background: '#fecaca',
+                        },
+                      })
+                    }
+
                     return
                   } else {
                     router.push(`/${newUser.username}`)
@@ -296,6 +328,7 @@ export default function SignIn() {
                 Confirm
               </Button>
             </div>
+
             <div className="flex flex-col justify-center">
               <img
                 src="/puzzle.png"

@@ -160,7 +160,11 @@ export default function Planner({
     const overSemester = getSemesterFromId(overId)
 
     if (overSemester && overSemester.semester_courses.length === 4) {
-      toast.error('Semester is full')
+      toast.error('Semester is full', {
+        style: {
+          background: '#fecaca',
+        },
+      })
       return
     }
 
