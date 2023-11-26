@@ -17,8 +17,8 @@ export default function Home() {
         transition={{ duration: 1, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <h1 className="mt-4 max-w-lg text-3xl font-bold text-blue-700">
-          Easily map out your entire online MCIT or MSE-DS degree
+        <h1 className="mt-4 inline-block max-w-lg bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 bg-clip-text text-3xl font-semibold text-transparent">
+          Easily plan out your entire online MCIT or MSE-DS degree
         </h1>
 
         <motion.div
