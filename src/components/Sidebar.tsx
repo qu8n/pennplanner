@@ -23,10 +23,9 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
 
 const sortMethods = {
-  'name-asc': 'Course name (asc)',
-  'name-desc': 'Course name (desc)',
-  'number-asc': 'Course number (asc)',
-  'number-desc': 'Course number (desc)',
+  id: 'Course id: A-Z (default)',
+  name: 'Course name: A-Z',
+  rating: 'Rating: high-low',
 }
 
 function filterCourses(selectedFilter: string, coursesToFilter: Course[]) {
@@ -67,26 +66,22 @@ function filterCourses(selectedFilter: string, coursesToFilter: Course[]) {
 function sortCourses(sortMethod: string, coursesToSort: Course[]) {
   let sortedCourses: Course[] = []
   switch (sortMethod) {
-    case '':
-    case 'number-asc':
+    case 'id':
       sortedCourses = [...coursesToSort].sort((a, b) =>
         a.course_id.localeCompare(b.course_id),
       )
       break
-    case 'number-desc':
-      sortedCourses = [...coursesToSort].sort((a, b) =>
-        b.course_id.localeCompare(a.course_id),
-      )
-      break
-    case 'name-asc':
+    case 'name':
       sortedCourses = [...coursesToSort].sort((a, b) =>
         a.course_name.localeCompare(b.course_name),
       )
       break
-    case 'name-desc':
-      sortedCourses = [...coursesToSort].sort((a, b) =>
-        b.course_name.localeCompare(a.course_name),
-      )
+    case 'rating':
+      sortedCourses = [...coursesToSort].sort((a, b) => {
+        const aRating = a.avg_rating ? a.avg_rating : 0
+        const bRating = b.avg_rating ? b.avg_rating : 0
+        return bRating - aRating
+      })
       break
   }
   return sortedCourses
@@ -163,7 +158,7 @@ export function Sidebar({
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
     filter: 'all',
-    sort: '',
+    sort: 'id',
   })
 
   useEffect(() => {
@@ -340,13 +335,14 @@ export function Sidebar({
             aria-label="filter"
             selectionMode="single"
             selectedKeys={[coursesQuery.filter]}
+            disallowEmptySelection
             onAction={(key) =>
               setCoursesQuery({ ...coursesQuery, filter: key as string })
             }
           >
             {/* Temp fix for an unresolved bug: https://github.com/nextui-org/nextui/issues/1691 */}
             {[
-              <DropdownItem key="all">All courses</DropdownItem>,
+              <DropdownItem key="all">All courses (default)</DropdownItem>,
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               courseGroups[dbUser.program].map((group) => (
@@ -365,11 +361,11 @@ export function Sidebar({
                 <BarsArrowDownIcon className="h-4 w-4 text-neutral-500" />
               }
               className={`${
-                coursesQuery.sort !== '' && 'ring-2 ring-blue-700'
+                coursesQuery.sort !== 'id' && 'ring-2 ring-blue-700'
               } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
             >
               <span className="line-clamp-1">
-                {coursesQuery.sort === ''
+                {coursesQuery.sort === 'id'
                   ? 'Sort by'
                   : sortMethods[coursesQuery.sort as keyof typeof sortMethods]}
               </span>
@@ -384,18 +380,9 @@ export function Sidebar({
               setCoursesQuery({ ...coursesQuery, sort: key as string })
             }
           >
-            <DropdownItem key="name-asc">
-              {sortMethods['name-asc']}
-            </DropdownItem>
-            <DropdownItem key="name-desc">
-              {sortMethods['name-desc']}
-            </DropdownItem>
-            <DropdownItem key="number-asc">
-              {sortMethods['number-asc']}
-            </DropdownItem>
-            <DropdownItem key="number-desc">
-              {sortMethods['number-desc']}
-            </DropdownItem>
+            <DropdownItem key="id">{sortMethods['id']}</DropdownItem>
+            <DropdownItem key="name">{sortMethods['name']}</DropdownItem>
+            <DropdownItem key="rating">{sortMethods['rating']}</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
