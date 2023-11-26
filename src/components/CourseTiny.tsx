@@ -188,13 +188,15 @@ export function CourseTiny({
         <Tooltip
           closeDelay={0}
           content={
-            <>
+            warnings.length === 1 ? (
+              <p>{warnings[0]}</p>
+            ) : (
               <ul className="list-disc pl-3">
                 {warnings.map((warning) => (
                   <li key={warning}>{warning}</li>
                 ))}
               </ul>
-            </>
+            )
           }
           className="max-w-sm"
           classNames={{
