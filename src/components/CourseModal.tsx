@@ -1,4 +1,7 @@
-import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import {
+  InformationCircleIcon,
+  SpeakerWaveIcon,
+} from '@heroicons/react/20/solid'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import { Course } from '@/shared/types'
 import { Link, Tooltip } from '@nextui-org/react'
@@ -32,6 +35,26 @@ export function CourseModal({
         body={
           <>
             <div className="flex flex-col text-sm font-normal">
+              {(modalCourse?.course_id === 'ESE 5410' ||
+                modalCourse?.course_id === 'ESE 5420') && (
+                <div className="mb-4 w-auto rounded-md bg-red-100 p-4 text-red-900">
+                  <SpeakerWaveIcon className="inline-block h-4 w-4 flex-none" />
+                  <b className="ml-1">Notes:</b> the previous ESE 5420 was
+                  renamed to ESE 5410 in Fall 2022, and the current ESE 5420 was
+                  newly launched in Summer 2023. As a result, older reviews for
+                  ESE 5420 on MCIT Central are actually for the now ESE 5410.
+                  For more context, see the full Slack announcement{' '}
+                  <Link
+                    className="text-sm text-blue-700"
+                    isExternal={true}
+                    underline="hover"
+                    href="https://penn-eng-onl-students.slack.com/archives/CDAUBBFFA/p1657223897934779"
+                  >
+                    here.
+                  </Link>
+                </div>
+              )}
+
               <div className="flex flex-row gap-2">
                 <span className="mr-[1.3rem]">Rating:</span>
                 <Rating

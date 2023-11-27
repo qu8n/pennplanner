@@ -214,10 +214,10 @@ export function CourseTiny({
           }
           className="max-w-sm"
           classNames={{
-            base: 'bg-rose-100 text-rose-900',
+            base: 'bg-red-100 text-red-900',
           }}
         >
-          <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-500" />
+          <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-600" />
         </Tooltip>
       )}
 
@@ -253,7 +253,7 @@ export function CourseTiny({
           isIconOnly
           className={`${
             isDragging ? '' : 'group-hover:block'
-          } absolute -left-5 -top-4 hidden rounded-full border-2 border-blue-500 bg-white text-red-500 shadow-lg hover:bg-neutral-200`}
+          } absolute -left-5 -top-4 hidden rounded-full border-2 border-blue-500 bg-white text-red-600 shadow-lg hover:bg-neutral-200`}
           onPress={async () => {
             setCourseCatalog!([...courseCatalog!, c])
 
