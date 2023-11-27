@@ -22,6 +22,7 @@ import {
 import {
   BookOpenIcon,
   HomeIcon,
+  LifebuoyIcon,
   NewspaperIcon,
 } from '@heroicons/react/24/outline'
 
@@ -166,6 +167,20 @@ export function Navbar({
                   className="text-sm"
                 >
                   Student Handbook
+                </Link>
+              </DropdownItem>
+
+              <DropdownItem
+                key="get-advising-help"
+                startContent={<LifebuoyIcon className="h-4 w-4 text-red-600" />}
+              >
+                <Link
+                  color="foreground"
+                  isExternal={true}
+                  href="https://online.seas.upenn.edu/student-knowledge-base/connect-with-student-support/"
+                  className="text-sm text-red-600"
+                >
+                  Get Advising Help
                 </Link>
               </DropdownItem>
             </DropdownMenu>

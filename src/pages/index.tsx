@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/Navbar'
-import { AcademicCapIcon } from '@heroicons/react/24/outline'
-import { Button, Link } from '@nextui-org/react'
+import { AcademicCapIcon, CheckIcon } from '@heroicons/react/24/outline'
+import { Button } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 
@@ -17,9 +17,32 @@ export default function Home() {
         transition={{ duration: 1, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <h1 className="mt-4 inline-block max-w-lg bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 bg-clip-text text-3xl font-semibold text-transparent">
+        <h1 className="mt-4 max-w-xl bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700 bg-clip-text text-4xl font-semibold text-transparent">
           Easily plan out your entire online MCIT or MSE-DS degree
         </h1>
+
+        <div className="mt-4 flex flex-col gap-1">
+          <div className="flex flex-row items-center gap-1">
+            <CheckIcon className="h-5 w-5 text-green-500" />
+            <p className="font-light text-neutral-500">
+              Visualize your entire course plan via a simple drag and drop
+            </p>
+          </div>
+
+          <div className="flex flex-row items-center gap-1">
+            <CheckIcon className="h-5 w-5 text-green-500" />
+            <p className="font-light text-neutral-500">
+              View detailed course information, including MCIT Central ratings
+            </p>
+          </div>
+
+          <div className="flex flex-row items-center gap-1">
+            <CheckIcon className="h-5 w-5 text-green-500" />
+            <p className="font-light text-neutral-500">
+              Get notified when requisites or other requirements are not met
+            </p>
+          </div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 100 }}
@@ -33,14 +56,10 @@ export default function Home() {
           >
             <AcademicCapIcon className="text-white-500 h-6 w-6" />
             <p>
-              <span className="font-light">Create your </span>
+              <span className="font-light">Access your </span>
               <span className="font-medium">PennPlanner</span>
             </p>
           </Button>
-
-          <Link className="mt-2" href="/signin" size="sm">
-            Sign In
-          </Link>
 
           <motion.div
             initial={{ opacity: 0, y: 100 }}
