@@ -40,10 +40,11 @@ export function CourseTiny({
           `${s.semester_season} ${s.semester_year}`,
         )
       ) {
-        warnings.push('Not offered in this semester')
+        warnings.push(
+          'This course is not offered in this semester, according to the latest Course Schedule',
+        )
       }
 
-      // Validate that prereqs have been taken in previous semesters
       const courseIdsInPrevSemesters = semesters.reduce(
         (acc, semester) =>
           semester.semester_index < s.semester_index
@@ -51,6 +52,8 @@ export function CourseTiny({
             : acc,
         [] as string[],
       )
+
+      // Validate that prereqs have been taken in previous semesters
       if (c.course_prereq_ids.length > 0) {
         const missingPrereqs: string[] = []
         const coursesToScan = courseIdsInPrevSemesters.concat(
@@ -74,6 +77,13 @@ export function CourseTiny({
             } in previous semesters: ${missingPrereqs.join(', ')}`,
           )
         }
+      }
+
+      // Enforce the 10 CUs to graduate rule
+      if (courseIdsInPrevSemesters.length >= 10) {
+        warnings.push(
+          '10 CUs have been reached or exceeded in previous semesters. Graduation is now required',
+        )
       }
 
       // Validate coreqs being taken in previous or current semesters
@@ -120,7 +130,7 @@ export function CourseTiny({
         if (c.mcit_open_elective) {
           if (coreCoursesInPrevSemestersCount < 4) {
             warnings.push(
-              'Students must complete 4 core courses before they can take an elective',
+              'Students must complete a minimum of 4 core courses before they can take an elective',
             )
           }
         }
@@ -157,16 +167,20 @@ export function CourseTiny({
 
         /* "students must complete six core course units and four
         elective course units" */
-        const semestersCourses = semesters.reduce(
+        const allSemestersCourses = semesters.reduce(
           (acc, semester) => acc.concat(semester.semester_courses),
           [] as Course[],
         )
-        const electivesCount = semestersCourses.filter(
-          (course) => course.mcit_open_elective,
+        const coreCoursesCount = allSemestersCourses.filter(
+          (course) => course.mcit_core_course,
         ).length
-        if (electivesCount > 4 && c.mcit_open_elective) {
+        if (
+          coreCoursesCount < 6 &&
+          allSemestersCourses.length >= 10 &&
+          c.mcit_core_course
+        ) {
           warnings.push(
-            `Students must complete 6 core and 4 elective courses to graduate. There are ${electivesCount} electives in the planner`,
+            `Students must complete all core courses to graduate. There are only ${coreCoursesCount} core courses in the planner`,
           )
         }
       }
