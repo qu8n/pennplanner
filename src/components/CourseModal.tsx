@@ -41,9 +41,10 @@ export function CourseModal({
                   <SpeakerWaveIcon className="inline-block h-4 w-4 flex-none" />
                   <b className="ml-1">Notes:</b> the previous ESE 5420 was
                   renamed to ESE 5410 in Fall 2022, and the current ESE 5420 was
-                  newly launched in Summer 2023. As a result, older reviews for
-                  ESE 5420 on MCIT Central are actually for the now ESE 5410.
-                  For more context, see the full Slack announcement{' '}
+                  newly launched in Summer 2023. As a result, older reviews and
+                  various ratings for ESE 5420 on MCIT Central are actually for
+                  the now ESE 5410. For more context, see the full Slack
+                  announcement{' '}
                   <Link
                     className="text-sm text-blue-700"
                     isExternal={true}
