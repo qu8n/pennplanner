@@ -2,6 +2,7 @@ import {
   AdjustmentsHorizontalIcon,
   BarsArrowDownIcon,
   MagnifyingGlassIcon,
+  PlayCircleIcon,
 } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -12,7 +13,6 @@ import {
   DropdownItem,
   ScrollShadow,
   useDisclosure,
-  Link,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
@@ -21,6 +21,7 @@ import { Course, DbUser } from '@/shared/types'
 import { CourseBig } from './CourseBig'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
+import { Tutorial } from '@/contents/Tutorial'
 
 const sortMethods = {
   id: 'Course id: A-Z (default)',
@@ -187,107 +188,22 @@ export function Sidebar({
         <h2 className="text-xl font-bold text-blue-800">Course Catalog</h2>
         <Button
           variant="light"
-          color="danger"
+          color="primary"
           size="sm"
           onPress={onOpen}
-          className="flex items-center gap-1 text-red-600"
+          className="flex items-center gap-1 text-blue-700"
         >
-          <p className="text-xs">Disclaimer</p>
-          <ExclamationTriangleIcon className="h-4 w-4" />
+          <p className="text-xs">Tutorial</p>
+          <PlayCircleIcon className="h-4 w-4" />
         </Button>
       </div>
 
       <ModalWrapper
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        header="Disclaimer"
+        header="Welcome"
         baseCustomClasses="max-w-lg"
-        body={
-          <>
-            <div>
-              PennPlanner is still in early development and may contains errors
-              or inaccuracies. Please refer to the Penn Engineering
-              Online&apos;s{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://online.seas.upenn.edu/student-knowledge-base/"
-              >
-                Student Knowledge Base
-              </Link>{' '}
-              for official information.
-            </div>
-
-            <div>
-              This application references reviews from{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://mcitcentral.com/"
-              >
-                MCIT Central
-              </Link>
-              , which is no longer maintained and may contain outdated
-              information.
-            </div>
-
-            <div>
-              Please refer to the Penn Engineering Online&apos;s Slack channel{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://penn-eng-onl-students.slack.com/archives/C02ADHGAL93"
-              >
-                #course-planning-advice
-              </Link>
-              , the{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://discord.gg/3HDZ2FNJaG"
-              >
-                MCIT Discord server
-              </Link>
-              , and the{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://discord.gg/S4KQKCXdvv"
-              >
-                MSE-DS Discord server
-              </Link>{' '}
-              to gather the latest student experiences.
-            </div>
-
-            <div>
-              See an error? Let me know by creating an issue on GitHub{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://github.com/qu8n/pennplanner/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
-              >
-                here
-              </Link>
-              . Contributions are also welcome! I&apos;m happy to help you get
-              started over{' '}
-              <Link
-                className="text-blue-700"
-                isExternal={true}
-                underline="hover"
-                href="https://penn-eng-onl-students.slack.com/team/U029YJF17LG"
-              >
-                Slack.
-              </Link>
-            </div>
-            <p>-Quan</p>
-          </>
-        }
+        body={<Tutorial />}
       />
 
       <Input

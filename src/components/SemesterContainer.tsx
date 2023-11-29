@@ -118,7 +118,7 @@ export function SemesterContainer({
               })
             }}
           >
-            <SelectSection title="First semester">
+            <SelectSection title="Change to...">
               {Array.from(
                 { length: new Date().getFullYear() - 2019 + 1 },
                 (_, i) => 2019 + i,
