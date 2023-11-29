@@ -16,7 +16,7 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react'
-import { RotatingSquare } from 'react-loader-spinner'
+import { ProgressBar } from 'react-loader-spinner'
 import { Navbar } from '@/components/Navbar'
 import Head from 'next/head'
 import { Database } from '@/shared/types'
@@ -73,18 +73,20 @@ export default function SignIn() {
 
   if (showLoading) {
     return (
-      <div className="m-auto">
-        <RotatingSquare
-          height="100"
-          width="100"
-          color="#1d4ed8"
-          ariaLabel="rotating-square-loading"
-          strokeWidth="10"
-          wrapperStyle={{}}
-          wrapperClass=""
+      <div className="m-auto flex flex-col items-center">
+        <ProgressBar
+          height="150"
+          width="150"
+          borderColor="#1d4ed8"
+          wrapperClass="progress-bar-wrapper"
+          barColor="#1d4ed8"
+          ariaLabel="loading"
           visible={true}
         />
-        <p className="text-center text-xs text-neutral-500">Loading...</p>
+        <p className="text-neutral-500">
+          Working hard to prepare your planner...
+        </p>
+        <p className="text-neutral-500">This can take several seconds</p>
       </div>
     )
   }
