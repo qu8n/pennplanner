@@ -17,7 +17,7 @@ export default function Home() {
         transition={{ duration: 1, ease: 'easeOut' }}
         className="m-auto flex w-full flex-col items-center text-center"
       >
-        <h1 className="mt-4 max-w-xl bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700 bg-clip-text text-4xl font-semibold text-transparent">
+        <h1 className="mt-4 max-w-xl text-4xl font-semibold text-blue-700">
           Easily plan out your entire online MCIT or MSE-DS degree
         </h1>
 
