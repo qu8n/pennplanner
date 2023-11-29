@@ -36,6 +36,7 @@
 - Vercel Deployment
 - Supabase Auth with Google OAuth
 - Supabase's PostgreSQL database
+- Highlight.io for observability
 
 ## Getting started
 
@@ -67,6 +68,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
 Note that for UI-only development, you might be able to opt out of using a database completely by commenting out all Supabase-related code.
+
+4. Remove observability code
+
+   a. Delete `instrumentation.ts`
+
+   b. Remove `HighlightInit` from `_app.tsx`
+
+   c. Replace `next.config.js` with the default config:
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
+
+module.exports = nextConfig
+```
 
 4. Run the development server
 

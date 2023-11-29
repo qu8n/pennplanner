@@ -10,6 +10,7 @@ import { geistSans } from '@/fonts/geistSans'
 import Head from 'next/head'
 import { MobileWarning } from '@/contents/MobileWarning'
 import { Database } from '@/shared/types'
+import { HighlightInit } from '@highlight-run/next/client'
 
 export default function App({
   Component,
@@ -43,6 +44,18 @@ export default function App({
           key="desc"
         />
       </Head>
+
+      <HighlightInit
+        projectId={process.env.NEXT_PUBLIC_HIGHLIGHT_PROJECT_ID}
+        serviceName="my-nextjs-frontend"
+        tracingOrigins
+        excludedHostnames={['localhost']}
+        networkRecording={{
+          enabled: true,
+          recordHeadersAndBody: true,
+          urlBlocklist: [],
+        }}
+      />
 
       <NextUIProvider className={`${geistSans.className}`}>
         <Toaster position="top-right" reverseOrder={false} />

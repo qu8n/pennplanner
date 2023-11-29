@@ -68,6 +68,7 @@ export default function SignIn() {
     } else {
       setShowLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isLoading])
 
   if (showLoading) {
