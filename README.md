@@ -116,7 +116,7 @@ npm run dev
 
 Schema visualizer:
 
-<img src="public/schema_visualizer.png" alt="Schema visualizer">
+<img src="public/schema-visualizer.png" alt="Schema visualizer">
 
 ## Contributing
 

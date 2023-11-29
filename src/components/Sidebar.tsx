@@ -201,8 +201,8 @@ export function Sidebar({
       <ModalWrapper
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        header="Welcome"
-        baseCustomClasses="max-w-lg"
+        header="📖 Tutorial"
+        baseCustomClasses="max-w-2xl"
         body={<Tutorial />}
       />
 

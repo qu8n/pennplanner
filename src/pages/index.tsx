@@ -70,7 +70,7 @@ export default function Home() {
               autoPlay
               muted
               loop
-              className="m-auto mt-10 rounded-lg border-1 border-neutral-300 bg-neutral-100 p-2 ring-8 ring-neutral-100 lg:max-w-3xl"
+              className="pointer-events-none m-auto mt-10 rounded-lg border-1 border-neutral-300 bg-neutral-100 p-2 ring-8 ring-neutral-100 lg:max-w-3xl"
             >
               <source src="/demo.mp4" type="video/mp4" />
             </video>
