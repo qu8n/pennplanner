@@ -1,7 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import {
+  useUser,
+  useSupabaseClient,
+  useSessionContext,
+} from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
@@ -24,6 +27,7 @@ export default function SignIn() {
 
   const supabaseClient = useSupabaseClient<Database>()
   const user = useUser()
+  const { isLoading } = useSessionContext()
   const router = useRouter()
   const [showSignUpForm, setShowSignUpForm] = useState(false)
   const [newUser, setNewUser] = useState({
@@ -32,14 +36,9 @@ export default function SignIn() {
     first_year: new Date().getFullYear(),
     program: 'MCIT',
   })
+  const [showLoading, setShowLoading] = useState(true)
 
   useEffect(() => {
-    setNewUser({
-      ...newUser,
-      username: user?.email ? user.email?.split('@')[0] : '',
-      full_name: user ? user.user_metadata.full_name : '',
-    })
-
     async function getUsername() {
       const { data, error } = await supabaseClient
         .from('users')
@@ -50,7 +49,15 @@ export default function SignIn() {
       if (error) console.error(error)
     }
 
+    if (isLoading) return
+
     if (user) {
+      setNewUser({
+        ...newUser,
+        username: user.email!.split('@')[0],
+        full_name: user.user_metadata.full_name,
+      })
+
       getUsername().then((username) => {
         if (username) {
           router.push(`/${username}`)
@@ -58,10 +65,12 @@ export default function SignIn() {
           setShowSignUpForm(true)
         }
       })
+    } else {
+      setShowLoading(false)
     }
-  }, [user, router, supabaseClient])
+  }, [user, isLoading])
 
-  if (router.query.code && !showSignUpForm) {
+  if (showLoading) {
     return (
       <div className="m-auto">
         <RotatingSquare
