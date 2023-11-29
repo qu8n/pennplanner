@@ -62,13 +62,14 @@ export default function SignIn() {
         if (username) {
           router.push(`/${username}`)
         } else {
+          setShowLoading(false)
           setShowSignUpForm(true)
         }
       })
     } else {
       setShowLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [user, isLoading])
 
   if (showLoading) {
@@ -241,7 +242,7 @@ export default function SignIn() {
 
               <Select
                 isRequired
-                label="First year"
+                label="First calendar year in the program"
                 variant="underlined"
                 disallowEmptySelection
                 selectedKeys={[String(newUser.first_year)]}
@@ -268,7 +269,6 @@ export default function SignIn() {
                 isRequired
                 size="sm"
                 label="Online program"
-                // orientation="horizontal"
                 value={newUser.program}
                 onValueChange={(value) =>
                   setNewUser({ ...newUser, program: value })

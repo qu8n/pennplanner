@@ -82,7 +82,7 @@ export function SemesterContainer({
             classNames={{
               trigger: 'bg-transparent shadow-none',
             }}
-            aria-label="Select first semester"
+            aria-label="Change semester"
             disallowEmptySelection
             size="sm"
             labelPlacement="outside"
