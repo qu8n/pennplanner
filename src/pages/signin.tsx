@@ -21,6 +21,7 @@ import { Navbar } from '@/components/Navbar'
 import Head from 'next/head'
 import { Database } from '@/shared/types'
 import toast from 'react-hot-toast'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
 
 export default function SignIn() {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
@@ -123,9 +124,6 @@ export default function SignIn() {
                         radii: {
                           borderRadiusButton: '7px',
                         },
-                        colors: {
-                          defaultButtonBackground: '#e5e5e5',
-                        },
                         borderWidths: {
                           buttonBorderWidth: '1px',
                         },
@@ -145,22 +143,32 @@ export default function SignIn() {
                 />
               </div>
 
-              <p className="max-w-sm text-center text-xs text-neutral-400">
-                After clicking the link above, you will be prompted to sign into{' '}
-                <b>wgusduhubrpononyltwn.supabase.co</b> with your Google
-                account. Supabase is a{' '}
-                <Link
-                  isExternal={true}
-                  underline="hover"
-                  href="https://supabase.com/security"
-                  className="text-xs opacity-60"
-                >
-                  secure
-                </Link>{' '}
-                backend service that powers PennPlanner. After you sign in,
-                PennPlanner will collect your (1) full name and (2) email
-                address as provided by Google.
-              </p>
+              <div className="-mt-2 flex max-w-sm flex-col gap-2 p-2 text-start text-xs text-neutral-500">
+                <div>
+                  <InformationCircleIcon className="mr-1 inline-block h-4 w-4 flex-none" />
+                  After clicking the link above, you will be prompted to sign
+                  into <b>wgusduhubrpononyltwn.supabase.co</b> with Google.
+                </div>
+                <div>
+                  Supabase is a{' '}
+                  <Link
+                    isExternal={true}
+                    underline="hover"
+                    href="https://supabase.com/security"
+                    className="text-xs"
+                  >
+                    secure
+                  </Link>{' '}
+                  backend service that powers PennPlanner.
+                  &quot;wgusduhubrpononyltwn&quot; is a free, randomly-generated
+                  Supabase subdomain that PennPlanner uses.
+                </div>
+                <p>
+                  After you sign in, we will collect your name and email address
+                  from Google. We use this information solely for the app
+                  experiences and do not share your information with anyone.
+                </p>
+              </div>
             </div>
 
             <div className="flex flex-col items-center justify-center">
