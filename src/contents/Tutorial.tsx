@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { Button, Link } from '@nextui-org/react'
+import { Button, Link, Pagination } from '@nextui-org/react'
 import { useState } from 'react'
 
 function BrowseCourses() {
@@ -11,7 +11,7 @@ function BrowseCourses() {
       <img
         src="/tutorial/browse-courses.gif"
         alt="Browse courses"
-        className="pointer-events-none mx-auto max-w-xl rounded-md border-1 border-neutral-200"
+        className="pointer-events-none mx-auto rounded-md border-1 border-neutral-200"
       />
     </>
   )
@@ -26,7 +26,7 @@ function CourseWarnings() {
       <img
         src="/tutorial/course-warnings.gif"
         alt="Course warnings"
-        className="pointer-events-none mx-auto max-w-xl rounded-md border-1 border-neutral-200"
+        className="pointer-events-none mx-auto rounded-md border-1 border-neutral-200"
       />
     </>
   )
@@ -147,18 +147,18 @@ function Disclaimer() {
 
 function PageContent({ page }: { page: number }) {
   switch (page) {
-    case 0:
-      return <BrowseCourses />
     case 1:
-      return <CourseWarnings />
+      return <BrowseCourses />
     case 2:
-      return <WarningTriggers />
+      return <CourseWarnings />
     case 3:
+      return <WarningTriggers />
+    case 4:
       return <Disclaimer />
   }
 }
 
-const PAGE_COUNT = 4
+const TOTAL_PAGES = 4
 
 const nextButtonTwClasses =
   'gap-1 border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]'
@@ -166,31 +166,41 @@ const nextButtonTwClasses =
 const getStartedButtonTwClasses = 'custom-gradient text-white'
 
 export function Tutorial({ onClose }: { onClose: () => void }) {
-  const [page, setPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
 
   return (
     <div className="flex flex-col gap-4">
-      <PageContent page={page} />
+      <PageContent page={currentPage} />
 
       <Button
         fullWidth
         className={`${
-          page !== PAGE_COUNT - 1
+          currentPage !== TOTAL_PAGES
             ? nextButtonTwClasses
             : getStartedButtonTwClasses
         } mx-auto mt-4 max-w-xs rounded-md`}
         onPress={() => {
-          if (page !== PAGE_COUNT - 1) setPage(page + 1)
+          if (currentPage !== TOTAL_PAGES) setCurrentPage(currentPage + 1)
           else onClose()
         }}
         endContent={
-          page !== PAGE_COUNT - 1 && (
+          currentPage !== TOTAL_PAGES && (
             <ChevronRightIcon className="h-4 w-4 text-neutral-500" />
           )
         }
       >
-        {page !== PAGE_COUNT - 1 ? 'Next' : 'Get started'}
+        {currentPage !== TOTAL_PAGES ? 'Next' : 'Get started'}
       </Button>
+
+      <Pagination
+        total={TOTAL_PAGES}
+        page={currentPage}
+        onChange={setCurrentPage}
+        className="mx-auto"
+        classNames={{
+          cursor: 'bg-neutral-200 text-black',
+        }}
+      />
     </div>
   )
 }
