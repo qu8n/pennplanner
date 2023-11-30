@@ -34,6 +34,7 @@ export default function SignIn() {
   const [newUser, setNewUser] = useState({
     username: '',
     full_name: '',
+    first_semester: 'Fall',
     first_year: new Date().getFullYear(),
     program: 'MCIT',
   })
@@ -102,68 +103,70 @@ export default function SignIn() {
 
       <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
 
-      <div className="flex flex-1 px-32">
+      <div className="flex flex-1 justify-evenly px-32">
         {!showSignUpForm ? (
           <>
-            <div className="flex w-1/2 flex-col items-center justify-center">
-              <h1 className="mb-5 text-center text-2xl font-medium text-blue-700">
-                Access your <b>PennPlanner</b>
-              </h1>
+            <div className="flex flex-col justify-center">
+              <div className="flex flex-col justify-center rounded-md bg-white bg-opacity-50 p-10">
+                <h1 className="mb-5 text-center text-2xl font-medium text-blue-700">
+                  Access your <b>PennPlanner</b>
+                </h1>
 
-              <div className="w-96">
-                <Auth
-                  supabaseClient={supabaseClient}
-                  redirectTo={currentUrl}
-                  appearance={{
-                    theme: ThemeSupa,
-                    variables: {
-                      default: {
-                        space: {
-                          buttonPadding: '20px',
-                        },
-                        radii: {
-                          borderRadiusButton: '7px',
-                        },
-                        borderWidths: {
-                          buttonBorderWidth: '1px',
+                <div className="w-96">
+                  <Auth
+                    supabaseClient={supabaseClient}
+                    redirectTo={currentUrl}
+                    appearance={{
+                      theme: ThemeSupa,
+                      variables: {
+                        default: {
+                          space: {
+                            buttonPadding: '20px',
+                          },
+                          radii: {
+                            borderRadiusButton: '7px',
+                          },
+                          borderWidths: {
+                            buttonBorderWidth: '1px',
+                          },
                         },
                       },
-                    },
-                  }}
-                  providers={['google']}
-                  socialLayout="vertical"
-                  onlyThirdPartyProviders={true}
-                  localization={{
-                    variables: {
-                      sign_in: {
-                        social_provider_text: 'Continue with {{provider}}',
+                    }}
+                    providers={['google']}
+                    socialLayout="vertical"
+                    onlyThirdPartyProviders={true}
+                    localization={{
+                      variables: {
+                        sign_in: {
+                          social_provider_text: 'Continue with {{provider}}',
+                        },
                       },
-                    },
-                  }}
-                />
-              </div>
+                    }}
+                  />
+                </div>
 
-              <div className="-mt-2 flex max-w-sm flex-col gap-2 px-2 text-start text-xs text-neutral-500">
-                <div>
-                  <InformationCircleIcon className="mr-1 inline-block h-4 w-4 flex-none" />
-                  After clicking the link above, you will be prompted to sign
-                  into <b>wgusduhubrpononyltwn.supabase.co</b> with any of your
-                  Google account. &quot;wgusduhubrpononyltwn&quot; is a free,
-                  randomly-generated subdomain provided by Supabase, a{' '}
-                  <Link
-                    isExternal={true}
-                    underline="hover"
-                    href="https://supabase.com/security"
-                    className="text-xs"
-                  >
-                    secure
-                  </Link>{' '}
-                  backend service that powers PennPlanner.
+                <div className="flex max-w-sm flex-col gap-2 px-2 text-start text-xs text-neutral-500">
+                  <div>
+                    <InformationCircleIcon className="mr-1 inline-block h-4 w-4 flex-none" />
+                    After clicking the link above, you will be prompted to sign
+                    into <b>wgusduhubrpononyltwn.supabase.co</b> with any of
+                    your Google account. &quot;wgusduhubrpononyltwn&quot; is a
+                    free, randomly-generated subdomain provided by Supabase, a{' '}
+                    <Link
+                      isExternal={true}
+                      underline="hover"
+                      href="https://supabase.com/security"
+                      className="text-xs"
+                    >
+                      secure
+                    </Link>{' '}
+                    backend service that powers PennPlanner.
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col justify-center">
               <img
                 src="/diploma.png"
                 alt="Sign in"
@@ -173,172 +176,200 @@ export default function SignIn() {
           </>
         ) : (
           <>
-            <div className="flex flex-col items-start justify-center gap-2 px-56">
-              <h1 className="mb-5 text-3xl font-semibold text-blue-700">
-                Almost there
-              </h1>
+            <div className="flex flex-col justify-center">
+              <div className="flex flex-col gap-2 rounded-md bg-white bg-opacity-50 p-10">
+                <h1 className="mb-5 text-3xl font-semibold text-blue-700">
+                  Almost there
+                </h1>
 
-              <Input
-                fullWidth
-                isDisabled
-                isRequired
-                variant="underlined"
-                type="email"
-                label="Email address"
-                value={user?.email}
-                className="opacity-40"
-                classNames={{
-                  label: 'text-neutral-500',
-                }}
-              />
+                <Input
+                  fullWidth
+                  isDisabled
+                  isRequired
+                  variant="underlined"
+                  type="email"
+                  label="Email address"
+                  value={user?.email}
+                  className="opacity-40"
+                  classNames={{
+                    label: 'text-neutral-500',
+                  }}
+                />
 
-              <Input
-                isRequired
-                type="text"
-                label="Full name"
-                variant="underlined"
-                value={newUser.full_name ?? ''}
-                onValueChange={(value) =>
-                  setNewUser({ ...newUser, full_name: value })
-                }
-                classNames={{
-                  label: 'text-neutral-500',
-                }}
-                isInvalid={newUser.full_name === ''}
-                errorMessage={
-                  newUser.full_name === '' ? 'Required field' : undefined
-                }
-              />
-
-              <Input
-                isRequired
-                type="text"
-                label="Username"
-                variant="underlined"
-                startContent={
-                  <span className="-mr-1 mb-1 text-sm text-default-400">
-                    pennplanner.com/
-                  </span>
-                }
-                description="Only letters (a-z) and numbers (0-9) are allowed"
-                value={newUser.username}
-                onValueChange={(value) =>
-                  setNewUser({ ...newUser, username: value.toLowerCase() })
-                }
-                classNames={{
-                  label: 'text-neutral-500',
-                }}
-                isInvalid={
-                  newUser.username === '' ||
-                  new RegExp('^[A-Za-z0-9]+$').test(newUser.username) === false
-                }
-                errorMessage={
-                  newUser.username === '' ||
-                  new RegExp('^[A-Za-z0-9]+$').test(newUser.username) === false
-                    ? 'Only letters (a-z) and numbers (0-9) are allowed'
-                    : undefined
-                }
-              />
-
-              <Select
-                isRequired
-                label="First calendar year in the program"
-                variant="underlined"
-                disallowEmptySelection
-                selectedKeys={[String(newUser.first_year)]}
-                onChange={(e) => {
-                  const value = e.target.value
-                  setNewUser({ ...newUser, first_year: Number(value) })
-                }}
-                classNames={{
-                  label: 'text-neutral-500',
-                }}
-              >
-                {Array.from(
-                  { length: new Date().getFullYear() - 2019 + 1 },
-                  (_, i) => 2019 + i,
-                )
-                  .reverse()
-                  .map((year) => {
-                    const yearStr = String(year)
-                    return <SelectItem key={yearStr}>{yearStr}</SelectItem>
-                  })}
-              </Select>
-
-              <RadioGroup
-                isRequired
-                size="sm"
-                label="Online program"
-                value={newUser.program}
-                onValueChange={(value) =>
-                  setNewUser({ ...newUser, program: value })
-                }
-                className="ml-1 mt-2 w-full"
-                classNames={{
-                  label: 'text-xs font-medium text-neutral-500',
-                }}
-              >
-                <Radio value="MCIT">
-                  <span className="font-semibold text-neutral-700">MCIT</span> -
-                  Master of Computer and Information Technology
-                </Radio>
-                <Radio value="MSE-DS">
-                  <span className="font-semibold text-neutral-700">MSE-DS</span>{' '}
-                  - Master of Science in Engineering in Data Science
-                </Radio>
-              </RadioGroup>
-
-              <Button
-                size="lg"
-                onPress={async () => {
-                  const allFilledOut = Object.values(newUser).every(
-                    (value) => value !== '',
-                  )
-
-                  if (!allFilledOut) {
-                    toast.error('Please fill out all fields', {
-                      style: {
-                        background: '#fecaca',
-                      },
-                    })
-                    return
+                <Input
+                  isRequired
+                  type="text"
+                  label="Full name"
+                  variant="underlined"
+                  value={newUser.full_name ?? ''}
+                  onValueChange={(value) =>
+                    setNewUser({ ...newUser, full_name: value })
                   }
+                  classNames={{
+                    label: 'text-neutral-500',
+                  }}
+                  isInvalid={newUser.full_name === ''}
+                  errorMessage={
+                    newUser.full_name === '' ? 'Required field' : undefined
+                  }
+                />
 
-                  const { error: userCreateError } = await supabaseClient
-                    .from('users')
-                    .insert([
-                      {
-                        id: user!.id,
-                        username: newUser.username,
-                        full_name: newUser.full_name,
-                        first_year: newUser.first_year,
-                        program: newUser.program,
-                        waived_courses:
-                          newUser.program === 'MSE-DS'
-                            ? ['CIT 5910', 'CIT 5920', 'CIT 5930', 'CIT 5940']
-                            : [],
-                      },
-                    ])
-                  if (userCreateError) {
-                    console.error('userCreateError:', userCreateError)
+                <Input
+                  isRequired
+                  type="text"
+                  label="Username"
+                  variant="underlined"
+                  startContent={
+                    <span className="-mr-1 mb-1 text-sm text-default-400">
+                      pennplanner.com/
+                    </span>
+                  }
+                  description="Only letters (a-z) and numbers (0-9) are allowed"
+                  value={newUser.username}
+                  onValueChange={(value) =>
+                    setNewUser({ ...newUser, username: value.toLowerCase() })
+                  }
+                  classNames={{
+                    label: 'text-neutral-500',
+                  }}
+                  isInvalid={
+                    newUser.username === '' ||
+                    new RegExp('^[A-Za-z0-9]+$').test(newUser.username) ===
+                      false
+                  }
+                  errorMessage={
+                    newUser.username === '' ||
+                    new RegExp('^[A-Za-z0-9]+$').test(newUser.username) ===
+                      false
+                      ? 'Only letters (a-z) and numbers (0-9) are allowed'
+                      : undefined
+                  }
+                />
 
-                    if (userCreateError.code === '23505') {
-                      toast.error('Username is already taken', {
+                <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
+                  <Select
+                    isRequired
+                    label="First semester"
+                    variant="underlined"
+                    disallowEmptySelection
+                    selectedKeys={[newUser.first_semester]}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setNewUser({ ...newUser, first_semester: value })
+                    }}
+                    classNames={{
+                      label: 'text-neutral-500',
+                    }}
+                  >
+                    <SelectItem key="Fall">Fall</SelectItem>
+                    <SelectItem key="Spring">Spring</SelectItem>
+                  </Select>
+
+                  <Select
+                    isRequired
+                    label="First year"
+                    variant="underlined"
+                    disallowEmptySelection
+                    selectedKeys={[String(newUser.first_year)]}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setNewUser({ ...newUser, first_year: Number(value) })
+                    }}
+                    classNames={{
+                      label: 'text-neutral-500',
+                    }}
+                  >
+                    {Array.from(
+                      { length: new Date().getFullYear() - 2019 + 1 },
+                      (_, i) => 2019 + i,
+                    )
+                      .reverse()
+                      .map((year) => {
+                        const yearStr = String(year)
+                        return <SelectItem key={yearStr}>{yearStr}</SelectItem>
+                      })}
+                  </Select>
+                </div>
+
+                <RadioGroup
+                  isRequired
+                  size="sm"
+                  label="Online program"
+                  value={newUser.program}
+                  onValueChange={(value) =>
+                    setNewUser({ ...newUser, program: value })
+                  }
+                  className="ml-1 mt-2 w-full"
+                  classNames={{
+                    label: 'text-xs font-medium text-neutral-500',
+                  }}
+                >
+                  <Radio value="MCIT">
+                    <span className="font-semibold text-neutral-700">MCIT</span>{' '}
+                    - Master of Computer and Information Technology
+                  </Radio>
+                  <Radio value="MSE-DS">
+                    <span className="font-semibold text-neutral-700">
+                      MSE-DS
+                    </span>{' '}
+                    - Master of Science in Engineering in Data Science
+                  </Radio>
+                </RadioGroup>
+
+                <Button
+                  onPress={async () => {
+                    const allFilledOut = Object.values(newUser).every(
+                      (value) => value !== '',
+                    )
+
+                    if (!allFilledOut) {
+                      toast.error('Please fill out all fields', {
                         style: {
                           background: '#fecaca',
                         },
                       })
+                      return
                     }
 
-                    return
-                  } else {
-                    router.push(`/${newUser.username}`)
-                  }
-                }}
-                className="mt-6 w-full bg-blue-700 text-white hover:bg-blue-800"
-              >
-                Confirm
-              </Button>
+                    const { error: userCreateError } = await supabaseClient
+                      .from('users')
+                      .insert([
+                        {
+                          id: user!.id,
+                          username: newUser.username,
+                          full_name: newUser.full_name,
+                          first_year:
+                            newUser.first_semester === 'Fall'
+                              ? newUser.first_year
+                              : newUser.first_year - 1,
+                          program: newUser.program,
+                          waived_courses:
+                            newUser.program === 'MSE-DS'
+                              ? ['CIT 5910', 'CIT 5920', 'CIT 5930', 'CIT 5940']
+                              : [],
+                        },
+                      ])
+                    if (userCreateError) {
+                      console.error('userCreateError:', userCreateError)
+
+                      if (userCreateError.code === '23505') {
+                        toast.error('Username is already taken', {
+                          style: {
+                            background: '#fecaca',
+                          },
+                        })
+                      }
+
+                      return
+                    } else {
+                      router.push(`/${newUser.username}`)
+                    }
+                  }}
+                  className="custom-gradient mt-6 w-full rounded-md text-white"
+                >
+                  Confirm
+                </Button>
+              </div>
             </div>
 
             <div className="flex flex-col justify-center">
