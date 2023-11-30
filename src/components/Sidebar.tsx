@@ -155,7 +155,7 @@ export function Sidebar({
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
     filter: 'all',
@@ -203,7 +203,7 @@ export function Sidebar({
         onOpenChange={onOpenChange}
         header="📖 Tutorial"
         baseCustomClasses="max-w-2xl"
-        body={<Tutorial />}
+        body={<Tutorial onClose={onClose} />}
       />
 
       <Input
