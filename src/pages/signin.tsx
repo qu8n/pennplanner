@@ -143,14 +143,13 @@ export default function SignIn() {
                 />
               </div>
 
-              <div className="-mt-2 flex max-w-sm flex-col gap-2 p-2 text-start text-xs text-neutral-500">
+              <div className="-mt-2 flex max-w-sm flex-col gap-2 px-2 text-start text-xs text-neutral-500">
                 <div>
                   <InformationCircleIcon className="mr-1 inline-block h-4 w-4 flex-none" />
                   After clicking the link above, you will be prompted to sign
-                  into <b>wgusduhubrpononyltwn.supabase.co</b> with Google.
-                </div>
-                <div>
-                  Supabase is a{' '}
+                  into <b>wgusduhubrpononyltwn.supabase.co</b> with any of your
+                  Google account. &quot;wgusduhubrpononyltwn&quot; is a free,
+                  randomly-generated subdomain provided by Supabase, a{' '}
                   <Link
                     isExternal={true}
                     underline="hover"
@@ -160,14 +159,7 @@ export default function SignIn() {
                     secure
                   </Link>{' '}
                   backend service that powers PennPlanner.
-                  &quot;wgusduhubrpononyltwn&quot; is a free, randomly-generated
-                  Supabase subdomain that PennPlanner uses.
                 </div>
-                <p>
-                  After you sign in, we will collect your name and email address
-                  from Google. We use this information solely for the app
-                  experiences and do not share your information with anyone.
-                </p>
               </div>
             </div>
 
