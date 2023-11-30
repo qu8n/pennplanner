@@ -79,8 +79,20 @@ export function CourseTiny({
         }
       }
 
+      const totalCUsInPrevSemesters = semesters.reduce(
+        (acc, semester) =>
+          semester.semester_index < s.semester_index
+            ? acc +
+              semester.semester_courses.reduce(
+                (acc, sc) => acc + sc.course_unit,
+                0,
+              )
+            : acc,
+        0,
+      )
+
       // Enforce the 10 CUs to graduate rule
-      if (courseIdsInPrevSemesters.length >= 10) {
+      if (totalCUsInPrevSemesters >= 10) {
         warnings.push(
           '10 CUs have been reached or exceeded in previous semesters. Graduation is now required',
         )
