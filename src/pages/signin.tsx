@@ -22,6 +22,7 @@ import Head from 'next/head'
 import { Database } from '@/shared/types'
 import toast from 'react-hot-toast'
 import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import { H } from '@highlight-run/next/client'
 
 export default function SignIn() {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
@@ -59,6 +60,8 @@ export default function SignIn() {
         username: user.email!.split('@')[0],
         full_name: user.user_metadata.full_name,
       })
+
+      H.identify(user.email!)
 
       getUsername().then((username) => {
         if (username) {

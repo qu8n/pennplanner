@@ -41,6 +41,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import toast from 'react-hot-toast'
+import { H } from '@highlight-run/next/client'
 
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
@@ -50,7 +51,10 @@ export default function Planner({
   dbUser,
   semestersData,
   courseCatalogData,
+  userEmailForHighlight,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  H.identify(userEmailForHighlight)
+
   const id = useId()
   const { width, height } = useWindowSize()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -571,11 +575,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
   })
 
+  const userEmailForHighlight = session.user.email
+
   return {
     props: {
       dbUser,
       semestersData,
       courseCatalogData,
+      userEmailForHighlight,
     },
   }
 }
