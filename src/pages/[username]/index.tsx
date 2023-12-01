@@ -19,7 +19,7 @@ import {
   DragOverEvent,
   Active,
 } from '@dnd-kit/core'
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState } from 'react'
 import { coursesData } from '@/data/coursesData'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
 import { Course, Database, Semester } from '@/shared/types'
@@ -53,7 +53,9 @@ export default function Planner({
   courseCatalogData,
   userEmailForHighlight,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  H.identify(userEmailForHighlight)
+  useEffect(() => {
+    H.identify(userEmailForHighlight)
+  }, [userEmailForHighlight])
 
   const id = useId()
   const { width, height } = useWindowSize()
