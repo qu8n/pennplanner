@@ -77,26 +77,6 @@ export default function SignIn() {
     // eslint-disable-next-line
   }, [user, isLoading])
 
-  if (showLoading) {
-    return (
-      <div className="m-auto flex flex-col items-center">
-        <ProgressBar
-          height="150"
-          width="150"
-          borderColor="#1d4ed8"
-          wrapperClass="progress-bar-wrapper"
-          barColor="#1d4ed8"
-          ariaLabel="loading"
-          visible={true}
-        />
-        <p className="text-neutral-500">
-          Working hard to prepare your planner...
-        </p>
-        <p className="text-neutral-500">This can take several seconds</p>
-      </div>
-    )
-  }
-
   return (
     <>
       <Head>
@@ -107,7 +87,23 @@ export default function SignIn() {
       <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
 
       <div className="flex flex-1 justify-evenly px-32">
-        {!showSignUpForm ? (
+        {showLoading ? (
+          <div className="m-auto flex flex-col items-center">
+            <ProgressBar
+              height="150"
+              width="150"
+              borderColor="#1d4ed8"
+              wrapperClass="progress-bar-wrapper"
+              barColor="#1d4ed8"
+              ariaLabel="loading"
+              visible={true}
+            />
+            <p className="text-neutral-500">
+              Working hard to prepare your planner...
+            </p>
+            <p className="text-neutral-500">This can take several seconds</p>
+          </div>
+        ) : !showSignUpForm ? (
           <>
             <div className="flex flex-col justify-center">
               <div className="flex flex-col justify-center rounded-md bg-white bg-opacity-50 p-10">
