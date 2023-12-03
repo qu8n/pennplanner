@@ -4,6 +4,7 @@ import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import {
   ArrowPathIcon,
   GlobeAltIcon,
+  LinkIcon,
   LockClosedIcon,
   PencilSquareIcon,
 } from '@heroicons/react/24/outline'
@@ -12,6 +13,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Progress,
+  Switch,
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
@@ -45,14 +47,17 @@ export function Toolbar({
     body: null,
     footer: null,
   })
-  const [selected, setSelected] = useState(dbUser.waived_courses)
+  const [selectedWaivedCourses, setSelectedWaivedCourses] = useState(
+    dbUser.waived_courses,
+  )
+  const [isPublic, setIsPublic] = useState(true)
 
-  const waivedCoursesBody = (
+  const waivedCoursesModalBody = (
     <CheckboxGroup
       label="Select courses you have waived:"
-      value={selected}
+      value={selectedWaivedCourses}
       onValueChange={async (value) => {
-        setSelected(value)
+        setSelectedWaivedCourses(value)
 
         const { error } = await supabaseClient
           .from('users')
@@ -104,13 +109,63 @@ export function Toolbar({
     </CheckboxGroup>
   )
 
+  const sharePlannerModalBody = (
+    <>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-col items-start">
+            <p>Let others view your planner?</p>
+            {isPublic ? (
+              <div className="flex flex-row items-center gap-1">
+                <GlobeAltIcon className="h-3 w-3 text-blue-500" />
+                <span className="text-xs text-blue-500">
+                  Your planner is publicly viewable
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-row items-center gap-1">
+                <LockClosedIcon className="h-3 w-3 text-neutral-500" />
+                <span className="text-xs text-neutral-500">
+                  Your planner is private
+                </span>
+              </div>
+            )}
+          </div>
+          <Switch isSelected={isPublic} onValueChange={setIsPublic}>
+            {isPublic ? 'Yes' : 'No'}
+          </Switch>
+        </div>
+
+        <div className="flex flex-row">
+          <Button
+            isDisabled={!isPublic}
+            startContent={<LinkIcon className="h-4 w-4 text-white" />}
+            fullWidth
+            className="custom-gradient rounded-md text-white"
+            onPress={() => {}}
+          >
+            Copy planner link
+          </Button>
+        </div>
+      </div>
+    </>
+  )
+
   useEffect(() => {
     setModalContent((prev) => ({
       ...prev,
-      body: waivedCoursesBody,
+      body: waivedCoursesModalBody,
     }))
     // eslint-disable-next-line
-  }, [selected])
+  }, [selectedWaivedCourses])
+
+  useEffect(() => {
+    setModalContent((prev) => ({
+      ...prev,
+      body: sharePlannerModalBody,
+    }))
+    // eslint-disable-next-line
+  }, [isPublic])
 
   return (
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
@@ -149,7 +204,7 @@ export function Toolbar({
             onOpen()
             setModalContent({
               header: 'Waived courses',
-              body: waivedCoursesBody,
+              body: waivedCoursesModalBody,
             })
           }}
         >
@@ -229,49 +284,8 @@ export function Toolbar({
           onPress={() => {
             onOpen()
             setModalContent({
-              header: 'Are you sure?',
-              body: (
-                <p>
-                  You will remove all courses from your planner. This action
-                  cannot be undone.
-                </p>
-              ),
-              footer: (
-                <>
-                  <Button
-                    color="default"
-                    variant="light"
-                    onPress={onClose}
-                    className="rounded-md"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    color="danger"
-                    className="rounded-md hover:bg-red-600"
-                    onPress={async () => {
-                      const { error } = await supabaseClient
-                        .from('semesters')
-                        .delete()
-                        .eq('user_id', dbUser.id)
-                      console.error(error)
-                      setSemesters(
-                        semesters.map((s) => ({
-                          ...s,
-                          semester_courses: [],
-                        })),
-                      )
-                      setCourseCatalog(coursesData)
-                      toast('Plan has been reset', {
-                        icon: '🔄',
-                      })
-                      onClose()
-                    }}
-                  >
-                    Reset
-                  </Button>
-                </>
-              ),
+              header: 'Share your planner',
+              body: sharePlannerModalBody,
             })
           }}
         >
