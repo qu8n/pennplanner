@@ -1,7 +1,12 @@
 import { allCourseIds, coursesData } from '@/data/coursesData'
 import { Course, Semester, DbUser, Database } from '@/shared/types'
 import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
-import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowPathIcon,
+  GlobeAltIcon,
+  LockClosedIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline'
 import {
   Button,
   Checkbox,
@@ -210,6 +215,67 @@ export function Toolbar({
           }}
         >
           Reset plan
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        closeDelay={0}
+        placement="top"
+        content="Copy your planner URL for sharing or edit your privacy setting"
+      >
+        <Button
+          startContent={<GlobeAltIcon className="h-4 w-4 text-blue-500" />}
+          className="w-38 flex-none rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
+          onPress={() => {
+            onOpen()
+            setModalContent({
+              header: 'Are you sure?',
+              body: (
+                <p>
+                  You will remove all courses from your planner. This action
+                  cannot be undone.
+                </p>
+              ),
+              footer: (
+                <>
+                  <Button
+                    color="default"
+                    variant="light"
+                    onPress={onClose}
+                    className="rounded-md"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="danger"
+                    className="rounded-md hover:bg-red-600"
+                    onPress={async () => {
+                      const { error } = await supabaseClient
+                        .from('semesters')
+                        .delete()
+                        .eq('user_id', dbUser.id)
+                      console.error(error)
+                      setSemesters(
+                        semesters.map((s) => ({
+                          ...s,
+                          semester_courses: [],
+                        })),
+                      )
+                      setCourseCatalog(coursesData)
+                      toast('Plan has been reset', {
+                        icon: '🔄',
+                      })
+                      onClose()
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </>
+              ),
+            })
+          }}
+        >
+          Share plan
         </Button>
       </Tooltip>
 
