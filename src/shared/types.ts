@@ -74,7 +74,7 @@ export interface Database {
           first_year: number
           full_name: string
           id: string
-          planner_privacy: string
+          is_public: boolean
           program: string
           username: string
           waived_courses: string[]
@@ -84,7 +84,7 @@ export interface Database {
           first_year: number
           full_name: string
           id: string
-          planner_privacy?: string
+          is_public?: boolean
           program: string
           username: string
           waived_courses?: string[]
@@ -94,7 +94,7 @@ export interface Database {
           first_year?: number
           full_name?: string
           id?: string
-          planner_privacy?: string
+          is_public?: boolean
           program?: string
           username?: string
           waived_courses?: string[]

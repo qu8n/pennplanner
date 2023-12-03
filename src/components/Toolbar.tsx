@@ -50,7 +50,7 @@ export function Toolbar({
   const [selectedWaivedCourses, setSelectedWaivedCourses] = useState(
     dbUser.waived_courses,
   )
-  const [isPublic, setIsPublic] = useState(true)
+  const [isPublic, setIsPublic] = useState(dbUser.is_public)
 
   const waivedCoursesModalBody = (
     <CheckboxGroup
@@ -131,7 +131,24 @@ export function Toolbar({
               </div>
             )}
           </div>
-          <Switch isSelected={isPublic} onValueChange={setIsPublic}>
+          <Switch
+            isSelected={isPublic}
+            onValueChange={async (value) => {
+              setIsPublic(value)
+
+              const { error } = await supabaseClient
+                .from('users')
+                .update({ is_public: value })
+                .eq('id', dbUser.id)
+
+              if (error) {
+                console.error(error)
+                toast.error('Privacy setting failed to update')
+              } else {
+                toast.success('Privacy setting updated successfully')
+              }
+            }}
+          >
             {isPublic ? 'Yes' : 'No'}
           </Switch>
         </div>
@@ -142,7 +159,10 @@ export function Toolbar({
             startContent={<LinkIcon className="h-4 w-4 text-white" />}
             fullWidth
             className="custom-gradient rounded-md text-white"
-            onPress={() => {}}
+            onPress={async () => {
+              window.navigator.clipboard.writeText(window.location.href)
+              toast.success('Planner link copied to clipboard')
+            }}
           >
             Copy planner link
           </Button>
