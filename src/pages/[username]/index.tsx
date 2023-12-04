@@ -355,7 +355,7 @@ export default function Planner({
         <meta property="og:title" content="User's planner" key="title" />
       </Head>
 
-      {totalCU === 10 && (
+      {totalCU >= 10 && visitorType === 'owner' && (
         <Confetti
           width={width}
           height={height}
@@ -460,6 +460,7 @@ export default function Planner({
                               setCourseCatalog={setCourseCatalog}
                               courseCatalog={courseCatalog}
                               dbUser={dbUser}
+                              visitorType={visitorType}
                             />
                           </Droppable>
                         ))}
@@ -467,7 +468,7 @@ export default function Planner({
                     </div>
                   ))}
 
-                {numOfYears < 7 ? (
+                {numOfYears < 7 && visitorType === 'owner' ? (
                   <Button
                     startContent={
                       <SquaresPlusIcon className="h-5 w-5 text-neutral-500" />

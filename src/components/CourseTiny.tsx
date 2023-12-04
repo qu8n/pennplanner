@@ -1,4 +1,4 @@
-import { Course, Semester, DbUser, Database } from '@/shared/types'
+import { Course, Semester, DbUser, Database, Visitor } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Button, Tooltip } from '@nextui-org/react'
@@ -16,6 +16,7 @@ export function CourseTiny({
   setSemesters,
   semesters,
   dbUser,
+  visitorType,
 }: {
   c: Course
   s?: Semester
@@ -27,6 +28,7 @@ export function CourseTiny({
   setSemesters?: (semesters: Semester[]) => void
   semesters?: Semester[]
   dbUser?: DbUser
+  visitorType?: Visitor
 }) {
   const supabaseClient = useSupabaseClient<Database>()
 
@@ -207,8 +209,12 @@ export function CourseTiny({
   return (
     <div
       className={`${
-        isDragging ? 'rotate-1 cursor-grabbing shadow-md' : 'cursor-grab shadow'
-      } group relative flex flex-row items-center justify-between rounded-md border-1 border-neutral-300 bg-white px-2 py-1 hover:ring-2 hover:ring-blue-500`}
+        isDragging ? 'rotate-1 cursor-grabbing shadow-md' : 'shadow'
+      } group relative flex flex-row items-center justify-between rounded-md border-1 border-neutral-300 bg-white px-2 py-1 ${
+        visitorType === 'owner'
+          ? 'cursor-grab hover:ring-2 hover:ring-blue-500'
+          : 'cursor-default'
+      }`}
     >
       {warnings.length > 0 && !isDragging && (
         <Tooltip
@@ -255,57 +261,59 @@ export function CourseTiny({
         </Button>
       </Tooltip>
 
-      <Tooltip
-        closeDelay={0}
-        placement="top-start"
-        content="Remove course from the planner and return it back to the course catalog"
-      >
-        <Button
-          size="sm"
-          isIconOnly
-          className={`${
-            isDragging ? '' : 'group-hover:block'
-          } absolute -left-5 -top-4 hidden rounded-full border-2 border-blue-500 bg-white text-red-600 shadow-lg hover:bg-neutral-200`}
-          onPress={async () => {
-            setCourseCatalog!([...courseCatalog!, c])
-
-            setSemesters!(
-              semesters!.map((s) => ({
-                ...s,
-                semester_courses: s.semester_courses.filter(
-                  (sc) => sc.course_id !== c.course_id,
-                ),
-              })),
-            )
-
-            const semester_course_ids = s?.semester_courses
-              .filter((sc) => sc.course_id !== c.course_id)
-              .map((sc) => sc.course_id)
-
-            if (semester_course_ids?.length === 0) {
-              const { error } = await supabaseClient
-                .from('semesters')
-                .delete()
-                .eq('semester_index', s!.semester_index)
-                .eq('user_id', dbUser!.id)
-              if (error) console.error(error)
-            } else {
-              const { error } = await supabaseClient
-                .from('semesters')
-                .update({ semester_course_ids })
-                .eq('semester_index', s!.semester_index)
-                .eq('user_id', dbUser!.id)
-              if (error) console.error(error)
-            }
-          }}
+      {visitorType === 'owner' && (
+        <Tooltip
+          closeDelay={0}
+          placement="top-start"
+          content="Remove course from the planner and return it back to the course catalog"
         >
-          <span className="sr-only">Close</span>
-          <XMarkIcon
-            className="pointer-events-none mx-auto h-4 w-4"
-            aria-hidden="true"
-          />
-        </Button>
-      </Tooltip>
+          <Button
+            size="sm"
+            isIconOnly
+            className={`${
+              isDragging ? '' : 'group-hover:block'
+            } absolute -left-5 -top-4 hidden rounded-full border-2 border-blue-500 bg-white text-red-600 shadow-lg hover:bg-neutral-200`}
+            onPress={async () => {
+              setCourseCatalog!([...courseCatalog!, c])
+
+              setSemesters!(
+                semesters!.map((s) => ({
+                  ...s,
+                  semester_courses: s.semester_courses.filter(
+                    (sc) => sc.course_id !== c.course_id,
+                  ),
+                })),
+              )
+
+              const semester_course_ids = s?.semester_courses
+                .filter((sc) => sc.course_id !== c.course_id)
+                .map((sc) => sc.course_id)
+
+              if (semester_course_ids?.length === 0) {
+                const { error } = await supabaseClient
+                  .from('semesters')
+                  .delete()
+                  .eq('semester_index', s!.semester_index)
+                  .eq('user_id', dbUser!.id)
+                if (error) console.error(error)
+              } else {
+                const { error } = await supabaseClient
+                  .from('semesters')
+                  .update({ semester_course_ids })
+                  .eq('semester_index', s!.semester_index)
+                  .eq('user_id', dbUser!.id)
+                if (error) console.error(error)
+              }
+            }}
+          >
+            <span className="sr-only">Close</span>
+            <XMarkIcon
+              className="pointer-events-none mx-auto h-4 w-4"
+              aria-hidden="true"
+            />
+          </Button>
+        </Tooltip>
+      )}
     </div>
   )
 }

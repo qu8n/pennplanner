@@ -1,4 +1,4 @@
-import { Course, Semester, DbUser, Database } from '@/shared/types'
+import { Course, Semester, DbUser, Database, Visitor } from '@/shared/types'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
@@ -40,6 +40,7 @@ export function SemesterContainer({
   setCourseCatalog,
   courseCatalog,
   dbUser,
+  visitorType,
 }: {
   s: Semester
   semesters: Semester[]
@@ -51,6 +52,7 @@ export function SemesterContainer({
   setCourseCatalog: (courseCatalog: Course[]) => void
   courseCatalog: Course[]
   dbUser: DbUser
+  visitorType: Visitor
 }) {
   const supabaseClient = useSupabaseClient<Database>()
 
@@ -77,7 +79,7 @@ export function SemesterContainer({
       } flex h-72 flex-col gap-y-2 rounded-md border-1 p-4 shadow`}
     >
       <div className="flex flex-row justify-between gap-2">
-        {s.semester_index === 0 ? (
+        {s.semester_index === 0 && visitorType === 'owner' ? (
           <Select
             classNames={{
               trigger: 'bg-transparent shadow-none',
@@ -207,7 +209,7 @@ export function SemesterContainer({
         strategy={rectSortingStrategy}
       >
         {s.semester_courses.map((c) => (
-          <Sortable key={c.course_id} course={c}>
+          <Sortable key={c.course_id} course={c} visitorType={visitorType}>
             <CourseTiny
               c={c}
               s={s}
@@ -218,6 +220,7 @@ export function SemesterContainer({
               setSemesters={setSemesters}
               semesters={semesters}
               dbUser={dbUser}
+              visitorType={visitorType}
             />
           </Sortable>
         ))}
