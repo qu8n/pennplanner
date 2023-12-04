@@ -22,7 +22,7 @@ import {
 import { useEffect, useId, useMemo, useState } from 'react'
 import { coursesData } from '@/data/coursesData'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
-import { Course, Database, DbUser, Semester } from '@/shared/types'
+import { Course, Database, DbUser, Semester, Visitor } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
@@ -47,8 +47,6 @@ const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 })
 
-export type Visitor = 'owner' | 'non-owner user' | 'non-user'
-
 export type PlannerProps = {
   dbUser: DbUser
   semestersData: Semester[]
@@ -64,8 +62,6 @@ export default function Planner({
   userEmailForHighlight,
   visitorType,
 }: PlannerProps) {
-  console.log('visitorType:', visitorType)
-
   useEffect(() => {
     userEmailForHighlight && H.identify(userEmailForHighlight)
   }, [userEmailForHighlight])
@@ -427,6 +423,7 @@ export default function Planner({
               setSemesters={setSemesters}
               setCourseCatalog={setCourseCatalog}
               dbUser={dbUser}
+              visitorType={visitorType}
             />
 
             <div className="mt-4 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-200 pl-1 shadow-inner">
@@ -576,6 +573,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       : session
       ? 'non-owner user'
       : 'non-user'
+
+  // STOPPED HERE LAST TIME
 
   const { data: dbSemesters, error: semestersError } = await supabaseClient
     .from('semesters')

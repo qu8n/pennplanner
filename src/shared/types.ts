@@ -28,6 +28,8 @@ export type Course = {
   semesters_not_offered: string[]
 }
 
+export type Visitor = 'owner' | 'non-owner user' | 'non-user'
+
 export type DbSemester = Database['public']['Tables']['semesters']['Row']
 
 export type DbUser = Database['public']['Tables']['users']['Row']

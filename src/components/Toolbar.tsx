@@ -1,5 +1,5 @@
 import { allCourseIds, coursesData } from '@/data/coursesData'
-import { Course, Semester, DbUser, Database } from '@/shared/types'
+import { Course, Semester, DbUser, Database, Visitor } from '@/shared/types'
 import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import {
   ArrowPathIcon,
@@ -28,12 +28,14 @@ export function Toolbar({
   setSemesters,
   setCourseCatalog,
   dbUser,
+  visitorType,
 }: {
   totalCU: number
   semesters: Semester[]
   setSemesters: (semesters: Semester[]) => void
   setCourseCatalog: (courseCatalog: Course[]) => void
   dbUser: DbUser
+  visitorType: Visitor
 }) {
   const supabaseClient = useSupabaseClient<Database>()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -110,65 +112,65 @@ export function Toolbar({
   )
 
   const sharePlannerModalBody = (
-    <>
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-row items-center justify-between">
-          <div className="flex flex-col items-start">
-            <p>Let others view your planner?</p>
-            {isPublic ? (
-              <div className="flex flex-row items-center gap-1">
-                <GlobeAltIcon className="h-3 w-3 text-blue-500" />
-                <span className="text-xs text-blue-500">
-                  Your planner is publicly viewable
-                </span>
-              </div>
-            ) : (
-              <div className="flex flex-row items-center gap-1">
-                <LockClosedIcon className="h-3 w-3 text-neutral-500" />
-                <span className="text-xs text-neutral-500">
-                  Your planner is private
-                </span>
-              </div>
-            )}
-          </div>
-          <Switch
-            isSelected={isPublic}
-            onValueChange={async (value) => {
-              setIsPublic(value)
-
-              const { error } = await supabaseClient
-                .from('users')
-                .update({ is_public: value })
-                .eq('id', dbUser.id)
-
-              if (error) {
-                console.error(error)
-                toast.error('Privacy setting failed to update')
-              } else {
-                toast.success('Privacy setting updated successfully')
-              }
-            }}
-          >
-            {isPublic ? 'Yes' : 'No'}
-          </Switch>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col items-start">
+          <p>Let others view your planner?</p>
+          {isPublic ? (
+            <div className="flex flex-row items-center gap-1">
+              <GlobeAltIcon className="h-3 w-3 text-blue-500" />
+              <span className="text-xs text-blue-500">
+                Your planner is publicly viewable
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-row items-center gap-1">
+              <LockClosedIcon className="h-3 w-3 text-neutral-500" />
+              <span className="text-xs text-neutral-500">
+                Your planner is private
+              </span>
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-row">
-          <Button
-            isDisabled={!isPublic}
-            startContent={<LinkIcon className="h-4 w-4 text-white" />}
-            fullWidth
-            className="custom-gradient rounded-md text-white"
-            onPress={async () => {
-              window.navigator.clipboard.writeText(window.location.href)
-              toast.success('Planner link copied to clipboard')
-            }}
-          >
-            Copy planner link
-          </Button>
-        </div>
+        <Switch
+          isSelected={isPublic}
+          onValueChange={async (value) => {
+            setIsPublic(value)
+
+            const { error } = await supabaseClient
+              .from('users')
+              .update({ is_public: value })
+              .eq('id', dbUser.id)
+
+            if (error) {
+              console.error(error)
+              toast.error('Privacy setting failed to update')
+            } else {
+              toast.success('Privacy setting updated successfully')
+            }
+          }}
+          isDisabled={visitorType !== 'owner'}
+        >
+          {isPublic ? 'Yes' : 'No'}
+        </Switch>
       </div>
-    </>
+
+      <div className="flex flex-row">
+        <Button
+          isDisabled={!isPublic}
+          startContent={<LinkIcon className="h-4 w-4 text-white" />}
+          fullWidth
+          className="custom-gradient rounded-md text-white"
+          onPress={async () => {
+            window.navigator.clipboard.writeText(window.location.href)
+            toast.success('Planner link copied to clipboard')
+          }}
+        >
+          Copy planner link
+        </Button>
+      </div>
+    </div>
   )
 
   useEffect(() => {
@@ -227,6 +229,7 @@ export function Toolbar({
               body: waivedCoursesModalBody,
             })
           }}
+          isDisabled={visitorType !== 'owner'}
         >
           Waived courses
         </Button>
@@ -276,7 +279,7 @@ export function Toolbar({
                         })),
                       )
                       setCourseCatalog(coursesData)
-                      toast('Plan has been reset', {
+                      toast('Planner has been reset', {
                         icon: '🔄',
                       })
                       onClose()
@@ -288,8 +291,9 @@ export function Toolbar({
               ),
             })
           }}
+          isDisabled={visitorType !== 'owner'}
         >
-          Reset plan
+          Reset planner
         </Button>
       </Tooltip>
 
@@ -304,12 +308,12 @@ export function Toolbar({
           onPress={() => {
             onOpen()
             setModalContent({
-              header: 'Share your planner',
+              header: 'Share planner',
               body: sharePlannerModalBody,
             })
           }}
         >
-          Share plan
+          Share planner
         </Button>
       </Tooltip>
 
