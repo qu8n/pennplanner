@@ -22,7 +22,7 @@ import {
 import { useEffect, useId, useMemo, useState } from 'react'
 import { coursesData } from '@/data/coursesData'
 import { Draggable } from '@/components/DnDWrappers/Draggable'
-import { Course, Database, Semester } from '@/shared/types'
+import { Course, Database, DbUser, Semester } from '@/shared/types'
 import { Droppable } from '@/components/DnDWrappers/Droppable'
 import { SemesterContainer } from '@/components/SemesterContainer'
 import { arrayMove } from '@dnd-kit/sortable'
@@ -32,7 +32,7 @@ import { CourseBig } from '@/components/CourseBig'
 import { CourseModal } from '@/components/CourseModal'
 import { SquaresPlusIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import type { GetServerSideProps } from 'next'
 import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { generateSemestersData } from '@/utils/generateSemestersData'
@@ -47,14 +47,27 @@ const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 })
 
+export type Visitor = 'owner' | 'non-owner user' | 'non-user'
+
+export type PlannerProps = {
+  dbUser: DbUser
+  semestersData: Semester[]
+  courseCatalogData: Course[]
+  userEmailForHighlight: string | null
+  visitorType: Visitor
+}
+
 export default function Planner({
   dbUser,
   semestersData,
   courseCatalogData,
   userEmailForHighlight,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  visitorType,
+}: PlannerProps) {
+  console.log('visitorType:', visitorType)
+
   useEffect(() => {
-    H.identify(userEmailForHighlight)
+    userEmailForHighlight && H.identify(userEmailForHighlight)
   }, [userEmailForHighlight])
 
   const id = useId()
@@ -532,7 +545,7 @@ export default function Planner({
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { username } = context.query
 
-  const supabaseClient = createPagesServerClient(context, {
+  const supabaseClient = createPagesServerClient<Database>(context, {
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
     supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   })
@@ -544,16 +557,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data: dbUser, error: usersError } = await supabaseClient
     .from('users')
     .select('*')
-    .eq('id', session?.user.id)
+    .eq('username', username as string)
     .single()
 
-  if (!session || dbUser.username !== username)
+  if (!dbUser) {
+    // either username doesn't exist or is_public is false (per RLS policy)
     return {
       redirect: {
         destination: '/signin',
-        permanent: false,
+        permanent: true,
       },
     }
+  }
+
+  const visitorType =
+    session?.user.id === dbUser.id
+      ? 'owner'
+      : session
+      ? 'non-owner user'
+      : 'non-user'
 
   const { data: dbSemesters, error: semestersError } = await supabaseClient
     .from('semesters')
@@ -577,7 +599,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
   })
 
-  const userEmailForHighlight = session.user.email
+  const userEmailForHighlight = session ? session.user.email : null
 
   return {
     props: {
@@ -585,6 +607,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       semestersData,
       courseCatalogData,
       userEmailForHighlight,
+      visitorType,
     },
   }
 }
