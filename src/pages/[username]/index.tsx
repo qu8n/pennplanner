@@ -376,19 +376,21 @@ export default function Planner({
           twHeight="h-10"
           twTextSize="text-xs"
           customNavbarItem={
-            <NavbarItem>
-              <Button
-                variant="light"
-                size="sm"
-                className="text-neutral-500 hover:text-neutral-400"
-                onPress={() => {
-                  document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
-                  supabaseClient.auth.signOut().then(() => router.push('/'))
-                }}
-              >
-                Logout
-              </Button>
-            </NavbarItem>
+            visitorType === 'owner' ? (
+              <NavbarItem>
+                <Button
+                  variant="light"
+                  size="sm"
+                  className="text-neutral-500 hover:text-neutral-400"
+                  onPress={() => {
+                    document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
+                    supabaseClient.auth.signOut().then(() => router.push('/'))
+                  }}
+                >
+                  Logout
+                </Button>
+              </NavbarItem>
+            ) : undefined
           }
         />
 
@@ -559,10 +561,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!dbUser) {
     // either username doesn't exist or is_public is false (per RLS policy)
+    // TODO: show a toaster message after redirecting
     return {
       redirect: {
         destination: '/signin',
-        permanent: true,
+        permanent: false,
       },
     }
   }
@@ -573,8 +576,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       : session
       ? 'non-owner user'
       : 'non-user'
-
-  // STOPPED HERE LAST TIME
 
   const { data: dbSemesters, error: semestersError } = await supabaseClient
     .from('semesters')
