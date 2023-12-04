@@ -155,8 +155,15 @@ export function CourseTiny({
         const firstSemesterWithCourses = semesters.find(
           (semester) => semester.semester_courses.length > 0,
         )
-        const firstSemesterCourses = firstSemesterWithCourses?.semester_courses
-        if (s.semester_index === firstSemesterWithCourses?.semester_index) {
+        const waived591or592 =
+          dbUser.waived_courses?.includes('CIT 5910') ||
+          dbUser.waived_courses?.includes('CIT 5920')
+        if (
+          s.semester_index === firstSemesterWithCourses?.semester_index &&
+          !waived591or592
+        ) {
+          const firstSemesterCourses =
+            firstSemesterWithCourses?.semester_courses
           if (firstSemesterCourses?.length === 1) {
             const courseId = firstSemesterCourses[0].course_id
             if (courseId !== 'CIT 5910' && courseId !== 'CIT 5920') {
