@@ -1,4 +1,5 @@
 import {
+  AcademicCapIcon,
   AdjustmentsHorizontalIcon,
   BarsArrowDownIcon,
   MagnifyingGlassIcon,
@@ -17,11 +18,12 @@ import {
 import { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
-import { Course, DbUser } from '@/shared/types'
+import { Course, DbUser, Visitor } from '@/shared/types'
 import { CourseBig } from './CourseBig'
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
 import { Tutorial } from '@/contents/Tutorial'
+import { useRouter } from 'next/router'
 
 const sortMethods = {
   id: 'Course id: A-Z (default)',
@@ -147,6 +149,7 @@ export function Sidebar({
   setCoursesToDisplay,
   setModalCourse,
   onModalOpen,
+  visitorType,
 }: {
   dbUser: DbUser
   courseCatalog: Course[]
@@ -154,7 +157,9 @@ export function Sidebar({
   setCoursesToDisplay: (courses: Course[]) => void
   setModalCourse: (modalCourse: Course) => void
   onModalOpen: () => void
+  visitorType: Visitor
 }) {
+  const router = useRouter()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [coursesQuery, setCoursesQuery] = useState({
     search: '',
@@ -185,13 +190,20 @@ export function Sidebar({
   return (
     <>
       <div className="ml-1 mt-6 flex flex-row items-start justify-between">
-        <h2 className="text-xl font-bold text-blue-800">Course Catalog</h2>
+        <h2
+          className={`text-xl font-bold text-blue-800 ${
+            visitorType !== 'owner' && 'opacity-50'
+          }`}
+        >
+          Course Catalog
+        </h2>
         <Button
           variant="light"
           color="primary"
           size="sm"
           onPress={onOpen}
           className="flex items-center gap-1 text-blue-700"
+          isDisabled={visitorType !== 'owner'}
         >
           <p className="text-xs">Tutorial</p>
           <PlayCircleIcon className="h-4 w-4" />
@@ -222,6 +234,7 @@ export function Sidebar({
         onValueChange={(value) =>
           setCoursesQuery({ ...coursesQuery, search: value })
         }
+        isDisabled={visitorType !== 'owner'}
       />
 
       <div className="z-0 mt-3 flex gap-3">
@@ -236,6 +249,7 @@ export function Sidebar({
               className={`${
                 coursesQuery.filter !== 'all' && 'ring-2 ring-blue-700'
               } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
+              isDisabled={visitorType !== 'owner'}
             >
               <span className="line-clamp-1">
                 {coursesQuery.filter === 'all'
@@ -279,6 +293,7 @@ export function Sidebar({
               className={`${
                 coursesQuery.sort !== 'id' && 'ring-2 ring-blue-700'
               } gap-1 rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 px-1 hover:bg-neutral-300/[.8]`}
+              isDisabled={visitorType !== 'owner'}
             >
               <span className="line-clamp-1">
                 {coursesQuery.sort === 'id'
@@ -303,44 +318,69 @@ export function Sidebar({
         </Dropdown>
       </div>
 
-      <div className="mt-3 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-300 shadow-inner">
-        <ScrollShadow className="overflow-y-auto px-2 pb-2 pt-2">
-          {courseGroups[dbUser.program].map((group, index) => (
+      <div
+        className={`mt-3 flex grow flex-col overflow-hidden rounded-md border-1 shadow-inner ${
+          visitorType === 'owner' ? 'border-neutral-300' : 'border-neutral-200'
+        }`}
+      >
+        <div className="flex grow flex-col overflow-y-auto px-2 pb-2 pt-2">
+          {visitorType === 'owner' ? (
             <>
-              <h3
-                className={`${
-                  index !== 0 && 'mt-10'
-                } text-md mx-1 border-b-2 border-neutral-500 bg-neutral-100 bg-opacity-70 font-semibold text-neutral-500`}
-              >
-                {group.title}
-              </h3>
-              <p className="mx-1 mb-4 mt-2 bg-neutral-100 bg-opacity-70 text-xs text-neutral-500">
-                {group.description}
-              </p>
-              {coursesToDisplay.map((c) => {
-                if (c[group.filter] === true) {
-                  return (
-                    <Draggable key={c.course_id} id={c.course_id}>
-                      <CourseBig
-                        c={c}
-                        setModalCourse={setModalCourse}
-                        onModalOpen={onModalOpen}
-                      />
-                    </Draggable>
-                  )
-                }
-              })}
-            </>
-          ))}
+              {courseGroups[dbUser.program].map((group, index) => (
+                <>
+                  <h3
+                    className={`${
+                      index !== 0 && 'mt-10'
+                    } text-md mx-1 border-b-2 border-neutral-500 bg-neutral-100 bg-opacity-70 font-semibold text-neutral-500`}
+                  >
+                    {group.title}
+                  </h3>
+                  <p className="mx-1 mb-4 mt-2 bg-neutral-100 bg-opacity-70 text-xs text-neutral-500">
+                    {group.description}
+                  </p>
+                  {coursesToDisplay.map((c) => {
+                    if (c[group.filter] === true) {
+                      return (
+                        <Draggable key={c.course_id} id={c.course_id}>
+                          <CourseBig
+                            c={c}
+                            setModalCourse={setModalCourse}
+                            onModalOpen={onModalOpen}
+                          />
+                        </Draggable>
+                      )
+                    }
+                  })}
+                </>
+              ))}
 
-          {coursesToDisplay.length === 0 && (
-            <div className="flex flex-col items-center">
-              <p className="mt-2 text-sm">
-                No courses found. Try a different search or filter.
+              {coursesToDisplay.length === 0 && (
+                <div className="flex flex-col items-center">
+                  <p className="mt-2 text-sm">
+                    No courses found. Try a different search or filter.
+                  </p>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="m-auto flex flex-col gap-2">
+              <p className="text-center font-medium text-blue-800">
+                Create or view your own planner
               </p>
+
+              <Button
+                className="custom-gradient m-auto flex flex-row items-center gap-3 rounded-md p-8 text-white"
+                onPress={() => router.push('/signin')}
+              >
+                <AcademicCapIcon className="text-white-500 h-6 w-6" />
+                <p>
+                  <span className="font-light">Access your </span>
+                  <span className="font-medium">PennPlanner</span>
+                </p>
+              </Button>
             </div>
           )}
-        </ScrollShadow>
+        </div>
       </div>
     </>
   )

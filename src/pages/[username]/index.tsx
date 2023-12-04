@@ -408,6 +408,7 @@ export default function Planner({
               setCoursesToDisplay={setCoursesToDisplay}
               setModalCourse={setModalCourse}
               onModalOpen={onOpen}
+              visitorType={visitorType}
             />
           </motion.div>
 
@@ -429,7 +430,7 @@ export default function Planner({
             />
 
             <div className="mt-4 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-200 pl-1 shadow-inner">
-              <ScrollShadow className="flex flex-col items-center overflow-y-auto">
+              <div className="flex flex-col items-center overflow-y-auto">
                 {Object.keys(semestersByYearOrder)
                   .sort()
                   .map((yearOrder) => (
@@ -502,7 +503,7 @@ export default function Planner({
                     Add year
                   </Button>
                 ) : null}
-              </ScrollShadow>
+              </div>
             </div>
           </motion.div>
         </div>
