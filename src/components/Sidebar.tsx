@@ -12,7 +12,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  ScrollShadow,
   useDisclosure,
 } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
@@ -20,7 +19,6 @@ import Fuse from 'fuse.js'
 import { Draggable } from './DnDWrappers/Draggable'
 import { Course, DbUser, Visitor } from '@/shared/types'
 import { CourseBig } from './CourseBig'
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { ModalWrapper } from './ModalWrapper'
 import { Tutorial } from '@/contents/Tutorial'
 import { useRouter } from 'next/router'
@@ -178,7 +176,10 @@ export function Sidebar({
   }, [coursesQuery, courseCatalog])
 
   useEffect(() => {
-    if (!document.cookie.includes('showedInitialDisclaimer=true')) {
+    if (
+      !document.cookie.includes('showedInitialDisclaimer=true') &&
+      visitorType === 'owner'
+    ) {
       onOpen()
       const aMonthFromNow = new Date()
       aMonthFromNow.setTime(aMonthFromNow.getTime() + 30 * 24 * 60 * 60 * 1000)
@@ -197,6 +198,7 @@ export function Sidebar({
         >
           Course Catalog
         </h2>
+
         <Button
           variant="light"
           color="primary"
