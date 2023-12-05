@@ -17,7 +17,7 @@ export function CourseBig({
     <div
       className={`${
         isDragging ? 'rotate-1 cursor-grabbing shadow-md' : 'cursor-grab shadow'
-      } mb-2 flex flex-col items-start rounded-md border-1 border-neutral-300 bg-white px-3 py-2 hover:ring-2 hover:ring-blue-500`}
+      } mb-2 flex flex-col items-start rounded-md border-1 border-neutral-300 bg-white px-3 py-2 duration-300 hover:ring-2 hover:ring-blue-500`}
     >
       <p className="font-semibold text-neutral-500">{c.course_id}</p>
       <p className="line-clamp-2 text-sm font-medium text-blue-900">

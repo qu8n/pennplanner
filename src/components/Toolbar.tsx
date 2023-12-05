@@ -120,7 +120,7 @@ export function Toolbar({
             <div className="flex flex-row items-center gap-1">
               <GlobeAltIcon className="h-3 w-3 text-blue-500" />
               <span className="text-xs text-blue-500">
-                Your planner is publicly viewable
+                Your planner is publicly viewable (not editable)
               </span>
             </div>
           ) : (

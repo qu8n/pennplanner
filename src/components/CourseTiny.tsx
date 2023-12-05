@@ -221,7 +221,7 @@ export function CourseTiny({
         visitorType === 'owner'
           ? 'cursor-grab hover:ring-2 hover:ring-blue-500'
           : 'cursor-default'
-      }`}
+      } duration-300`}
     >
       {warnings.length > 0 && !isDragging && (
         <Tooltip
