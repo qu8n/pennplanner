@@ -12,6 +12,8 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  Divider,
+  Link,
   Progress,
   Switch,
   Tooltip,
@@ -154,6 +156,20 @@ export function Toolbar({
         >
           {isPublic ? 'Yes' : 'No'}
         </Switch>
+      </div>
+
+      <div className="rounded-md bg-red-100 p-4 text-xs text-red-900">
+        This app is still in early development. We recommend that you copy your
+        planner link and share it with your program advisor for their
+        professional review{' '}
+        <Link
+          isExternal={true}
+          href="https://online.seas.upenn.edu/student-knowledge-base/connect-with-student-support/"
+          className="text-xs text-blue-700"
+        >
+          here
+        </Link>
+        .
       </div>
 
       <div className="flex flex-row">
@@ -303,7 +319,13 @@ export function Toolbar({
         content="Copy your planner URL for sharing or edit your privacy setting"
       >
         <Button
-          startContent={<GlobeAltIcon className="h-4 w-4 text-blue-500" />}
+          startContent={
+            isPublic ? (
+              <GlobeAltIcon className="h-4 w-4 text-blue-500" />
+            ) : (
+              <LockClosedIcon className="text-500-500 h-4 w-4" />
+            )
+          }
           className="w-38 flex-none rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
           onPress={() => {
             onOpen()
