@@ -114,53 +114,54 @@ export function Toolbar({
 
   const sharePlannerModalBody = (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-row items-center justify-between">
-        <div className="flex flex-col items-start">
-          <p>Let others view your planner?</p>
+      <div className="flex flex-col gap-2">
+        <h2 className="font-medium">Enable public access to your planner</h2>
+
+        <div className="flex flex-row items-center justify-between">
+          <Switch
+            isSelected={isPublic}
+            onValueChange={async (value) => {
+              setIsPublic(value)
+
+              const { error } = await supabaseClient
+                .from('users')
+                .update({ is_public: value })
+                .eq('id', dbUser.id)
+
+              if (error) {
+                console.error(error)
+                toast.error('Privacy setting failed to update')
+              } else {
+                toast.success('Privacy setting updated successfully')
+              }
+            }}
+            isDisabled={visitorType !== 'owner'}
+          >
+            {isPublic ? 'On' : 'Off'}
+          </Switch>
+
           {isPublic ? (
             <div className="flex flex-row items-center gap-1">
-              <GlobeAltIcon className="h-3 w-3 text-blue-500" />
-              <span className="text-xs text-blue-500">
-                Your planner is publicly viewable (not editable)
+              <GlobeAltIcon className="h-4 w-4 text-blue-500" />
+              <span className="text-blue-500">
+                Everyone can view, only you can edit
               </span>
             </div>
           ) : (
             <div className="flex flex-row items-center gap-1">
-              <LockClosedIcon className="h-3 w-3 text-neutral-500" />
-              <span className="text-xs text-neutral-500">
-                Your planner is private
+              <LockClosedIcon className="h-4 w-4 text-neutral-500" />
+              <span className="text-neutral-500">
+                Only you can view and edit
               </span>
             </div>
           )}
         </div>
-
-        <Switch
-          isSelected={isPublic}
-          onValueChange={async (value) => {
-            setIsPublic(value)
-
-            const { error } = await supabaseClient
-              .from('users')
-              .update({ is_public: value })
-              .eq('id', dbUser.id)
-
-            if (error) {
-              console.error(error)
-              toast.error('Privacy setting failed to update')
-            } else {
-              toast.success('Privacy setting updated successfully')
-            }
-          }}
-          isDisabled={visitorType !== 'owner'}
-        >
-          {isPublic ? 'Yes' : 'No'}
-        </Switch>
       </div>
 
       <div className="rounded-md bg-red-100 p-4 text-xs text-red-900">
-        This app is still in early development. We recommend that you copy your
-        planner link and share it with your program advisor for their
-        professional review{' '}
+        This app is still in early development. We recommend that you enable
+        public access, copy your planner link, and share it with your program
+        advisor for their professional review{' '}
         <Link
           isExternal={true}
           href="https://online.seas.upenn.edu/student-knowledge-base/connect-with-student-support/"
