@@ -38,7 +38,6 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { generateSemestersData } from '@/utils/generateSemestersData'
 import { Navbar } from '@/components/Navbar'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import toast from 'react-hot-toast'
 import { H } from '@highlight-run/next/client'
@@ -71,7 +70,6 @@ export default function Planner({
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const sensors = useSensors(useSensor(PointerSensor))
   const supabaseClient = useSupabaseClient<Database>()
-  const router = useRouter()
 
   const [firstYear, setFirstYear] = useState<number>(dbUser.first_year)
   const [semesters, setSemesters] = useState<Semester[]>(semestersData)
@@ -371,28 +369,7 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <Navbar
-          maxWidthSize="full"
-          twHeight="h-10"
-          twTextSize="text-xs"
-          customNavbarItem={
-            visitorType === 'owner' ? (
-              <NavbarItem>
-                <Button
-                  variant="light"
-                  size="sm"
-                  className="text-neutral-500 hover:text-neutral-400"
-                  onPress={() => {
-                    document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
-                    supabaseClient.auth.signOut().then(() => router.push('/'))
-                  }}
-                >
-                  Logout
-                </Button>
-              </NavbarItem>
-            ) : undefined
-          }
-        />
+        <Navbar maxWidthSize="full" twHeight="h-10" twTextSize="text-xs" />
 
         <div className="flex flex-1 overflow-hidden pb-4 pl-10 pr-4">
           <motion.div

@@ -25,19 +25,23 @@ import {
   LifebuoyIcon,
   NewspaperIcon,
 } from '@heroicons/react/24/outline'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
+import { Database } from '@/shared/types'
 
 export function Navbar({
   maxWidthSize,
   twHeight,
   twTextSize,
-  customNavbarItem,
 }: {
   maxWidthSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | undefined
   twHeight: string
   twTextSize: string
-  customNavbarItem?: JSX.Element
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient<Database>()
+  const user = useUser()
 
   return (
     <>
@@ -102,7 +106,7 @@ export function Navbar({
               <DropdownTrigger>
                 <Button
                   disableRipple
-                  className={`${twTextSize} text-neutral-500`}
+                  className={`${twTextSize} -mr-2 text-neutral-500`}
                   endContent={<ChevronDownIcon className="h-4 w-4" />}
                   size="sm"
                   variant="light"
@@ -186,7 +190,32 @@ export function Navbar({
             </DropdownMenu>
           </Dropdown>
 
-          {customNavbarItem}
+          {user ? (
+            <NavbarItem>
+              <Button
+                variant="light"
+                size="sm"
+                className={`${twTextSize} text-neutral-500 hover:text-neutral-400`}
+                onPress={() => {
+                  document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
+                  supabaseClient.auth.signOut().then(() => router.push('/'))
+                }}
+              >
+                Sign Out
+              </Button>
+            </NavbarItem>
+          ) : (
+            <NavbarItem>
+              <Button
+                variant="light"
+                size="sm"
+                className={`${twTextSize} text-neutral-500 hover:text-neutral-400`}
+                onPress={() => router.push('/signin')}
+              >
+                Sign In
+              </Button>
+            </NavbarItem>
+          )}
         </NavbarContent>
       </NextUINavbar>
     </>

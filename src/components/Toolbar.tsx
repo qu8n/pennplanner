@@ -12,7 +12,6 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
-  Divider,
   Link,
   Progress,
   Switch,
