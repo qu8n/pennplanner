@@ -207,13 +207,15 @@ export function Toolbar({
   return (
     <div className="flex h-16 flex-row items-center gap-2 pl-2">
       <div className="flex grow flex-col gap-2 pr-4">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between gap-2">
           <h2 className="flex-none text-xl font-bold text-blue-800">
             {dbUser.full_name.split(/(\s+)/)[0]}&#39;s {dbUser.program} Degree
             Planner
           </h2>
           <div className="mt-1 flex flex-row items-center gap-1">
-            <span className="text-xs">{totalCU} / 10 course units (CU)</span>
+            <span className="line-clamp-1 text-xs">
+              {totalCU} / 10 course units (CU)
+            </span>
             <Tooltip
               closeDelay={0}
               placement="top"

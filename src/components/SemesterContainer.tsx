@@ -11,7 +11,10 @@ import {
 } from '@nextui-org/react'
 import { CourseTiny } from './CourseTiny'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronUpDownIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/20/solid'
 
 const seasonalBgColors: {
   [key: string]: string
@@ -80,62 +83,84 @@ export function SemesterContainer({
     >
       <div className="flex flex-row justify-between gap-2">
         {s.semester_index === 0 && visitorType === 'owner' ? (
-          <Select
-            classNames={{
-              trigger: 'bg-transparent shadow-none',
-            }}
-            aria-label="Change semester"
-            disallowEmptySelection
-            size="sm"
-            labelPlacement="outside"
-            selectedKeys={[String(firstYear)]}
-            selectorIcon={<ChevronUpDownIcon />}
-            disableSelectorIconRotation
-            className="-ml-2 -mt-2 w-[115px] rounded-md bg-orange-200/[.4]"
-            onChange={async (e) => {
-              const value = Number(e.target.value)
-              const yearDiff = value - firstYear
-              setFirstYear(value)
-              const newSemesters = semesters.map((s) => ({
-                ...s,
-                semester_year: s.semester_year + yearDiff,
-              }))
-              setSemesters(newSemesters)
-              const { error } = await supabaseClient
-                .from('users')
-                .update({ first_year: value })
-                .eq('id', dbUser.id)
-              if (error) console.error(error)
-            }}
-            renderValue={(items) => {
-              return items.map((item) => {
-                return (
-                  <p
-                    key={item.textValue}
-                    className="text-[16px] font-medium text-blue-900"
-                  >
-                    {s.semester_season} {s.semester_year}
-                  </p>
-                )
-              })
-            }}
-          >
-            <SelectSection title="Change to...">
-              {Array.from(
-                { length: new Date().getFullYear() - 2019 + 1 },
-                (_, i) => 2019 + i,
-              )
-                .reverse()
-                .map((year) => {
-                  const yearStr = String(year)
+          <div className="flex flex-row gap-1">
+            <Select
+              classNames={{
+                trigger: 'bg-transparent shadow-none',
+                selectorIcon: 'text-blue-900',
+              }}
+              aria-label="Change first semester"
+              disallowEmptySelection
+              size="sm"
+              labelPlacement="outside"
+              selectedKeys={[String(firstYear)]}
+              selectorIcon={<ChevronUpDownIcon />}
+              disableSelectorIconRotation
+              className="-ml-2 -mt-2 w-[115px] rounded-md bg-orange-200/[.4]"
+              onChange={async (e) => {
+                const value = Number(e.target.value)
+                const yearDiff = value - firstYear
+                setFirstYear(value)
+                const newSemesters = semesters.map((s) => ({
+                  ...s,
+                  semester_year: s.semester_year + yearDiff,
+                }))
+                setSemesters(newSemesters)
+                const { error } = await supabaseClient
+                  .from('users')
+                  .update({ first_year: value })
+                  .eq('id', dbUser.id)
+                if (error) console.error(error)
+              }}
+              renderValue={(items) => {
+                return items.map((item) => {
                   return (
-                    <SelectItem key={yearStr}>
-                      {`${s.semester_season} ${yearStr}`}
-                    </SelectItem>
+                    <p
+                      key={item.textValue}
+                      className="text-[16px] font-medium text-blue-900"
+                    >
+                      {s.semester_season} {s.semester_year}
+                    </p>
                   )
-                })}
-            </SelectSection>
-          </Select>
+                })
+              }}
+            >
+              <SelectSection title="Change to...">
+                {Array.from(
+                  { length: new Date().getFullYear() - 2019 + 2 },
+                  (_, i) => 2019 + i,
+                )
+                  .reverse()
+                  .map((year) => {
+                    const yearStr = String(year)
+                    return (
+                      <SelectItem key={yearStr}>
+                        {`${s.semester_season} ${yearStr}`}
+                      </SelectItem>
+                    )
+                  })}
+              </SelectSection>
+            </Select>
+
+            <Tooltip
+              closeDelay={0}
+              placement="top"
+              size="sm"
+              content={
+                <div>
+                  <b>Is your first semester a Spring semester?</b>
+                  <p className="max-w-md">
+                    If so, set this to the preceding Fall semester. PennPlanner
+                    organizes semesters by academic year, which starts in the
+                    Fall in the US. In your planner, ignore the first Fall and
+                    drop your first course(s) into the following Spring.
+                  </p>
+                </div>
+              }
+            >
+              <QuestionMarkCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
+            </Tooltip>
+          </div>
         ) : (
           <p className="-mt-1 mb-1 line-clamp-1 font-medium text-blue-900">
             {s.semester_season} {s.semester_year}
