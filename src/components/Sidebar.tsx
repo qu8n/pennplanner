@@ -20,7 +20,7 @@ import { Draggable } from './DnDWrappers/Draggable'
 import { Course, DbUser, Visitor } from '@/shared/types'
 import { CourseBig } from './CourseBig'
 import { ModalWrapper } from './ModalWrapper'
-import { Tutorial } from '@/contents/Tutorial'
+import { Tutorial } from '@/components/Tutorial'
 import { useRouter } from 'next/router'
 
 const sortMethods = {
@@ -190,7 +190,7 @@ export function Sidebar({
 
   return (
     <>
-      <div className="ml-1 mt-6 flex flex-row items-start justify-between">
+      <div className="ml-1 mt-4 flex flex-row items-start justify-between">
         <h2
           className={`text-xl font-bold text-blue-800 ${
             visitorType !== 'owner' && 'opacity-50'

@@ -371,12 +371,12 @@ export default function Planner({
       >
         <Navbar maxWidthSize="full" twHeight="h-10" twTextSize="text-xs" />
 
-        <div className="flex flex-1 overflow-hidden pb-4 pl-10 pr-4">
+        <div className="flex flex-1 overflow-hidden px-4 pb-4">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex w-1/4 flex-col"
+            className="flex w-5/12 flex-col xl:w-1/4"
           >
             <Sidebar
               dbUser={dbUser}
@@ -395,7 +395,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="flex flex-1 flex-col rounded-md border-1 border-neutral-300 bg-white p-6 shadow"
+            className="flex flex-1 flex-col rounded-md border-1 border-neutral-300 bg-white p-4 shadow"
           >
             <Toolbar
               totalCU={totalCU}
@@ -415,11 +415,11 @@ export default function Planner({
                       key={yearOrder}
                       className="flex w-full flex-col px-2 py-4"
                     >
-                      <h2 className="ml-2 text-lg font-semibold text-blue-900">
+                      <h2 className="ml-2 text-lg font-semibold text-blue-800">
                         Year {Number(yearOrder) + 1}
                       </h2>
 
-                      <div className="mt-2 grid grid-cols-3 gap-4">
+                      <div className="mt-2 grid grid-cols-1 gap-4 xl:grid-cols-3">
                         {semestersByYearOrder[yearOrder].map((s) => (
                           <Droppable
                             id={String(s.semester_index)}

@@ -55,7 +55,7 @@ export function Navbar({
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             className="sm:hidden"
           />
-          <NavbarBrand className="ml-4 gap-4">
+          <NavbarBrand className="gap-4">
             <Logo />
             <GitHubBtn twTextSize={twTextSize} />
           </NavbarBrand>

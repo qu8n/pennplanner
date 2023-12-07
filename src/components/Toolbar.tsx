@@ -2,11 +2,11 @@ import { allCourseIds, coursesData } from '@/data/coursesData'
 import { Course, Semester, DbUser, Database, Visitor } from '@/shared/types'
 import { InformationCircleIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 import {
+  ArchiveBoxIcon,
   ArrowPathIcon,
   GlobeAltIcon,
   LinkIcon,
   LockClosedIcon,
-  PencilSquareIcon,
 } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -206,16 +206,17 @@ export function Toolbar({
   }, [isPublic])
 
   return (
-    <div className="flex h-16 flex-row items-center gap-2 pl-2">
-      <div className="flex grow flex-col gap-2 pr-4">
+    <div className="flex flex-col items-center gap-4 px-2 xl:flex-row xl:gap-2">
+      <div className="flex w-full flex-col gap-2 pr-4 xl:grow">
         <div className="flex flex-row justify-between gap-2">
           <h2 className="flex-none text-xl font-bold text-blue-800">
             {dbUser.full_name.split(/(\s+)/)[0]}&#39;s {dbUser.program} Degree
             Planner
           </h2>
+
           <div className="mt-1 flex flex-row items-center gap-1">
             <span className="line-clamp-1 text-xs">
-              {totalCU} / 10 course units (CU)
+              {totalCU} / 10 CU{totalCU === 1 ? '' : 's'}
             </span>
             <Tooltip
               closeDelay={0}
@@ -227,119 +228,127 @@ export function Toolbar({
             </Tooltip>
           </div>
         </div>
+
         <Progress isStriped aria-label="progress" value={totalCU * 10} />
       </div>
 
-      <Tooltip
-        closeDelay={0}
-        placement="top"
-        content="Select courses you have waived"
-      >
-        <Button
-          startContent={
-            <PencilSquareIcon className="h-4 w-4 text-neutral-500" />
-          }
-          className="w-38 flex-none rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
-          onPress={() => {
-            onOpen()
-            setModalContent({
-              header: 'Waived courses',
-              body: waivedCoursesModalBody,
-            })
-          }}
-          isDisabled={visitorType !== 'owner'}
+      <div className="flex w-full flex-row gap-2 xl:w-full">
+        <Tooltip
+          closeDelay={0}
+          placement="top"
+          content="Select courses you have waived"
         >
-          Waived courses
-        </Button>
-      </Tooltip>
+          <Button
+            startContent={
+              <ArchiveBoxIcon className="h-4 w-4 text-neutral-500" />
+            }
+            fullWidth
+            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+            onPress={() => {
+              onOpen()
+              setModalContent({
+                header: 'Waive courses',
+                body: waivedCoursesModalBody,
+              })
+            }}
+            isDisabled={visitorType !== 'owner'}
+          >
+            Waive courses
+          </Button>
+        </Tooltip>
 
-      <Tooltip
-        closeDelay={0}
-        placement="top"
-        content="Remove all courses from your planner"
-      >
-        <Button
-          startContent={<ArrowPathIcon className="h-4 w-4 text-neutral-500" />}
-          className="w-38 flex-none rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
-          onPress={() => {
-            onOpen()
-            setModalContent({
-              header: 'Are you sure?',
-              body: (
-                <p>
-                  You will remove all courses from your planner. This action
-                  cannot be undone.
-                </p>
-              ),
-              footer: (
-                <>
-                  <Button
-                    color="default"
-                    variant="light"
-                    onPress={onClose}
-                    className="rounded-md"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    color="danger"
-                    className="rounded-md hover:bg-red-600"
-                    onPress={async () => {
-                      const { error } = await supabaseClient
-                        .from('semesters')
-                        .delete()
-                        .eq('user_id', dbUser.id)
-                      console.error(error)
-                      setSemesters(
-                        semesters.map((s) => ({
-                          ...s,
-                          semester_courses: [],
-                        })),
-                      )
-                      setCourseCatalog(coursesData)
-                      toast('Planner has been reset', {
-                        icon: '🔄',
-                      })
-                      onClose()
-                    }}
-                  >
-                    Reset
-                  </Button>
-                </>
-              ),
-            })
-          }}
-          isDisabled={visitorType !== 'owner'}
+        <Tooltip
+          closeDelay={0}
+          placement="top"
+          content="Remove all courses from your planner"
         >
-          Reset planner
-        </Button>
-      </Tooltip>
+          <Button
+            startContent={
+              <ArrowPathIcon className="h-4 w-4 text-neutral-500" />
+            }
+            fullWidth
+            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+            onPress={() => {
+              onOpen()
+              setModalContent({
+                header: 'Are you sure?',
+                body: (
+                  <p>
+                    You will remove all courses from your planner. This action
+                    cannot be undone.
+                  </p>
+                ),
+                footer: (
+                  <>
+                    <Button
+                      color="default"
+                      variant="light"
+                      onPress={onClose}
+                      className="rounded-md"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      color="danger"
+                      className="rounded-md hover:bg-red-600"
+                      onPress={async () => {
+                        const { error } = await supabaseClient
+                          .from('semesters')
+                          .delete()
+                          .eq('user_id', dbUser.id)
+                        console.error(error)
+                        setSemesters(
+                          semesters.map((s) => ({
+                            ...s,
+                            semester_courses: [],
+                          })),
+                        )
+                        setCourseCatalog(coursesData)
+                        toast('Planner has been reset', {
+                          icon: '🔄',
+                        })
+                        onClose()
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </>
+                ),
+              })
+            }}
+            isDisabled={visitorType !== 'owner'}
+          >
+            Reset planner
+          </Button>
+        </Tooltip>
 
-      <Tooltip
-        closeDelay={0}
-        placement="top"
-        content="Copy your planner URL for sharing or edit your privacy setting"
-      >
-        <Button
-          startContent={
-            isPublic ? (
-              <GlobeAltIcon className="h-4 w-4 text-blue-500" />
-            ) : (
-              <LockClosedIcon className="text-500-500 h-4 w-4" />
-            )
-          }
-          className="w-38 flex-none rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
-          onPress={() => {
-            onOpen()
-            setModalContent({
-              header: 'Share planner',
-              body: sharePlannerModalBody,
-            })
-          }}
+        <Tooltip
+          closeDelay={0}
+          placement="top"
+          content="Copy your planner URL for sharing or edit your privacy setting"
         >
-          Share planner
-        </Button>
-      </Tooltip>
+          <Button
+            startContent={
+              isPublic ? (
+                <GlobeAltIcon className="h-4 w-4 text-blue-500" />
+              ) : (
+                <LockClosedIcon className="text-500-500 h-4 w-4" />
+              )
+            }
+            fullWidth
+            className="rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
+            onPress={() => {
+              onOpen()
+              setModalContent({
+                header: 'Share planner',
+                body: sharePlannerModalBody,
+              })
+            }}
+          >
+            Share planner
+          </Button>
+        </Tooltip>
+      </div>
 
       <ModalWrapper
         isOpen={isOpen}

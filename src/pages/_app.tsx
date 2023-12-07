@@ -8,7 +8,6 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { geistSans } from '@/fonts/geistSans'
 import Head from 'next/head'
-import { MobileWarning } from '@/contents/MobileWarning'
 import { Database } from '@/shared/types'
 import { HighlightInit } from '@highlight-run/next/client'
 
@@ -61,14 +60,10 @@ export default function App({
         <Toaster position="top-right" reverseOrder={false} />
 
         <main
-          className={`absolute inset-0 -z-10 hidden h-full w-full flex-col bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem] xl:flex`}
+          className={`absolute inset-0 -z-10 flex h-full w-full flex-col bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem]`}
         >
           <Component {...pageProps} />
         </main>
-
-        <div className="flex h-screen bg-neutral-100 text-neutral-500 xl:hidden">
-          <MobileWarning />
-        </div>
       </NextUIProvider>
     </SessionContextProvider>
   )
