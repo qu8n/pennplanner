@@ -87,7 +87,7 @@ export default function SignIn() {
 
       <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
 
-      <div className="relative flex flex-grow flex-col items-center justify-evenly bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem] p-10 lg:flex-row">
+      <div className="relative flex flex-grow flex-col items-center justify-evenly p-10 lg:flex-row">
         {showPageLoading ? (
           <div className="m-auto flex flex-col items-center">
             <ProgressBar

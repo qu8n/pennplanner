@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Navbar maxWidthSize="xl" twTextSize="text-sm" />
 
-      <div className="relative flex flex-grow bg-neutral-100 bg-[linear-gradient(to_right,#e8e8e8_1px,transparent_1px),linear-gradient(to_bottom,#e8e8e8_1px,transparent_1px)] bg-[size:6rem_4rem]">
+      <div className="relative flex flex-grow">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
