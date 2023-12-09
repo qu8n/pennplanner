@@ -208,10 +208,9 @@ export function Toolbar({
   return (
     <div className="flex flex-col items-center gap-4 px-2 xl:flex-row xl:gap-2">
       <div className="flex w-full flex-col gap-2 pr-4 xl:grow">
-        <div className="flex flex-row justify-between gap-2">
-          <h2 className="flex-none text-xl font-bold text-blue-800">
-            {dbUser.full_name.split(/(\s+)/)[0]}&#39;s {dbUser.program} Degree
-            Planner
+        <div className="flex flex-row items-center justify-between gap-2">
+          <h2 className="line-clamp-1 flex-none text-lg font-bold text-blue-800 lg:text-xl">
+            {dbUser.full_name.split(/(\s+)/)[0]}&#39;s {dbUser.program} Planner
           </h2>
 
           <div className="mt-1 flex flex-row items-center gap-1">
@@ -240,10 +239,10 @@ export function Toolbar({
         >
           <Button
             startContent={
-              <ArchiveBoxIcon className="h-4 w-4 text-neutral-500" />
+              <ArchiveBoxIcon className="hidden h-4 w-4 text-neutral-500 lg:block" />
             }
             fullWidth
-            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 text-xs hover:bg-neutral-300/[.8] lg:text-sm"
             onPress={() => {
               onOpen()
               setModalContent({
@@ -264,10 +263,10 @@ export function Toolbar({
         >
           <Button
             startContent={
-              <ArrowPathIcon className="h-4 w-4 text-neutral-500" />
+              <ArrowPathIcon className="hidden h-4 w-4 text-neutral-500 lg:block" />
             }
             fullWidth
-            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 hover:bg-neutral-300/[.8]"
+            className="rounded-md border-1 border-b-4 border-neutral-300 bg-neutral-200 text-xs hover:bg-neutral-300/[.8] lg:text-sm"
             onPress={() => {
               onOpen()
               setModalContent({
@@ -330,13 +329,13 @@ export function Toolbar({
           <Button
             startContent={
               isPublic ? (
-                <GlobeAltIcon className="h-4 w-4 text-blue-500" />
+                <GlobeAltIcon className="hidden h-4 w-4 text-blue-500 lg:block" />
               ) : (
-                <LockClosedIcon className="text-500-500 h-4 w-4" />
+                <LockClosedIcon className="text-500-500 hidden h-4 w-4 lg:block" />
               )
             }
             fullWidth
-            className="rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
+            className="rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-xs text-blue-700 hover:bg-blue-200 lg:text-sm"
             onPress={() => {
               onOpen()
               setModalContent({

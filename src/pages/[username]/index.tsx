@@ -18,6 +18,8 @@ import {
   PointerSensor,
   DragOverEvent,
   Active,
+  MouseSensor,
+  TouchSensor,
 } from '@dnd-kit/core'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { coursesData } from '@/data/coursesData'
@@ -65,10 +67,24 @@ export default function Planner({
     userEmailForHighlight && H.identify(userEmailForHighlight)
   }, [userEmailForHighlight])
 
+  const mouseSensor = useSensor(MouseSensor, {
+    // Require the mouse to move by 10 pixels before activating
+    activationConstraint: {
+      distance: 5,
+    },
+  })
+  const touchSensor = useSensor(TouchSensor, {
+    // Press delay of 250ms, with tolerance of 5px of movement
+    activationConstraint: {
+      delay: 150,
+      tolerance: 5,
+    },
+  })
+
   const id = useId()
   const { width, height } = useWindowSize()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const sensors = useSensors(useSensor(PointerSensor))
+  const sensors = useSensors(mouseSensor, touchSensor)
   const supabaseClient = useSupabaseClient<Database>()
 
   const [firstYear, setFirstYear] = useState<number>(dbUser.first_year)
@@ -376,7 +392,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="sticky top-0 mt-2 flex h-[calc(100vh-50vh)] flex-col overflow-auto lg:h-[calc(100vh-65px)] lg:w-5/12 xl:w-1/4"
+            className="sticky top-0 mt-2 flex h-[calc(100vh-25vh)] flex-col overflow-auto lg:h-[calc(100vh-65px)] lg:w-5/12 xl:w-1/4"
           >
             <Sidebar
               dbUser={dbUser}
@@ -387,6 +403,8 @@ export default function Planner({
               onModalOpen={onOpen}
               visitorType={visitorType}
             />
+
+            <Divider orientation="horizontal" className="block lg:hidden" />
           </motion.div>
 
           <Spacer x={3} />
@@ -406,7 +424,7 @@ export default function Planner({
               visitorType={visitorType}
             />
 
-            <div className="mt-4 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-200 pl-1 shadow-inner">
+            <div className="mt-4 flex grow flex-col overflow-hidden rounded-md border-1 border-neutral-300 pl-1 shadow-inner">
               <div className="flex flex-col items-center overflow-y-auto">
                 {Object.keys(semestersByYearOrder)
                   .sort()

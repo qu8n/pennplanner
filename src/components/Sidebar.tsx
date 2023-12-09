@@ -321,7 +321,7 @@ export function Sidebar({
       </div>
 
       <div
-        className={`mt-3 flex grow flex-col overflow-hidden rounded-md border-1 shadow-inner ${
+        className={`mb-4 mt-3 flex grow flex-col overflow-hidden rounded-md border-1 shadow-inner lg:mb-0 ${
           visitorType === 'owner' ? 'border-neutral-300' : 'border-neutral-200'
         }`}
       >
