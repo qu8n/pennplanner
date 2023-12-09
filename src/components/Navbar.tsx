@@ -13,6 +13,7 @@ import {
   DropdownItem,
   NavbarMenu,
   NavbarMenuItem,
+  Divider,
 } from '@nextui-org/react'
 import { Logo } from './Logo'
 import { GitHubBtn } from './GitHubBtn'
@@ -77,12 +78,8 @@ const menuGroups = [
 
 export function Navbar({
   maxWidthSize,
-  twHeight,
-  twTextSize,
 }: {
   maxWidthSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | undefined
-  twHeight?: string
-  twTextSize: string
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
@@ -95,14 +92,14 @@ export function Navbar({
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       isBordered
-      className={`${twHeight} bg-neutral-200 bg-opacity-50`}
+      className={`bg-neutral-200 bg-opacity-50`}
     >
       {/* Desktop nav */}
       <NavbarContent className="hidden md:flex" justify="center">
         <NavbarBrand>
           <Logo />
         </NavbarBrand>
-        <GitHubBtn twTextSize={twTextSize} />
+        <GitHubBtn />
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 md:flex" justify="end">
@@ -111,9 +108,9 @@ export function Navbar({
             <DropdownTrigger>
               <Button
                 disableRipple
-                className={`${twTextSize} -mr-2 text-neutral-500`}
+                className={`-mr-2 text-neutral-500`}
                 endContent={<ChevronDownIcon className="h-4 w-4" />}
-                size="sm"
+                // size="sm"
                 variant="light"
               >
                 Get Help
@@ -174,9 +171,9 @@ export function Navbar({
             <DropdownTrigger>
               <Button
                 disableRipple
-                className={`${twTextSize} -mr-2 text-neutral-500`}
+                className={`-mr-2 text-neutral-500`}
                 endContent={<ChevronDownIcon className="h-4 w-4" />}
-                size="sm"
+                // size="sm"
                 variant="light"
               >
                 Penn Resources
@@ -266,8 +263,8 @@ export function Navbar({
           <NavbarItem>
             <Button
               variant="light"
-              size="sm"
-              className={`${twTextSize} text-neutral-500 hover:text-neutral-400`}
+              // size="sm"
+              className={`text-neutral-500 hover:text-neutral-400`}
               onPress={() => {
                 document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
                 supabaseClient.auth.signOut().then(() => router.push('/'))
@@ -280,8 +277,8 @@ export function Navbar({
           <NavbarItem>
             <Button
               variant="light"
-              size="sm"
-              className={`${twTextSize} text-neutral-500 hover:text-neutral-400`}
+              // size="sm"
+              className={`text-neutral-500 hover:text-neutral-400`}
               onPress={() => router.push('/signin')}
             >
               Sign In
@@ -296,7 +293,7 @@ export function Navbar({
           <Logo />
         </NavbarBrand>
 
-        <GitHubBtn twTextSize={twTextSize} />
+        <GitHubBtn />
       </NavbarContent>
 
       <NavbarContent className="md:hidden" justify="center">
@@ -308,7 +305,7 @@ export function Navbar({
       <NavbarMenu className="">
         {menuGroups.flatMap((group, index) => [
           <NavbarMenuItem key={`${group.groupName}-${index}`}>
-            <p className="mt-4 font-medium text-blue-900">{group.groupName}</p>
+            <p className="mt-6 font-medium text-blue-900">{group.groupName}</p>
           </NavbarMenuItem>,
           ...group.menuItems.map((item) => (
             <NavbarMenuItem key={`${item.text}-${index}`}>
@@ -317,13 +314,41 @@ export function Navbar({
                 isExternal={true}
                 color="foreground"
                 href={item.href}
-                size="lg"
               >
                 {item.text}
               </Link>
             </NavbarMenuItem>
           )),
         ])}
+
+        <Divider className="mb-2 mt-4" />
+
+        {user ? (
+          <NavbarMenuItem>
+            <Button
+              variant="light"
+              size="lg"
+              className={`rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-neutral-400`}
+              onPress={() => {
+                document.cookie = `showedInitialDisclaimer=true; expires=${new Date().toUTCString()}`
+                supabaseClient.auth.signOut().then(() => router.push('/'))
+              }}
+            >
+              Sign Out
+            </Button>
+          </NavbarMenuItem>
+        ) : (
+          <NavbarMenuItem>
+            <Button
+              variant="light"
+              size="lg"
+              className={`rounded-md border-1 border-b-4 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-neutral-400`}
+              onPress={() => router.push('/signin')}
+            >
+              Sign In
+            </Button>
+          </NavbarMenuItem>
+        )}
       </NavbarMenu>
     </NextUINavbar>
   )

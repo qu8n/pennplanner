@@ -15,7 +15,6 @@ import {
   DragOverlay,
   useSensors,
   useSensor,
-  PointerSensor,
   DragOverEvent,
   Active,
   MouseSensor,
@@ -385,14 +384,16 @@ export default function Planner({
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <Navbar maxWidthSize="full" twHeight="h-10" twTextSize="text-xs" />
+        <Navbar maxWidthSize="full" />
 
         <div className="flex flex-1 flex-col overflow-hidden px-4 pb-4 lg:flex-row">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="sticky top-0 mt-2 flex h-[calc(100vh-25vh)] flex-col overflow-auto lg:h-[calc(100vh-65px)] lg:w-5/12 xl:w-1/4"
+            className={`sticky top-0 mt-4 flex ${
+              visitorType === 'owner' ? 'h-[550px]' : 'h-[350px]'
+            } flex-col overflow-auto lg:h-[calc(100vh-100px)] lg:w-5/12 xl:w-1/4`}
           >
             <Sidebar
               dbUser={dbUser}
@@ -413,7 +414,7 @@ export default function Planner({
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
-            className="mt-2 flex h-[calc(100vh-65px)] flex-1 flex-col rounded-md border-1 border-neutral-300 bg-white p-4 shadow"
+            className="mt-4 flex flex-1 flex-col rounded-md border-1 border-neutral-300 bg-white p-4 shadow lg:h-[calc(100vh-100px)]"
           >
             <Toolbar
               totalCU={totalCU}
