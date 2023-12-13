@@ -143,14 +143,14 @@ export function Toolbar({
           {isPublic ? (
             <div className="flex flex-row items-center gap-1">
               <GlobeAltIcon className="h-4 w-4 text-blue-500" />
-              <span className="text-blue-500">
+              <span className="text-xs text-blue-500">
                 Everyone can view, only you can edit
               </span>
             </div>
           ) : (
             <div className="flex flex-row items-center gap-1">
               <LockClosedIcon className="h-4 w-4 text-neutral-500" />
-              <span className="text-neutral-500">
+              <span className="text-xs text-neutral-500">
                 Only you can view and edit
               </span>
             </div>

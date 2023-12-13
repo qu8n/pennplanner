@@ -24,17 +24,17 @@ export function CourseModal({
         baseCustomClasses="max-w-3xl"
         header={
           <>
-            <p className="text-xl font-bold text-neutral-500">
+            <p className="font-semibold text-neutral-500">
               {modalCourse?.course_id}
             </p>
-            <p className="text-2xl font-semibold text-blue-900">
+            <p className="font-semibold text-blue-900">
               {modalCourse?.course_name}
             </p>
           </>
         }
         body={
           <>
-            <div className="flex flex-col text-sm font-normal">
+            <div className="flex flex-col font-normal">
               {(modalCourse?.course_id === 'ESE 5410' ||
                 modalCourse?.course_id === 'ESE 5420') && (
                 <div className="mb-4 w-auto rounded-md bg-red-100 p-4 text-red-900">
@@ -46,7 +46,7 @@ export function CourseModal({
                   the now ESE 5410. For more context, see the full Slack
                   announcement{' '}
                   <Link
-                    className="text-sm text-blue-700"
+                    className="text-xs text-blue-700 lg:text-base"
                     isExternal={true}
                     underline="hover"
                     href="https://penn-eng-onl-students.slack.com/archives/CDAUBBFFA/p1657223897934779"
@@ -57,7 +57,7 @@ export function CourseModal({
               )}
 
               <div className="flex flex-row gap-2">
-                <span className="mr-[1.3rem]">Rating:</span>
+                <span className="mr-[1.1rem] lg:mr-[1.3rem]">Rating:</span>
                 <Rating
                   readOnly={true}
                   style={{ maxWidth: 100 }}

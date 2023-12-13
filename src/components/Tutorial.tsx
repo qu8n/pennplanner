@@ -46,7 +46,7 @@ function WarningTriggers() {
         <li>
           Course is <b>not available</b> in the assigned semester, per the{' '}
           <Link
-            className="text-blue-700"
+            className="text-xs text-blue-700 lg:text-base"
             isExternal={true}
             underline="hover"
             href="https://online.seas.upenn.edu/student-knowledge-base/course-schedule/"
@@ -57,7 +57,7 @@ function WarningTriggers() {
         <li>
           Other miscellaneous rules from the{' '}
           <Link
-            className="text-blue-700"
+            className="text-xs text-blue-700 lg:text-base"
             isExternal={true}
             underline="hover"
             href="https://online.seas.upenn.edu/degrees/student-services/student-handbook/"
@@ -83,7 +83,7 @@ function Disclaimer() {
         PennPlanner is still in early development and may contains errors or
         inaccuracies. It also references reviews from{' '}
         <Link
-          className="text-blue-700"
+          className="text-xs text-blue-700 lg:text-base"
           isExternal={true}
           underline="hover"
           href="https://mcitcentral.com/"
@@ -98,7 +98,7 @@ function Disclaimer() {
         For official and updated information, please refer to the Penn
         Engineering Online&apos;s{' '}
         <Link
-          className="text-blue-700"
+          className="text-xs text-blue-700 lg:text-base"
           isExternal={true}
           underline="hover"
           href="https://online.seas.upenn.edu/student-knowledge-base/"
@@ -108,7 +108,7 @@ function Disclaimer() {
         . For the latest student experiences, please refer to the Penn
         Engineering Online&apos;s Slack channel{' '}
         <Link
-          className="text-blue-700"
+          className="text-xs text-blue-700 lg:text-base"
           isExternal={true}
           underline="hover"
           href="https://penn-eng-onl-students.slack.com/archives/C02ADHGAL93"
@@ -117,7 +117,7 @@ function Disclaimer() {
         </Link>
         , the{' '}
         <Link
-          className="text-blue-700"
+          className="text-xs text-blue-700 lg:text-base"
           isExternal={true}
           underline="hover"
           href="https://discord.gg/3HDZ2FNJaG"
@@ -126,7 +126,7 @@ function Disclaimer() {
         </Link>
         , and the{' '}
         <Link
-          className="text-blue-700"
+          className="text-xs text-blue-700 lg:text-base"
           isExternal={true}
           underline="hover"
           href="https://discord.gg/S4KQKCXdvv"
@@ -139,7 +139,7 @@ function Disclaimer() {
       <img
         src="/tutorial/get-started.png"
         alt="Get started"
-        className="pointer-events-none mx-auto max-w-xs"
+        className="pointer-events-none mx-auto hidden max-w-xs lg:block"
       />
     </>
   )

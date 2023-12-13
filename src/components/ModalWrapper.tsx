@@ -34,13 +34,13 @@ export function ModalWrapper({
       <ModalContent>
         {() => (
           <>
-            <ModalHeader className="flex flex-col text-2xl font-semibold text-blue-900">
+            <ModalHeader className="flex flex-col text-lg font-semibold text-blue-900 lg:text-xl">
               {header}
             </ModalHeader>
 
             <Divider />
 
-            <ModalBody className="mt-4">{body}</ModalBody>
+            <ModalBody className="mt-4 text-xs lg:text-base">{body}</ModalBody>
 
             <ModalFooter>{footer}</ModalFooter>
           </>
