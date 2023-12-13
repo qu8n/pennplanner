@@ -8,6 +8,9 @@ function BrowseCourses() {
       <h2 className="text-xl font-medium text-blue-900">
         Browse, then drag and drop courses into a semester
       </h2>
+      <p>
+        If you&apos;re on mobile, tap and hold a course to enable drag mode.
+      </p>
       <img
         src="/tutorial/browse-courses.gif"
         alt="Browse courses"

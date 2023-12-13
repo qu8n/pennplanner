@@ -4,6 +4,9 @@ import { Sortable } from '@/components/DnDWrappers/Sortable'
 import {
   Chip,
   Divider,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
   SelectItem,
   SelectSection,
@@ -142,11 +145,11 @@ export function SemesterContainer({
               </SelectSection>
             </Select>
 
-            <Tooltip
-              closeDelay={0}
-              placement="top"
-              size="sm"
-              content={
+            <Popover showArrow placement="top">
+              <PopoverTrigger>
+                <QuestionMarkCircleIcon className="h-4 w-4 flex-none text-neutral-400 hover:text-neutral-500" />
+              </PopoverTrigger>
+              <PopoverContent>
                 <div>
                   <b>Is your first semester a Spring semester?</b>
                   <p className="max-w-md">
@@ -156,10 +159,8 @@ export function SemesterContainer({
                     drop your first course(s) into the following Spring.
                   </p>
                 </div>
-              }
-            >
-              <QuestionMarkCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
         ) : (
           <p className="-mt-1 mb-1 line-clamp-1 font-medium text-blue-900">

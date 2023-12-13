@@ -1,7 +1,13 @@
 import { Course, Semester, DbUser, Database, Visitor } from '@/shared/types'
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
-import { Button, Tooltip } from '@nextui-org/react'
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+} from '@nextui-org/react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useMemo } from 'react'
 
@@ -224,10 +230,20 @@ export function CourseTiny({
       } duration-300`}
     >
       {warnings.length > 0 && !isDragging && (
-        <Tooltip
-          closeDelay={0}
-          content={
-            warnings.length === 1 ? (
+        <Popover
+          showArrow
+          placement="top"
+          className="max-w-sm"
+          classNames={{
+            base: 'bg-red-100 text-red-900',
+            arrow: 'bg-red-100',
+          }}
+        >
+          <PopoverTrigger>
+            <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-600 hover:text-red-700" />
+          </PopoverTrigger>
+          <PopoverContent>
+            {warnings.length === 1 ? (
               <p>{warnings[0]}</p>
             ) : (
               <ul className="list-disc pl-3">
@@ -235,15 +251,9 @@ export function CourseTiny({
                   <li key={warning}>{warning}</li>
                 ))}
               </ul>
-            )
-          }
-          className="max-w-sm"
-          classNames={{
-            base: 'bg-red-100 text-red-900',
-          }}
-        >
-          <ExclamationCircleIcon className="absolute -right-3 -top-3 h-6 w-6 cursor-default rounded-full bg-white text-red-600" />
-        </Tooltip>
+            )}
+          </PopoverContent>
+        </Popover>
       )}
 
       <div className="flex flex-col">

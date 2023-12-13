@@ -4,7 +4,12 @@ import {
 } from '@heroicons/react/20/solid'
 import { Rating, ThinRoundedStar } from '@smastrom/react-rating'
 import { Course } from '@/shared/types'
-import { Link, Tooltip } from '@nextui-org/react'
+import {
+  Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@nextui-org/react'
 import { ModalWrapper } from './ModalWrapper'
 
 export function CourseModal({
@@ -110,9 +115,12 @@ export function CourseModal({
                 {modalCourse?.avg_hours_per_week
                   ? `${modalCourse?.avg_hours_per_week} hours/week`
                   : 'n/a'}
-                <Tooltip
-                  placement="right"
-                  content={
+
+                <Popover showArrow placement="right">
+                  <PopoverTrigger>
+                    <InformationCircleIcon className="h-4 w-4 flex-none text-neutral-400 hover:text-neutral-500" />
+                  </PopoverTrigger>
+                  <PopoverContent>
                     <div className="flex flex-col">
                       <p className="font-medium">Rating system:</p>
                       <div className="flex flex-row items-center gap-1">
@@ -147,11 +155,8 @@ export function CourseModal({
                         <span>&gt;= 20 hours/week</span>
                       </div>
                     </div>
-                  }
-                  showArrow
-                >
-                  <InformationCircleIcon className="h-4 w-4 flex-none text-neutral-400" />
-                </Tooltip>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               {modalCourse?.review_count ? (
