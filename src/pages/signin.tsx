@@ -85,7 +85,7 @@ export default function SignIn() {
         <meta property="og:title" content="PennPlanner login" key="title" />
       </Head>
 
-      <Navbar maxWidthSize="xl" twHeight="h-20" twTextSize="text-sm" />
+      <Navbar maxWidthSize="xl" />
 
       <div className="relative flex flex-grow flex-col items-center justify-evenly p-10 lg:flex-row">
         {showPageLoading ? (

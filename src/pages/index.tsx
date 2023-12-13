@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar maxWidthSize="xl" twTextSize="text-sm" />
+      <Navbar maxWidthSize="xl" />
 
       <div className="relative flex flex-grow">
         <motion.div
