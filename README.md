@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository has been archived. The PennPlanner no longer receives any updates starting May 1, 2024, as the University of Pennsylvnia plans to roll out DegreeWorks, a degree-planning tool, in the Fall of 2024. PennPlanner will remain accessible [here](https://pennplanner.vercel.app/), and anyone is welcome to fork and use this codebase for their needs.
+
 <div align="center">
   <a href="https://github.com/qu8n/PennPlanner">
     <img src="public/logo.png" alt="PennPlanner logo" height="50" width="50">
